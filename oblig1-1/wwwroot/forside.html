@@ -6,6 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/index.css">
     <script src="js/forside.js"></script>
 </head>
 <body>
@@ -20,14 +21,28 @@
                 <label for="til">Reise til:</label>
                 <br><input class="form-control-lg" type="text" id="til">
                 <br /><br />
-                <input type="radio" id="tur" name="tur/retur" value="tur" />
+                <input type="radio" id="tur" name="tur/retur" value="tur" checked="checked" />
                 <label for="tur">Én vei</label>
                 <input type="radio" id="retur" name="tur/retur" value="retur" />
                 <label for="retur">Tur/retur</label><br /><br />
-                <input type="date" id="turDato" name="turDato" />
-                <div id="returDato"></div> <!--Dersom man velger tur/retur skal man få opp en til kalender-->
+
+                <label for="reiseDato">Avreise</label>
+                <div id="reiseDato">
+                    <input type="date" id="turDato" name="turDato" />
+                </div>
+                <label for="retDato" id="retLabel" style="display:none">Retur</label>
+                <div id="returDato">
+                    <input type="date" style="display:none" id="retDato" name="retDato" />
+                </div> <!--Dersom man velger tur/retur skal man få opp en til kalender-->
                 <br />
                 <h3>Reisende:</h3>
+                
+                <div id="field1">
+                    <label for="field1">Voksen</label>
+                    <button type="button" id="sub" class="sabutton">−</button>
+                    <input type="text" id="textinput" value="0" class="field" />
+                    <button type="button" id="add" class="sabutton">+</button>
+                </div>
             </div>
         </form>
         <input type="button" value="Bestill" name="bestill" onclick="lagreKunde()" class="btn btn-primary" />
