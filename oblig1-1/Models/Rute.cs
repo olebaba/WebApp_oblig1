@@ -11,7 +11,7 @@ namespace oblig1_1.Models
     {
         [Key]
         public int RID { get; set; }
-        public string dato { get; set; }
-        public List<Holdeplass> holdeplasser { get; set; }
+        public string Dato { get; set; }
+        public virtual List<Holdeplass> Holdeplasser { get; set; }
     }
 }

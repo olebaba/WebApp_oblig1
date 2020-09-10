@@ -10,7 +10,8 @@ namespace oblig1_1.Models
     {
         [Key]
         public int HID { get; set; }
-        public string sted { get; set; }
-        public string avgangstid { get; set; }
+        public string Sted { get; set; }
+        public string Avgangstider { get; set; }
+
     }
 }

@@ -11,9 +11,9 @@ namespace oblig1_1.Models
     {
         [Key]
         public int KID { get; set; }
-        public string navn { get; set; }
-        public string prisklasse { get; set; }
-        public string mobilnummer { get; set; }
-        public List<Bestilling> Bestillinger { get; set; }
+        public string Navn { get; set; }
+        public string Prisklasse { get; set; }
+        public string Mobilnummer { get; set; }
+        public virtual List<Bestilling> Bestillinger { get; set; }
     }
 }

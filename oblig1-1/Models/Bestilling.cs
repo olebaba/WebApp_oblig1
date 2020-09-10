@@ -12,7 +12,7 @@ namespace oblig1_1.Models
         [Key]
         public int BID { get; set; }
         public double Pris { get; set; }
-        public Kunde Kunde { get; set; }
-        public Rute Rute { get; set; }
+        public virtual Kunde Kunde { get; set; }
+        public virtual Rute Rute { get; set; }
     }
 }
