@@ -2,6 +2,19 @@
     console.log("Test");
 });
 
+$(document).ready(function () {
+    $("input:radio[name='tur/retur']").change(function () {
+        if ($(this).val() == "retur") {
+            $("#retDato").show();
+            $("#retLabel").show();
+        } else {
+            $("#retDato").hide();
+            $("#retLabel").hide();
+        }
+    });
+});
+
+
 function lagreKunde() {
 
     const kunde = {
@@ -9,10 +22,8 @@ function lagreKunde() {
         telefon: $("#til").val()
     }
 
-
     const url = "Buss/LagreKunde";
     $.post(url, kunde, function (OK) {
-        console.log(kunde.navn);
         if (OK) {
             window.location.href = 'forside.html';
         } else {

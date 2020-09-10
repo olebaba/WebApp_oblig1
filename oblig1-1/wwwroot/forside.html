@@ -20,12 +20,17 @@
                 <label for="til">Reise til:</label>
                 <br><input class="form-control-lg" type="text" id="til">
                 <br /><br />
-                <input type="radio" id="tur" name="tur/retur" value="tur" />
+                <input type="radio" id="tur" name="tur/retur" value="tur" checked="checked" />
                 <label for="tur">Én vei</label>
                 <input type="radio" id="retur" name="tur/retur" value="retur" />
                 <label for="retur">Tur/retur</label><br /><br />
+
+                <label for="turDato">Avreise</label>
                 <input type="date" id="turDato" name="turDato" />
-                <div id="returDato"></div> <!--Dersom man velger tur/retur skal man få opp en til kalender-->
+                <div id="returDato">
+                    <label for="retDato" id="retLabel" style="display:none">Retur</label>
+                    <input type="date" style="display:none" id="retDato" name="retDato" />
+                    </div> <!--Dersom man velger tur/retur skal man få opp en til kalender-->
                 <br />
                 <h3>Reisende:</h3>
             </div>
