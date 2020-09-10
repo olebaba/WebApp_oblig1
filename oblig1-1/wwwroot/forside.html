@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/forside.js"></script>
@@ -18,8 +19,18 @@
                 <br><br>
                 <label for="til">Reise til:</label>
                 <br><input class="form-control-lg" type="text" id="til">
+                <br /><br />
+                <input type="radio" id="tur" name="tur/retur" value="tur" />
+                <label for="tur">Én vei</label>
+                <input type="radio" id="retur" name="tur/retur" value="retur" />
+                <label for="retur">Tur/retur</label><br /><br />
+                <input type="date" id="turDato" name="turDato" />
+                <div id="returDato"></div> <!--Dersom man velger tur/retur skal man få opp en til kalender-->
+                <br />
+                <h3>Reisende:</h3>
             </div>
         </form>
+        <input type="button" value="Bestill" name="bestill" onclick="lagreKunde()" class="btn btn-primary" />
     </div>
 </body>
 </html>
