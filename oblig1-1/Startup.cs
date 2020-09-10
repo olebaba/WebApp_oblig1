@@ -39,6 +39,7 @@ namespace oblig1_1
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseStaticFiles(); //Bruke HTML-filen
 
             app.UseAuthorization();
 
