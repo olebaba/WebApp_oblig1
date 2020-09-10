@@ -12,6 +12,21 @@ $(document).ready(function () {
             $("#retLabel").hide();
         }
     });
+
+    $('#add').click(function () {
+        let number = $('#textinput').val();
+        number++;
+        $('#textinput').val(number);
+    });
+
+    $('#sub').click(function () {
+        let number = $('#textinput').val();
+        if (number <= 0) {
+        } else {
+            number--;
+        }
+        $('#textinput').val(number);
+    });
 });
 
 
