@@ -27,8 +27,11 @@ namespace oblig1_1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddDbContext<BestillingDB>(options => options.UseSqlite("Datasource=Buss.db"));
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+            services.AddDbContext<DB>(options => 
+                        options.UseSqlite("Data Source=Bestillinger.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +40,7 @@ namespace oblig1_1
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                DBInit.Init(app);
             }
 
             app.UseHttpsRedirection();

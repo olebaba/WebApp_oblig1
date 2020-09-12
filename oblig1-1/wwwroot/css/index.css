@@ -1,0 +1,27 @@
+﻿.sabutton {
+    margin: 4px;
+    cursor: pointer;
+    border-radius: 20px;
+    border-width: 1px;
+    background-color: cadetblue;
+    width: 30px;
+    height: 30px;
+    outline: none;
+    font-size: 110%;
+    flex-direction: row;
+}
+
+    button:hover {
+        background-color: darkcyan;
+    }
+
+    button:active {
+        background-color: darkslategrey;
+    }
+
+.field {
+    width: 1%;
+    border: 0;
+    text-align: center;
+}
+
