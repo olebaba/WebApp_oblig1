@@ -4,25 +4,29 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/2.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/betaling.js"></script>
 
 </head>
 <body>
-    <div class="nav-brand">
+    <div class="nav-brand" style="margin: 1em">
         <a href="forside.html">
-            <img src="logo.png" width="100px" height="50px"/>
+            <img src="logo.png" width="150px" height="30px"/>
         </a>
     </div>
     <div class="container">
         <h1 style="color: navy">Betaling</h1>
         <form class="form">
+
             <div class="form-group">
-                <label>Velg betaling:</label>
-                <select id="betaling">
-                    <option>Kredittkort</option>
-                    <option>Vipps</option>
+                <select id="betaling" onchange="valgtBetaling()">
+                    <option>Velg betaling...</option>
+                    <option value="kort">Kredittkort</option>
+                    <option value="vipps">Vipps</option>
                 </select>
             </div>
-            <div class="kort">
+
+            <div id="kort" style="display:none">
                 <div class="form-group">
                     <label>Navn:</label>
                     <input type="text" id="navn" />
@@ -41,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="vipps">
+            <div id="vipps" style="display:none">
                 <div class="form-group">
                     <label>Telefonnummer:</label>
                     <input type="text" id="telefonnr" />
