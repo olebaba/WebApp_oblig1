@@ -12,6 +12,9 @@
         .container {
             padding: 3em;
         }
+        .form-group label {
+            font-size: 1.5em;
+        }
     </style>
 </head>
 <body>
@@ -21,14 +24,14 @@
         </a>
     </div>
     <div class="container d-flex justify-content-center text-center">
-        <h1>Hvor vil du reise?</h1>
+        <h1>Hvor vil du reise?</h1><br />
         <form class="form-group">
 
             <label for="fra">Reise fra:</label>
-            <br><input class="form-control form-control" type="text" id="fra" placeholder="F.eks Oslo Bussterminal">
+            <br><input class="form-control input-lg" type="text" id="fra" placeholder="F.eks Oslo Bussterminal">
             <br><br>
             <label for="til">Reise til:</label>
-            <br><input class="form-control" type="text" id="til" placeholder="F.eks Skien stasjon">
+            <br><input class="form-control input-lg" type="text" id="til" placeholder="F.eks Skien stasjon">
 
             <br /><br />
             <input type="radio" id="tur" name="tur/retur" value="tur" checked="checked" />
@@ -38,11 +41,12 @@
 
             <label for="reiseDato">Avreise</label>
             <div id="reiseDato">
-                <input type="date" id="turDato" name="turDato" />
+                <input type="date" id="turDato" name="turDato" class="form-control input-md" />
             </div>
+            <br />
             <label for="retDato" id="retLabel" style="display:none">Retur</label>
             <div id="returDato">
-                <input type="date" style="display:none" id="retDato" name="retDato" />
+                <input type="date" style="display:none" id="retDato" name="retDato" class="form-control input-md" />
             </div> <!--Dersom man velger tur/retur skal man få opp en til kalender-->
             <br />
             <h3>Reisende:</h3>
