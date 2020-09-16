@@ -34,30 +34,75 @@
             <br><input class="form-control input-lg" type="text" id="til" placeholder="F.eks Skien stasjon">
 
             <br /><br />
+            <div class="turretur">
+            <div class="turvalg">
             <input type="radio" id="tur" name="tur/retur" value="tur" checked="checked" />
             <label for="tur">Én vei</label>
+                </div>
+            <div class="turvalg">
             <input type="radio" id="retur" name="tur/retur" value="retur" />
-            <label for="retur">Tur/retur</label><br /><br />
-
-            <label for="reiseDato">Avreise</label>
-            <div id="reiseDato">
-                <input type="date" id="turDato" name="turDato" class="form-control input-md" />
-            </div>
+            <label for="retur">Tur/Retur</label><br /><br />
+                </div>
+                </div>
             <br />
-            <label for="retDato" id="retLabel" style="display:none">Retur</label>
+
+            <div class="reiseContainer">
+            
+                <div id="reiseDato">
+                    <label for="reiseDato">Avreise</label>
+                    <input type="date" id="turDato" name="turDato" class="form-control input-md" />
+                </div>
+            
             <div id="returDato">
+                <label for="retDato" id="retLabel" style="display:none">Retur</label>
                 <input type="date" style="display:none" id="retDato" name="retDato" class="form-control input-md" />
-            </div> <!--Dersom man velger tur/retur skal man få opp en til kalender-->
-            <br />
-            <h3>Reisende:</h3>
-
-            <div id="field1">
-                <label for="field1">Voksen</label>
-                <button type="button" id="sub" class="sabutton">−</button>
-                <input type="text" id="textinput" value="0" class="field" />
-                <button type="button" id="add" class="sabutton">+</button>
             </div>
-
+            </div><!--Dersom man velger tur/retur skal man få opp en til kalender-->
+            <br />
+            <h3><b>Reisende:</b></h3>
+            <div class="numContainer">
+                <div class="field1">
+                    <div class="field1text">
+                    <label>Voksen</label>
+                        </div>
+                    <div class="field1button">
+                    <button type="button" id="sub" class="sabutton">−</button>
+                    <input type="text" id="textinput" value="0" class="field" />
+                    <button type="button" id="add" class="sabutton">+</button>
+                        </div>
+                </div>
+                <div class="field2">
+                    <div class="field1text">
+                        <label>Honnør</label>
+                    </div>
+                    <div class="field1button">
+                        <button type="button" id="sub1" class="sabutton">−</button>
+                        <input type="text" id="honinput" value="0" class="field" />
+                        <button type="button" id="add1" class="sabutton">+</button>
+                    </div>  
+                </div>
+                <div class="field1">
+                    <div class="field1text">
+                        <label>Barn</label>
+                    </div>
+                    <div class="field1button">
+                        <button type="button" id="sub2" class="sabutton">−</button>
+                        <input type="text" id="barninput" value="0" class="field" />
+                        <button type="button" id="add2" class="sabutton">+</button>
+                    </div> 
+                </div>
+                <div class="field2">
+                    <div class="field1text">
+                        <label>Student</label>
+                    </div>
+                    <div class="field1button">
+                        <button type="button" id="sub" class="sabutton">−</button>
+                        <input type="text" id="textinput" value="0" class="field" />
+                        <button type="button" id="add" class="sabutton">+</button>
+                    </div>
+                    
+                </div>
+            </div>
 
             <input type="button" value="Se tider og priser" name="bestill" onclick="lagreKunde()" class="btn btn-primary" />
         </form>

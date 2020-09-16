@@ -1,5 +1,5 @@
 ﻿$(function () {
-    console.log("Test");
+    console.log("Kjører");
 });
 
 $(document).ready(function () {
@@ -14,37 +14,59 @@ $(document).ready(function () {
     });
 
     $('#add').click(function () {
+        $("#sub").prop("disabled", false);
         let number = $('#textinput').val();
-        number++;
-        $('#textinput').val(number);
+        
+        if (number >= 9) {
+            $("#add").prop("disabled", true);
+        } else {
+            number++;
+            $('#textinput').val(number);
+        }
+        
     });
 
     $('#sub').click(function () {
+        $("#add").prop("disabled", false);
         let number = $('#textinput').val();
+        if (number <= 0) {
+            $("#sub").prop("disabled", true);
+        } else {
+            number--;
+            
+        }
+        $('#textinput').val(number);
+    });
+
+    $('#add1').click(function () {
+        let number = $('#honinput').val();
+        number++;
+        $('#honinput').val(number);
+    });
+
+    $('#sub1').click(function () {
+        let number = $('#honinput').val();
         if (number <= 0) {
         } else {
             number--;
         }
-        $('#textinput').val(number);
+        $('#honinput').val(number);
+    });
+
+    $('#add2').click(function () {
+        let number = $('#barninput').val();
+        number++;
+        $('#barninput').val(number);
+    });
+
+    $('#sub2').click(function () {
+        let number = $('#barninput').val();
+        if (number <= 0) {
+        } else {
+            number--;
+        }
+        $('#barninput').val(number);
     });
 });
 
-
-function lagreKunde() {
-
-    const kunde = {
-        navn: $('#fra').val(),
-        telefon: $("#til").val()
-    }
-
-    const url = "Buss/LagreKunde";
-    $.post(url, kunde, function (OK) {
-        if (OK) {
-            window.location.href = 'forside.html';
-        } else {
-            $("#feil").html("Feil i db - bestilling");
-        }
-    });
-
-}
 
