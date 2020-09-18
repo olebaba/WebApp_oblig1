@@ -8,14 +8,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/index.css">
     <script src="js/forside.js"></script>
-    <style>
-        .container {
-            padding: 3em;
-        }
-        .form-group label {
-            font-size: 1.5em;
-        }
-    </style>
 </head>
 <body>
     <div class="nav-brand" style="margin: 1em">
@@ -34,32 +26,32 @@
             <br><input class="form-control input-lg" type="text" id="til" placeholder="F.eks Skien stasjon">
 
             <br /><br />
+            
             <div class="turretur">
-            <div class="turvalg">
-            <input type="radio" id="tur" name="tur/retur" value="tur" checked="checked" />
-            <label for="tur">Én vei</label>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" id="tur" name="tur/retur" value="tur" checked="checked" />
+                    <label for="tur">Én vei</label>
+                    <input type="radio" id="retur" class="form-check-input" name="tur/retur" value="retur" />
+                    <label for="retur">Tur/Retur</label><br /><br />
+                
                 </div>
-            <div class="turvalg">
-            <input type="radio" id="retur" name="tur/retur" value="retur" />
-            <label for="retur">Tur/Retur</label><br /><br />
-                </div>
-                </div>
+            </div>
             <br />
 
-            <div class="reiseContainer">
+           <div class="reiseContainer">
             
                 <div id="reiseDato">
                     <label for="reiseDato">Avreise</label>
                     <input type="date" id="turDato" name="turDato" class="form-control input-md" />
                 </div>
             
-            <div id="returDato">
-                <label for="retDato" id="retLabel" style="display:none">Retur</label>
-                <input type="date" style="display:none" id="retDato" name="retDato" class="form-control input-md" />
-            </div>
+                <div id="returDato">
+                    <label for="retDato" id="retLabel" style="display:none">Retur</label>
+                    <input type="date" style="display:none" id="retDato" name="retDato" class="form-control input-md" />
+                </div>
             </div><!--Dersom man velger tur/retur skal man få opp en til kalender-->
             <br />
-            <h3><b>Reisende:</b></h3>
+            <label for="numContainer">Reisende:</label>
             <div class="numContainer">
                 <div class="field1">
                     <div class="field1text">
