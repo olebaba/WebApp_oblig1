@@ -76,6 +76,9 @@ button:active {
     /*background: pink;*/
     
 }
+input[type="radio"] {
+    margin-left: 1.5em;
+}
 #reiseDato {
     width: 45%;
     float: left;
