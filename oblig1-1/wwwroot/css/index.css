@@ -1,4 +1,8 @@
-﻿.sabutton {
+﻿.nav-brand {
+    width: 1em;
+    height: 2em;
+}
+.sabutton {
     margin: 0.9em;
     cursor: pointer;
     border-radius: 20px;
@@ -10,6 +14,7 @@
     font-size: 130%;
     flex-direction: row;
 }
+
 .container {
     padding: 3em;
 }
@@ -39,20 +44,22 @@ button:active {
    margin: auto;
    padding: 1em;
 }
-
+#row {
+    background-color: pink;
+}
 .field1 {
     width: 50%;
     height: 33%;
     float: left;
     /*background: red;*/
-    padding: 5px;
+    padding: 1em;
 }
 
 .field2 {
     margin-left: 50%;
     height: 33%;
-    /*background: pink;*/
-    padding: 5px;
+   /* background: pink;*/
+    padding: 1em;
 }
 
 .field1text {
@@ -60,15 +67,16 @@ button:active {
     height: 100%;
     float: left;
     /*background: gray;*/
-    padding: 10px;
+    padding: 1em;
     text-align: left;
 }
 
 .field1button {
-    /*background: black;*/
-    margin-left: 35%;
+    /*background: black;
     height: 100%;
+    /*margin-left: 5%;*/
     text-align: left;
+    /*background-color: aquamarine;*/
 }
 
 .reiseContainer {
@@ -113,6 +121,7 @@ input[type="radio"] {
 h3 {
     text-align: left;
     margin-left: 10%;
+        */
 }
-*/
+
 
