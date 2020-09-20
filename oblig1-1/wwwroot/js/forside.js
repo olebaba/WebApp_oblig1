@@ -39,34 +39,65 @@ $(document).ready(function () {
     });
 
     $('#add1').click(function () {
+        $("#sub1").prop("disabled", false);
         let number = $('#honinput').val();
-        number++;
-        $('#honinput').val(number);
+
+        if (number >= 9) {
+            $("#add1").prop("disabled", true);
+        } else {
+            number++;
+            $('#honinput').val(number);
+        }
     });
 
     $('#sub1').click(function () {
+        $("#add1").prop("disabled", false);
         let number = $('#honinput').val();
         if (number <= 0) {
+            $("#sub1").prop("disabled", true);
         } else {
             number--;
+
         }
         $('#honinput').val(number);
     });
 
     $('#add2').click(function () {
+        $("#sub2").prop("disabled", false);
         let number = $('#barninput').val();
-        number++;
-        $('#barninput').val(number);
+
+        if (number >= 9) {
+            $("#add2").prop("disabled", true);
+        } else {
+            number++;
+            $('#barninput').val(number);
+        }
     });
 
     $('#sub2').click(function () {
+        $("#add2").prop("disabled", false);
         let number = $('#barninput').val();
         if (number <= 0) {
+            $("#sub2").prop("disabled", true);
         } else {
             number--;
+
         }
         $('#barninput').val(number);
     });
 });
+
+function beregnPris() {
+    
+    let pris;
+    pris = $('#textinput').val() * 50 +
+        $('#honinput').val() * 25 +
+        $('#barninput').val() * 20;
+    console.log(pris);
+    $('#pristest').html("Prisen blir " + pris);
+    if (pris == 0) {
+        $('#pristest').html("Du har ikke valgt noen reisende");
+    }
+}
 
 
