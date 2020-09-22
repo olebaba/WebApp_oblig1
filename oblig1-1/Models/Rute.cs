@@ -13,8 +13,10 @@ namespace oblig1_1.Models
         public int RID { get; set; }
         // dato skriver DD.MM.YY
         [RegularExpression(@"^[0-9.]{8}$")]
-        public string Dato { get; set; }
+        public string Datoer { get; set; }
+        public virtual Holdeplass Fra { get; set; }
+        public virtual Holdeplass Til { get; set; }
         public virtual List<Holdeplass> Holdeplasser { get; set; }
-        public string TotalTid { get; set; }
+        public string TotalTid { get; set; } //trenger vi?
     }
 }

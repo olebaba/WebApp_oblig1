@@ -39,9 +39,10 @@ namespace oblig1_1.Models
 
                 var holdeplasser = new List<Holdeplass> { oslo, drammen, fokserød, skjelsvik, tangen, vinterkjær, harebakken, grimstad, lillesand, kristiansand, mandal, lyngdal, flekkefjord, 
                                                             sandnes, sola, stavanger };
-                var konkurrenten = new Rute { Dato = "21.09.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
+                var tur = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
+                var retur = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
 
-                var bestilling1 = new Bestilling { Kunde = kunde1, Rute = konkurrenten, Pris = 594 };
+                var bestilling1 = new Bestillinger { Kunde = kunde1, Tur = tur, Retur = retur, Pris = 594 };
 
                 context.Bestillinger.Add(bestilling1);
                 context.SaveChanges();
