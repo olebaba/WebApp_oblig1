@@ -11,8 +11,12 @@ namespace oblig1_1.Models
     {
         [Key]
         public int KID { get; set; }
+        [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2-20}$")]
         public string Navn { get; set; }
+        
+        // trenger ikke validere prisklasse siden det ikke er input 
         public string Prisklasse { get; set; }
+        [RegularExpression(@"^[0-9]{8}$")]
         public string Mobilnummer { get; set; }
         public virtual List<Bestilling> Bestillinger { get; set; }
     }

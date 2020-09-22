@@ -54,7 +54,7 @@ function beregnpris() {
     }
     if (antSBarn != 0) {
         // barn under 6 år gratis
-        ut += "Spedbarn (0-5 år): " + #prisSBarn + " kr<br/>";
+        ut += "Spedbarn (0-5 år): " + prisSBarn + " kr<br/>";
     }
     if (antStudent != 0) {
         prisStudent = parseInt(prisPer * antStudent / 1.5);
