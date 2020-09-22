@@ -20,3 +20,9 @@ function formaterBestilling(bestilling) {
         "</table>";
     $("#ruter").html(ut);
 }
+
+function hentEnBestilling() {
+    var url = "Bestilling/HentEn?" + 0;
+    var ut = $.get(url);
+    console.log(ut)
+}

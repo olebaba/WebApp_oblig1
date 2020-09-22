@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using oblig1_1.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace oblig1_1.Models
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetService<DB>();
+                var context = serviceScope.ServiceProvider.GetService<BestillingContext>();
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 

@@ -31,7 +31,7 @@ namespace oblig1_1
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-            services.AddDbContext<DB>(options => 
+            services.AddDbContext<BestillingContext>(options => 
                         options.UseSqlite("Data Source=Bestillinger.db"));
             services.AddScoped<IBestillingRepository, BestillingRepository>();
         }

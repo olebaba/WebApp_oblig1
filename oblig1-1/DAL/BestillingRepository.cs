@@ -10,9 +10,9 @@ namespace oblig1_1.DAL
 {
     public class BestillingRepository : IBestillingRepository
     {
-        private readonly DB _db;
+        private readonly BestillingContext _db;
 
-        public BestillingRepository(DB db)
+        public BestillingRepository(BestillingContext db)
         {
             _db = db;
         }
@@ -100,12 +100,12 @@ namespace oblig1_1.DAL
         {
             try
             {
-                Bestilling enBestillling = await _db.Bestillinger.FindAsync(id);
+                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
                 var hentetBestilling = new Bestilling()
                 {
-                    Kunde = enBestillling.Kunde,
-                    Pris = enBestillling.Pris,
-                    Rute = enBestillling.Rute
+                    Kunde = enBestilling.Kunde,
+                    Pris = enBestilling.Pris,
+                    Rute = enBestilling.Rute
                 };
                 return hentetBestilling;
             }
