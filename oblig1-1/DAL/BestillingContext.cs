@@ -11,16 +11,17 @@ namespace oblig1_1.DAL
     // fra forelesningsvideo DAL 
     public class BestillingContext : DbContext
     {
+
         public BestillingContext (DbContextOptions<BestillingContext> options)
             : base(options)
         {
             Database.EnsureCreated();
         }
 
-        public DbSet<Kunde> Kunde { get; set; }
-        public DbSet<Rute> Rute { get; set; }
-        public DbSet<Holdeplass> Holdeplass { get; set; }
-        public DbSet<Bestilling> Bestilling { get; set; }
+        public DbSet<Kunde> Kunder { get; set; }
+        public DbSet<Rute> Ruter { get; set; }
+        public DbSet<Holdeplass> Holdeplasser { get; set; }
+        public DbSet<Bestilling> Bestillinger { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
