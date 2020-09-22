@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace oblig1_1.Models
 {
-    public class Bestilling
+    public class Bestillinger
     {
         [Key]
         public int ID { get; set; }
         public double Pris { get; set; }
         [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2-20}$")]
         public virtual Kunde Kunde { get; set; }
-        public virtual Rute Rute { get; set; }
+        public virtual Rute Tur { get; set; }
+        public virtual Rute Retur { get; set; }
     }
 }

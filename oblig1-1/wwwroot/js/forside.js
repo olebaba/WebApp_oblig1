@@ -211,6 +211,11 @@ function beregnPris() {
     pris = $('#textinput').val() * 50 +
         $('#honinput').val() * 25 +
         $('#barninput').val() * 20;
+    return pris;
+}
+
+function printPris() {
+    var pris = beregnPris();
     console.log(pris);
     $('#pristest').html("Prisen blir " + pris);
     if (pris == 0) {
@@ -222,4 +227,32 @@ function visTider() {
     var url = "Rutetider.html";
 
     location.href = url;
+}
+
+function nyBestilling() {
+    var url = "Bestillinger/Lagre";
+
+    var fraSted = $("#fra").text();
+    var tilSted = $("#til").text();
+
+    var rute = finnRute(fraSted, tilSted);
+
+    const tur = {
+        dato: $("#turDato").val(),
+    };
+
+    const retur = {
+        dato: $("#returDato").val(),
+    };
+
+    
+}
+
+function finnRute(fra, til) {
+    var url = "Bestillinger/finnEnRute?" + fra + "&" + til;
+    var funnetRute = undefined;
+    $.get(url, (rute) => {
+        funnetRute = rute;
+    });
+    return funnetRute;
 }

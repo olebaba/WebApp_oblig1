@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using oblig1_1.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,16 +19,17 @@ namespace oblig1_1.DAL
         }
 
         [HttpPost]
-        public async Task<List<Bestilling>> index()
+        public async Task<List<Bestillinger>> index()
         {
             try
             {
-                List<Bestilling> alleBestillinger = await _db.Bestillinger.Select(best => new Bestilling
+                List<Bestillinger> alleBestillinger = await _db.Bestillinger.Select(best => new Bestillinger
                 {
                     ID = best.ID,
                     Kunde = best.Kunde,
                     Pris = best.Pris,
-                    Rute = best.Rute
+                    Tur = best.Tur,
+                    Retur = best.Retur
                 }).ToListAsync();
                 return alleBestillinger;
             }
@@ -49,7 +51,7 @@ namespace oblig1_1.DAL
                     var holdeplasserIRute = new List<Holdeplass>();
                     var enRute = new Rute
                     {
-                        Dato = rute.Dato,
+                        Datoer = rute.Datoer,
                         Holdeplasser = holdeplasserIRute
                     };
                     foreach (var holdeplass in rute.Holdeplasser)
@@ -67,7 +69,20 @@ namespace oblig1_1.DAL
 
         }
 
-        public async Task<bool> Lagre(Bestilling innBestilling)
+        public Rute FinnEnRute(Holdeplass fra, Holdeplass til) //kan ikke være async pga where
+        {
+            try
+            {
+                Rute enRute = (Rute)_db.Ruter.Where(r => r.Fra == fra).Where(r => r.Til == til);
+                return enRute;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> Lagre(Bestillinger innBestilling)
         {
             try
             {
@@ -85,8 +100,8 @@ namespace oblig1_1.DAL
         {
             try
             {
-                Bestilling enBestillling = await _db.Bestillinger.FindAsync(id);
-                _db.Bestillinger.Remove(enBestillling);
+                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
+                _db.Bestillinger.Remove(enBestilling);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -96,33 +111,39 @@ namespace oblig1_1.DAL
             }
         }
 
-        public async Task<Bestilling> HentEn(int id)
+        public async Task<Bestillinger> HentEn(int id)
         {
             try
             {
-                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
-                var hentetBestilling = new Bestilling()
+                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
+                if (enBestilling == null) return null; //finner ikke id i DB (tror jeg heh)
+                var hentetBestilling = new Bestillinger()
                 {
+                    ID = enBestilling.ID,
                     Kunde = enBestilling.Kunde,
                     Pris = enBestilling.Pris,
-                    Rute = enBestilling.Rute
+                    Tur = enBestilling.Tur,
+                    Retur = enBestilling.Retur
                 };
                 return hentetBestilling;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 return null;
             }
+            
         }
 
-        public async Task<bool> Endre(Bestilling endreBestilling)
+        public async Task<bool> Endre(Bestillinger endreBestilling)
         {
             try
             {
-                Bestilling enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
+                Bestillinger enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
                 enBestillling.Kunde = endreBestilling.Kunde;
                 enBestillling.Pris = endreBestilling.Pris;
-                enBestillling.Rute = endreBestilling.Rute;
+                enBestillling.Tur = endreBestilling.Tur;
+                enBestillling.Retur = endreBestilling.Retur;
 
                 await _db.SaveChangesAsync();
                 return true;

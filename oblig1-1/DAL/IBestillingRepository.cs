@@ -9,11 +9,12 @@ namespace oblig1_1.DAL
     public interface IBestillingRepository
     {
         Task<List<Rute>> VisAlleRuter();
-        Task<List<Bestilling>> index();
-        Task<bool> Lagre(Bestilling innBestilling);
+        Task<List<Bestillinger>> index();
+        Task<bool> Lagre(Bestillinger innBestilling);
         Task<bool> Slett(int id);
-        Task<Bestilling> HentEn(int id);
-        Task<bool> Endre(Bestilling endreBestilling);
+        Task<Bestillinger> HentEn(int id);
+        Task<bool> Endre(Bestillinger endreBestilling);
+        Rute FinnEnRute(Holdeplass fra, Holdeplass til);
 
     }
 }

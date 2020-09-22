@@ -18,12 +18,12 @@ namespace oblig1_1.Controllers
             _db = db;
         }
 
-        public async Task<bool> Lagre(Bestilling innBestilling)
+        public async Task<bool> Lagre(Bestillinger innBestilling)
         {
             return await _db.Lagre(innBestilling);
         }
 
-        public async Task<List<Bestilling>> index()
+        public async Task<List<Bestillinger>> index()
         {
             return await _db.index();
         }
@@ -39,20 +39,15 @@ namespace oblig1_1.Controllers
             return await _db.Slett(id);
         }
 
-        public async Task<Bestilling> HentEn(int id)
+        public async Task<Bestillinger> HentEn(int id)
         {
             return await _db.HentEn(id);
         }
 
-        public async Task<bool> Endre(Bestilling endreBestilling)
+        public async Task<bool> Endre(Bestillinger endreBestilling)
         {
             return await _db.Endre(endreBestilling);
         }
 
-        public List<Holdeplass> HentHoldeplasser()
-        {
-            List<Holdeplass> holdeplasser = _db.Holdeplasser.ToList();
-            return holdeplasser;
-        }
     }
 }
