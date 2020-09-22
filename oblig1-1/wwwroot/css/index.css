@@ -138,4 +138,7 @@ ul.ui-autocomplete.ui-menu {
     background-color: #e3e3e3;
 }
 
+.ui-helper-hidden-accessible {
+    display: none !important;
+}
 
