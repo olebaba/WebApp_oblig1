@@ -29,18 +29,17 @@ $(document).ready(function () {
     });
 });
 
+function lagreBestilling() {
 
-function lagreKunde() {
-
-    const kunde = {
-        navn: $('#fra').val(),
-        telefon: $("#til").val()
+    const bestilling = {
+        navn: $('#navn').val(),
+        nummer: $("#nummer").val()
     }
 
-    const url = "Buss/LagreKunde";
-    $.post(url, kunde, function (OK) {
+    const url = "";
+    $.post(url, bestilling, function (OK) {
         if (OK) {
-            window.location.href = 'forside.html';
+            window.location.href = 'Rutetider.html';
         } else {
             $("#feil").html("Feil i db - bestilling");
         }

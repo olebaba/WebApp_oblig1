@@ -18,9 +18,32 @@ namespace oblig1_1.Controllers
             _db = db;
         }
 
+        [HttpPost]
         public List<Bestilling> index()
         {
             return _db.Bestillinger.ToList();
+        }
+
+        public List<Rute> VisAlleRuter()
+        {
+            List<Rute> alleDBRuter = _db.Ruter.ToList();
+            List<Rute> alleRuter = new List<Rute>();
+
+            foreach (var rute in alleDBRuter)
+            {
+                var holdeplasserIRute = new List<Holdeplass>();
+                var enRute = new Rute
+                {
+                    Dato = rute.Dato,
+                    Holdeplasser = holdeplasserIRute
+                };
+                foreach (var holdeplass in rute.Holdeplasser)
+                {
+                    holdeplasserIRute.Add(holdeplass);
+                }
+                alleRuter.Add(enRute);
+            }
+            return alleRuter;
         }
     }
 }
