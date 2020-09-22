@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using oblig1_1.DAL;
 using oblig1_1.Models;
 using System;
 using System.Collections.Generic;
@@ -11,39 +12,41 @@ namespace oblig1_1.Controllers
     [Route("[controller]/[action]")]
     public class BestillingController : ControllerBase
     {
-        private readonly DB _db;
-
-        public BestillingController(DB db)
+        private readonly IBestillingRepository _db;
+        public BestillingController(IBestillingRepository db)
         {
             _db = db;
         }
 
-        [HttpPost]
-        public List<Bestilling> index()
+        public async Task<bool> Lagre(Bestilling innBestilling)
         {
-            return _db.Bestillinger.ToList();
+            return await _db.Lagre(innBestilling);
         }
 
-        public List<Rute> VisAlleRuter()
+        public async Task<List<Bestilling>> index()
         {
-            List<Rute> alleDBRuter = _db.Ruter.ToList();
-            List<Rute> alleRuter = new List<Rute>();
+            return await _db.index();
+        }
 
-            foreach (var rute in alleDBRuter)
-            {
-                var holdeplasserIRute = new List<Holdeplass>();
-                var enRute = new Rute
-                {
-                    Dato = rute.Dato,
-                    Holdeplasser = holdeplasserIRute
-                };
-                foreach (var holdeplass in rute.Holdeplasser)
-                {
-                    holdeplasserIRute.Add(holdeplass);
-                }
-                alleRuter.Add(enRute);
-            }
-            return alleRuter;
+        public async Task<List<Rute>> VisAlleRuter()
+        {
+            return await _db.VisAlleRuter();
+
+        }
+
+        public async Task<bool> Slett(int id)
+        {
+            return await _db.Slett(id);
+        }
+
+        public async Task<Bestilling> HentEn(int id)
+        {
+            return await _db.HentEn(id);
+        }
+
+        public async Task<bool> Endre(Bestilling endreBestilling)
+        {
+            return await _db.Endre(endreBestilling);
         }
     }
 }

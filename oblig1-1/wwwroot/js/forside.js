@@ -100,4 +100,8 @@ function beregnPris() {
     }
 }
 
+function visTider() {
+    var url = "Rutetider.html";
 
+    location.href = url;
+}

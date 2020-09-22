@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using oblig1_1.DAL;
 using oblig1_1.Models;
 
 namespace oblig1_1
@@ -32,6 +33,7 @@ namespace oblig1_1
             );
             services.AddDbContext<DB>(options => 
                         options.UseSqlite("Data Source=Bestillinger.db"));
+            services.AddScoped<IBestillingRepository, BestillingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
