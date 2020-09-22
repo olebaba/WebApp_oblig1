@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace oblig1_1.DAL
 {
+    // interface som inneholder alle metodene vi trenger 
     interface IBestillingRepository
     {
     }
