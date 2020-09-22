@@ -8,7 +8,7 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="css/index.css">
     <script src="js/forside.js"></script>
 </head>
@@ -60,47 +60,77 @@
             <a href="typeBilletter.html">Se info om billettyper her</a>
             <div class="numContainer">
                 <div class="field1">
-                    <div class="field1text">
-                    <label>Voksen</label>
-                        </div>
-                    <div class="field1button">
-                    <button type="button" id="sub" class="sabutton">−</button>
-                    <input type="text" id="textinput" value="0" class="field" />
-                    <button type="button" id="add" class="sabutton">+</button>
-                        </div>
-                </div>
-                <div class="field2">
-                    <div class="field1text">
-                        <label>Honnør</label>
+                    <div class="fieldtext">
+                        <label>Voksen</label>
                     </div>
-                    <div class="field1button">
-                        <button type="button" id="sub1" class="sabutton">−</button>
-                        <input type="text" id="honinput" value="0" class="field" />
-                        <button type="button" id="add1" class="sabutton">+</button>
-                    </div>  
-                </div>
-                <div class="field1">
-                    <div class="field1text">
-                        <label>Barn</label>
-                    </div>
-                    <div class="field1button">
-                        <button type="button" id="sub2" class="sabutton">−</button>
-                        <input type="text" id="barninput" value="0" class="field" />
-                        <button type="button" id="add2" class="sabutton">+</button>
-                    </div> 
-                </div>
-                <div class="field2">
-                    <div class="field1text">
-                        <label>Student</label>
-                    </div>
-                    <div class="field1button">
+                    <div class="fieldbutton">
                         <button type="button" id="sub" class="sabutton">−</button>
                         <input type="text" id="textinput" value="0" class="field" />
                         <button type="button" id="add" class="sabutton">+</button>
                     </div>
-                    
+                </div>
+                <div class="field2">
+                    <div class="fieldtext">
+                        <label>Honnør</label>
+                    </div>
+                    <div class="fieldbutton">
+                        <button type="button" id="sub1" class="sabutton">−</button>
+                        <input type="text" id="honinput" value="0" class="field" />
+                        <button type="button" id="add1" class="sabutton">+</button>
+                    </div>
+                </div>
+                <div class="field1">
+                    <div class="fieldtext">
+                        <label>Barn 0-5 år</label>
+                    </div>
+                    <div class="fieldbutton">
+                        <button type="button" id="sub2" class="sabutton">−</button>
+                        <input type="text" id="barninput" value="0" class="field" />
+                        <button type="button" id="add2" class="sabutton">+</button>
+                    </div>
+                </div>
+                <div class="field2">
+                    <div class="fieldtext">
+                        <label>Student</label>
+                    </div>
+                    <div class="fieldbutton">
+                        <button type="button" id="sub3" class="sabutton">−</button>
+                        <input type="text" id="studentinput" value="0" class="field" />
+                        <button type="button" id="add3" class="sabutton">+</button>
+                    </div>
+                </div>
+                <div class="field1">
+                    <div class="fieldtext">
+                        <label>Barn 6-17 år</label>
+                    </div>
+                    <div class="fieldbutton">
+                        <button type="button" id="sub4" class="sabutton">−</button>
+                        <input type="text" id="storbarninput" value="0" class="field" />
+                        <button type="button" id="add4" class="sabutton">+</button>
+                    </div>
+                </div>
+                <div class="field2">
+                    <div class="fieldtext">
+                        <label>Vernepliktig</label>
+                    </div>
+                    <div class="fieldbutton">
+                        <button type="button" id="sub5" class="sabutton">−</button>
+                        <input type="text" id="vernepliktiginput" value="0" class="field" />
+                        <button type="button" id="add5" class="sabutton">+</button>
+                    </div>
+                </div>
+                <div class="field1">
+                    <div class="fieldtext">
+                        <label>Ledsager</label>
+                    </div>
+                    <div class="fieldbutton">
+                        <button type="button" id="sub6" class="sabutton">−</button>
+                        <input type="text" id="ledsagerinput" value="0" class="field" />
+                        <button type="button" id="add6" class="sabutton">+</button>
+                    </div>
                 </div>
             </div>
+            <br /><br /><br /><br />
             <input type="button" value="Beregn pris test" name="beregn" onclick="beregnPris()" class="btn btn-primary" />
             <input type="button" value="Se tider og priser" name="bestill" onclick="visTider()" class="btn btn-primary" />
         </form>

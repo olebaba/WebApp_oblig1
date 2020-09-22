@@ -48,5 +48,11 @@ namespace oblig1_1.Controllers
         {
             return await _db.Endre(endreBestilling);
         }
+
+        public List<Holdeplass> HentHoldeplasser()
+        {
+            List<Holdeplass> holdeplasser = _db.Holdeplasser.ToList();
+            return holdeplasser;
+        }
     }
 }
