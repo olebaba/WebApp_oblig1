@@ -22,5 +22,11 @@ namespace oblig1_1.Controllers
         {
             return _db.Bestillinger.ToList();
         }
+
+        public List<Holdeplass> HentHoldeplasser()
+        {
+            List<Holdeplass> holdeplasser = _db.Holdeplasser.ToList();
+            return holdeplasser;
+        }
     }
 }

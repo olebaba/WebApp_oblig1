@@ -85,6 +85,124 @@ $(document).ready(function () {
         }
         $('#barninput').val(number);
     });
+
+    $('#add3').click(function () {
+        $("#sub3").prop("disabled", false);
+        let number = $('#studentinput').val();
+
+        if (number >= 9) {
+            $("#add3").prop("disabled", true);
+        } else {
+            number++;
+            $('#studentinput').val(number);
+        }
+    });
+
+    $('#sub3').click(function () {
+        $("#add3").prop("disabled", false);
+        let number = $('#studentinput').val();
+        if (number <= 0) {
+            $("#sub3").prop("disabled", true);
+        } else {
+            number--;
+
+        }
+        $('#studentinput').val(number);
+    });
+
+    $('#add4').click(function () {
+        $("#sub4").prop("disabled", false);
+        let number = $('#storbarninput').val();
+
+        if (number >= 9) {
+            $("#add4").prop("disabled", true);
+        } else {
+            number++;
+            $('#storbarninput').val(number);
+        }
+    });
+
+    $('#sub4').click(function () {
+        $("#add4").prop("disabled", false);
+        let number = $('#storbarninput').val();
+        if (number <= 0) {
+            $("#sub4").prop("disabled", true);
+        } else {
+            number--;
+
+        }
+        $('#storbarninput').val(number);
+    });
+
+    $('#add5').click(function () {
+        $("#sub5").prop("disabled", false);
+        let number = $('#vernepliktiginput').val();
+
+        if (number >= 9) {
+            $("#add5").prop("disabled", true);
+        } else {
+            number++;
+            $('#vernepliktiginput').val(number);
+        }
+    });
+
+    $('#sub5').click(function () {
+        $("#add5").prop("disabled", false);
+        let number = $('#vernepliktiginput').val();
+        if (number <= 0) {
+            $("#sub5").prop("disabled", true);
+        } else {
+            number--;
+
+        }
+        $('#vernepliktiginput').val(number);
+    });
+
+    $('#add6').click(function () {
+        $("#sub6").prop("disabled", false);
+        let number = $('#ledsagerinput').val();
+
+        if (number >= 9) {
+            $("#add6").prop("disabled", true);
+        } else {
+            number++;
+            $('#ledsagerinput').val(number);
+        }
+    });
+
+    $('#sub6').click(function () {
+        $("#add6").prop("disabled", false);
+        let number = $('#ledsagerinput').val();
+        if (number <= 0) {
+            $("#sub6").prop("disabled", true);
+        } else {
+            number--;
+
+        }
+        $('#ledsagerinput').val(number);
+    });
+
+    $.get("bestilling/HentHoldeplasser", function (holdeplasser) {
+        formaterHoldeplass(holdeplasser);
+    });
+
+    function formaterHoldeplass(holdeplass) {
+        let avTags = [];
+        for (let i = 0; i < holdeplass.length; i++) {
+            avTags.push(holdeplass[i].sted);
+            console.log(holdeplass[i].sted);
+        }
+            $("#fra").autocomplete({
+                source: avTags,
+                minLength: 1
+            });
+            $("#til").autocomplete({
+                source: avTags,
+                minLength: 1
+            });
+            }
+    
+
 });
 
 function beregnPris() {

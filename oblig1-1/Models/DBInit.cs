@@ -38,6 +38,12 @@ namespace oblig1_1.Models
                 };
                 bergen.Avgangstider = "1100, 1430, 2000";
 
+                var skien = new Holdeplass
+                {
+                    Sted = "Skien"
+                };
+                skien.Avgangstider = "1600";
+
                 var nyBestilling = new Bestilling
                 {
                     Kunde = nyKunde,
@@ -45,7 +51,7 @@ namespace oblig1_1.Models
                     Pris = 500
                 };
 
-                var holdeplasser = new List<Holdeplass> { oslo, bergen };
+                var holdeplasser = new List<Holdeplass> { oslo, bergen, skien };
                 nyRute.Holdeplasser = holdeplasser;
 
                 context.Bestillinger.Add(nyBestilling);

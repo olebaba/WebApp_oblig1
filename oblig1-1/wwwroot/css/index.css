@@ -57,20 +57,20 @@ button:active {
 .field2 {
     margin-left: 50%;
     height: 33%;
-   /* background: pink;*/
+    /*background: pink;*/
     padding: 1em;
 }
 
-.field1text {
+.fieldtext {
     width: 35%;
     height: 100%;
     float: left;
-    /*background: gray;*/
+   /*background: gray;*/
     padding: 1em;
     text-align: left;
 }
 
-.field1button {
+.fieldbutton {
     /*background: black;
     height: 100%;
     /*margin-left: 5%;*/
@@ -121,6 +121,21 @@ h3 {
     text-align: left;
     margin-left: 10%;
         */
+}
+
+ul.ui-autocomplete.ui-menu {
+    width: 50%;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    list-style: none;
+    margin: auto;
+    padding: 5px;
+    font-size: 150%;
+}
+
+.ui-state-hover, .ui-state-active {
+    background-color: #e3e3e3;
 }
 
 
