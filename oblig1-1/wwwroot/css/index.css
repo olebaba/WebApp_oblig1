@@ -43,39 +43,50 @@ button:active {
    margin: auto;
    padding: 1em;
 }
-#row {
-    background-color: pink;
-}
+
 .field1 {
     width: 50%;
     height: 33%;
     float: left;
-    /*background: red;*/
-    padding: 1em;
+ /*   background: red;*/
+    padding: 0.3em;
 }
 
 .field2 {
     margin-left: 50%;
     height: 33%;
     /*background: pink;*/
-    padding: 1em;
+    padding: 0.3em;
 }
 
+
+
 .fieldtext {
-    width: 35%;
-    height: 100%;
-    float: left;
-   /*background: gray;*/
     padding: 1em;
+    height: 100%;
+    width: 45%;
+    float: left;
+  /*  background: gray;*/
     text-align: left;
 }
 
 .fieldbutton {
-    /*background: black;
     height: 100%;
-    /*margin-left: 5%;*/
+    /*background: black;*/
+    margin-left: 45%;
     text-align: left;
-    /*background-color: aquamarine;*/
+    
+}
+
+@media (max-width:1000px) {
+    .field1 {
+        width: 100%;
+    }
+
+    .field2 {
+        float: right;
+        width: 100%;
+    }
 }
 
 .reiseContainer {
@@ -101,26 +112,6 @@ input[type="radio"] {
    /* height: 80%;/*
     /*background: cyan; */
     padding: 5px;
-}
-
-.turretur {
-    /*
-        height: 50px;
-  /* background: pink;
-  /*  margin: auto;
-}
-.turvalg {
-    width: 50%;
-    height: 100%;
-    float: left;
-   /*background: red;
-    padding: 5px;
-}
-
-h3 {
-    text-align: left;
-    margin-left: 10%;
-        */
 }
 
 ul.ui-autocomplete.ui-menu {
