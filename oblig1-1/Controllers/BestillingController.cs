@@ -49,5 +49,10 @@ namespace oblig1_1.Controllers
             return await _db.Endre(endreBestilling);
         }
 
+        public async Task<List<Holdeplass>> HentHoldeplasser()
+        {
+            return await _db.HentHoldeplasser();
+        }
+
     }
 }

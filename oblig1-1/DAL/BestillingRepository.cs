@@ -153,5 +153,11 @@ namespace oblig1_1.DAL
                 return false;
             }
         }
+
+        public async Task<List<Holdeplass>> HentHoldeplasser()
+        {
+            List<Holdeplass> holdeplasser = await _db.Holdeplasser.ToListAsync();
+            return holdeplasser;
+        }
     }
 }
