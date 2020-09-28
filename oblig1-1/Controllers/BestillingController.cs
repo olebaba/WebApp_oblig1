@@ -18,9 +18,18 @@ namespace oblig1_1.Controllers
             _db = db;
         }
 
-        public async Task<bool> Lagre(Bestillinger innBestilling)
+        public async Task<ActionResult> Lagre(Bestillinger innBestilling)
         {
-            return await _db.Lagre(innBestilling);
+            if (ModelState.IsValid)
+            {
+                bool returOk = await _db.Lagre(innBestilling);
+                if(!returOk)
+                {
+                    return BadRequest("Bestillingen kunne ikke lagres");
+                }
+                return Ok("Bestillingen er lagret");
+            }
+            return BadRequest("Feil i inputvalidering");
         }
 
         public async Task<List<Bestillinger>> index()
@@ -34,19 +43,38 @@ namespace oblig1_1.Controllers
 
         }
 
-        public async Task<bool> Slett(int id)
+        public async Task<ActionResult> Slett(int id)
         {
-            return await _db.Slett(id);
+            bool returOk = await _db.Slett(id);
+            if(!returOk)
+            {
+                return NotFound("Sletting ble ikke utført");
+            }
+            return Ok("Bestillingen er slettet");
         }
 
-        public async Task<Bestillinger> HentEn(int id)
+        public async Task<ActionResult> HentEn(int id)
         {
-            return await _db.HentEn(id);
+            Bestillinger bestilling = await _db.HentEn(id);
+            if (bestilling == null)
+            {
+                return NotFound("Bestillingen ikke funnet");
+            }
+            return Ok(bestilling);
         }
 
-        public async Task<bool> Endre(Bestillinger endreBestilling)
+        public async Task<ActionResult> Endre(Bestillinger endreBestilling)
         {
-            return await _db.Endre(endreBestilling);
+            if (ModelState.IsValid)
+            {
+                bool returOk = await _db.Endre(endreBestilling);
+                if (!returOk)
+                {
+                    return NotFound("Endring av bestilling kunne ikke utføres");
+                }
+                return Ok("Bestillingen ble endret");
+            }
+            return BadRequest("Feil i inputvalidering");
         }
 
         public async Task<List<Holdeplass>> HentHoldeplasser()
