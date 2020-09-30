@@ -24,8 +24,6 @@ function visAvganger() {    //Denne henter alle relevante avganger og sender dem
     //Denne må fullføres
     //Hent fra og til fra db?
     hentRuteFraDB();
-    settTittel("Oslo", "Bergen");
-    settDato("Lørdag 19. September");
 
     //Hent billetter fra db?
     settBilletter();
@@ -45,7 +43,7 @@ function hentRuteFraDB() {
     }
 
     var reise = {
-        datoer: urlParams.get('date'),
+        datoer: urlParams.get('goDate'),
         holdeplasser: [
             fra, til
         ]
@@ -54,6 +52,8 @@ function hentRuteFraDB() {
     console.log("Reise fra " + fra.sted + " til " + til.sted);
     $.post("Bestilling/FinnEnRute", reise, function (rute) {
         console.log(rute);
+        settTittel(rute.holdeplasser[0].sted, rute.holdeplasser[rute.holdeplasser.length-1].sted);
+        settDato(rute.datoer);
     });
 }
 
