@@ -62,6 +62,14 @@ function settTittel(fra, til) {
     $("#fraOgTil").html(tittel);
 }
 
+function hentDato() {
+    let url_dato = new Date(getUrlParam('goDate'));
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var formatert_dato = url_dato.toLocaleDateString("no-NO", options);
+    var reise_dato = formatert_dato.charAt(0).toUpperCase() + formatert_dato.slice(1);
+    settDato(reise_dato);
+}
+
 function settDato(dato) {
     $("#datoTittel").html(dato);
 }
@@ -70,6 +78,10 @@ function settBilletter() {
     let bill = "1 Voksen, 2 Barn";
     $("#billetter").html(bill);
 }
+
+function gaTilbake() {
+    location.href = "forside.html";
+} 
 
 function skrivUt(avreiser) {    //Funksjon som skriver ut avganger
     let ut = "<table class='table table-striped'>" +
