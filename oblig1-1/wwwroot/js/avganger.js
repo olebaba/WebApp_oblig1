@@ -23,6 +23,7 @@ function newFunction() {
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
     //Denne må fullføres
     //Hent fra og til fra db?
+    hentRuteFraDB();
     settTittel("Oslo", "Bergen");
     settDato("Lørdag 19. September");
 
@@ -31,6 +32,29 @@ function visAvganger() {    //Denne henter alle relevante avganger og sender dem
 
     //Hent avreiser fra db?
     //skrivUt(avreiser);
+}
+
+function hentRuteFraDB() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    var fra = {
+        sted: urlParams.get('from')
+    }
+    var til = {
+        sted: urlParams.get('to')
+    }
+
+    var reise = {
+        datoer: urlParams.get('date'),
+        holdeplasser: [
+            fra, til
+        ]
+    }
+
+    console.log("Reise fra " + fra.sted + " til " + til.sted);
+    $.post("Bestilling/FinnEnRute", reise, function (rute) {
+        console.log(rute);
+    });
 }
 
 function settTittel(fra, til) {

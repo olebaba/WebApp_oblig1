@@ -223,44 +223,10 @@ function printPris() {
     }
 }
 
-function visTider() {
-    var url = "Rutetider.html";
-
-    location.href = url;
-}
-
-function nyBestilling() {
-    var url = "Bestillinger/Lagre";
-
-    var fraSted = $("#fra").text();
-    var tilSted = $("#til").text();
-
-    var rute = finnRute(fraSted, tilSted);
-
-    const tur = {
-        dato: $("#turDato").val(),
-    };
-
-    const retur = {
-        dato: $("#returDato").val(),
-    };
-
-    
-}
-
 function tilAvganger() {
     var from = document.getElementById("fra").value;
     var to = document.getElementById("til").value;
     var datt = document.getElementById("turDato").value;
     let vindu = "avganger.html?from=" + from + "&to=" + to + "&goDate=" + datt;
-    window.href = vindu;
-}
-
-function finnRute(fra, til) {
-    var url = "Bestillinger/finnEnRute?" + fra + "&" + til;
-    var funnetRute = undefined;
-    $.get(url, (rute) => {
-        funnetRute = rute;
-    });
-    return funnetRute;
+    location.href = vindu;
 }

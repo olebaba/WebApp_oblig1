@@ -60,7 +60,6 @@ namespace oblig1_1.Models
                 //siden vi har med retur så legger vi holdeplassene inn i motsatt rekkefølge 
                 holdeplasser.Reverse(); 
                 var retur = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
-
                 var bestilling1 = new Bestillinger { Kunde = kunde1, Tur = tur, Retur = retur, Pris = 594 };
 
                 context.Bestillinger.Add(bestilling1);
