@@ -40,18 +40,81 @@ namespace oblig1_1.Models
                 List<Holdeplass> holdeplasser = new List<Holdeplass>{ oslo, drammen, fokserød, skjelsvik, tangen, vinterkjær, harebakken, grimstad, lillesand, kristiansand, mandal, lyngdal, 
                                                                         flekkefjord, sandnes, sola, stavanger};
 
-                var osloStavanger = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
-
+                var tur1 = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
                 //siden vi har med retur så legger vi holdeplassene inn i motsatt rekkefølge 
-                List<Holdeplass> holdeplasserSO = holdeplasser;
-                holdeplasserSO.Reverse();
-                var stavangerOslo = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
+                holdeplasser.Reverse(); 
+                var retur1 = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
 
-                context.Ruter.AddRange(osloStavanger);
+                var bestilling1 = new Bestillinger { Kunde = kunde1, Tur = tur1, Retur = retur1, Pris = 594 };
 
-                var bestilling1 = new Bestillinger { Kunde = kunde1, Tur = osloStavanger, Retur = stavangerOslo, Pris = 594 };
+                var kunde2 = new Kunde { Navn = "Line", Mobilnummer = "49876543", Prisklasse = "voksen" };
+
+                var bergen = new Holdeplass { Sted = "Bergen", Avgangstider = "0930, 1130" };
+                var os = new Holdeplass { Sted = "Os", Avgangstider = "1010, 1210" };
+                var halhjem = new Holdeplass { Sted = "Halhjem", Avgangstider = "1025, 1225" };
+                var sandvikvåg = new Holdeplass { Sted = "Sandvikvåg", Avgangstider = "1150, 1350"};
+                var leirvik = new Holdeplass { Sted = "Leirvik", Avgangstider = "1225, 1425"};
+                var haukås = new Holdeplass { Sted = "Haukås", Avgangstider = "1305, 1505"};
+                var aksdal = new Holdeplass { Sted = "Aksdal", Avgangstider = "1330, 1530"};
+                var mjåsund = new Holdeplass { Sted = "Mjåsund", Avgangstider = "1345, 1545"};
+                var arsvågen = new Holdeplass { Sted = "Arsvågen", Avgangstider = "1405, 1605"};
+                var mortavika = new Holdeplass { Sted = "Mortavika", Avgangstider = "1445, 1645"};
+                // andre avgangstider for en ny rute, derfor to like holdeplasser 
+                var stavanger2 = new Holdeplass { Sted = "Stavanger", Avgangstider = "1515, 1715"};
+
+                List<Holdeplass> kyst = new List<Holdeplass>();
+                kyst.Add(bergen);
+                kyst.Add(os);
+                kyst.Add(halhjem);
+                kyst.Add(sandvikvåg);
+                kyst.Add(leirvik);
+                kyst.Add(haukås);
+                kyst.Add(aksdal);
+                kyst.Add(mjåsund);
+                kyst.Add(arsvågen);
+                kyst.Add(mortavika);
+                kyst.Add(stavanger2);
+
+                var tur2 = new Rute { Datoer = "01.10.2020, 10.10.2020", Holdeplasser = kyst, TotalTid = "5t 45min" };
+                kyst.Reverse();
+                var retur2 = new Rute { Datoer = "02.10.2020, 11.10.2020", Holdeplasser = kyst, TotalTid = "5t 45min" };
+
+                var bestilling2 = new Bestillinger { Kunde = kunde2, Tur = tur2, Retur = retur2, Pris = 740 };
+
+                var oslo2 = new Holdeplass { Sted = "Oslo", Avgangstider = "0830, 1030" };
+                var kongsberg = new Holdeplass { Sted = "Kongsberg", Avgangstider = "0940, 1140" };
+                var notodden = new Holdeplass { Sted = "Norodden", Avgangstider = "1015, 1215"};
+                var sauland = new Holdeplass { Sted = "Sauland", Avgangstider = "1040, 1240"};
+                var seljord = new Holdeplass { Sted = "Seljord", Avgangstider = "1110, 1310"};
+                var åmot = new Holdeplass { Sted = "Åmot", Avgangstider = "1210, 1410"};
+                var haukeligrend = new Holdeplass { Sted = "Haukeligrend", Avgangstider = "1320, 1520"};
+                var røldal = new Holdeplass { Sted = "Røldal", Avgangstider = "1415, 1615"};
+                var seljestad = new Holdeplass { Sted = "Seljestad", Avgangstider = "1445, 1645"};
+                var ølen = new Holdeplass { Sted = "Ølen", Avgangstider = "1545, 1745"};
+                var haugesund = new Holdeplass { Sted = "Haugesund", Avgangstider = "1635, 1835"};
+
+                List<Holdeplass> hauk = new List<Holdeplass>();
+                hauk.Add(oslo2);
+                hauk.Add(kongsberg);
+                hauk.Add(notodden);
+                hauk.Add(sauland);
+                hauk.Add(seljord);
+                hauk.Add(åmot);
+                hauk.Add(haukeligrend);
+                hauk.Add(røldal);
+                hauk.Add(seljestad);
+                hauk.Add(ølen);
+                hauk.Add(haugesund);
+
+                var tur3 = new Rute { Datoer = "02.10.2020, 10.10.2020", Holdeplasser = hauk, TotalTid = "8t 5min" };
+                hauk.Reverse();
+                var retur3 = new Rute { Datoer = "03.10.2020, 12.10.2020", Holdeplasser = hauk, TotalTid = "8t 5min" };
+
+                var bestilling3 = new Bestillinger { Kunde = kunde1, Tur = tur3, Retur = retur3, Pris = 690 };
 
                 context.Bestillinger.Add(bestilling1);
+                context.Bestillinger.Add(bestilling2);
+                context.Bestillinger.Add(bestilling3); 
                 context.SaveChanges();
             }
         }
