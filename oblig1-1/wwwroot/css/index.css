@@ -133,3 +133,6 @@ ul.ui-autocomplete.ui-menu {
     display: none !important;
 }
 
+td{
+    max-width: 15em;
+}

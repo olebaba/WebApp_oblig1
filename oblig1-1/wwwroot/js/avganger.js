@@ -37,9 +37,11 @@ function hentRuteFraDB() {
         settTittel(fra.sted, til.sted);
         settDato(rute.datoer);
         var holdeplasser = rute.holdeplasser;
-        avreiser = [
-            { start: fra.avgangstider, totaltid: rute.totalTid, pris: (rute.holdeplasser.length * 66.6).toFixed(2), holdeplasser}
-        ]
+        var avgangstider = fra.avgangstider.split(",");
+        avreiser = [];
+        for (i = 0; i < avgangstider.length; i++) {
+            avreiser[i] = { start: avgangstider[i], totaltid: rute.totalTid, pris: (rute.holdeplasser.length * 66.6).toFixed(2), holdeplasser }
+        }
         console.log(avreiser);
         skrivUt(avreiser);
     });
@@ -72,21 +74,24 @@ function gaTilbake() {
 } 
 
 function skrivUt(avreiser) {    //Funksjon som skriver ut avganger
+    var timer = Math.floor(parseInt(avreiser[0].totaltid) / 60);
+    var minutter = parseInt(avreiser[0].totaltid) % 60;
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
         "<th>Avreise</th><th>Reisetid</th><th>Pris</th><th>Holdeplasser</th>" +
-        "<th>Valg</th>" +
+        "<th></th>" +
         "</tr>";
     for (let avreise of avreiser) {
         ut += "<tr>" +
             "<td>" + avreise.start + "</td>" +
-            "<td>" + avreise.totaltid + "</td>" +
-            "<td>" + avreise.pris + "</td>" +
+            "<td>" + timer + " timer og " + minutter + " minutter</td>" +
+            "<td>" + avreise.pris + "kr</td>" +
             "<td>";
         for (h in avreise.holdeplasser) {
             ut += avreise.holdeplasser[h].sted + ", ";
         }
-        ut += "</td>";
+        ut += "</td>" + 
+            '<td><input type="button" value="Velg reise"/></td>';
             
     }
     ut += "</tr></table>";
