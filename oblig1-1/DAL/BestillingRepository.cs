@@ -69,12 +69,37 @@ namespace oblig1_1.DAL
 
         }
 
-        public Rute FinnEnRute(Holdeplass fra, Holdeplass til) //kan ikke være async pga where
+        public Rute FinnEnRute(Rute reise) //kan ikke være async pga where
         {
+            Holdeplass fra = reise.Holdeplasser[0];
+            Holdeplass til = reise.Holdeplasser[1];
+            
             try
             {
-                Rute enRute = (Rute)_db.Ruter.Where(r => r.Fra == fra).Where(r => r.Til == til);
-                return enRute;
+                List<Holdeplass> holdeplasser = new List<Holdeplass>();
+                Holdeplass h1 = (Holdeplass)_db.Holdeplasser.Where(h => h.Sted == fra.Sted).FirstOrDefault();
+                holdeplasser.Add(h1);
+                Holdeplass hS = (Holdeplass)_db.Holdeplasser.Where(h => h.Sted == til.Sted).FirstOrDefault();
+                if (h1.HID < hS.HID)
+                {
+                    for (int i = h1.HID + 1; i < hS.HID; i++)
+                    {
+                        holdeplasser.Add(_db.Holdeplasser.Find(i));
+                    }
+                }
+                else
+                {
+                    for (int i = h1.HID - 1; i > hS.HID; i--)
+                    {
+                        holdeplasser.Add(_db.Holdeplasser.Find(i));
+                    }
+                }
+                holdeplasser.Add(hS);
+                Rute nyReise = new Rute {Holdeplasser = holdeplasser, Datoer = reise.Datoer, TotalTid = (holdeplasser.Count*60).ToString()};
+
+                nyReise.Holdeplasser.ForEach(i => Console.WriteLine(i.Sted));
+
+                return nyReise;
             }
             catch
             {

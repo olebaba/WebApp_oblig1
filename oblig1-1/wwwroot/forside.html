@@ -46,12 +46,12 @@
             
                 <div id="reiseDato">
                     <label for="reiseDato">Avreise</label>
-                    <input type="date" id="turDato" name="turDato" class="form-control input-md" />
+                    <input type="date" id="turDato" name="turDato" class="form-control input-lg" />
                 </div>
             
                 <div id="returDato">
                     <label for="retDato" id="retLabel" style="display:none">Retur</label>
-                    <input type="date" style="display:none" id="retDato" name="retDato" class="form-control input-md" />
+                    <input type="date" style="display:none" id="retDato" name="retDato" class="form-control input-lg" />
                 </div>
             </div><!--Dersom man velger tur/retur skal man få opp en til kalender-->
             <br />
@@ -130,9 +130,8 @@
                     </div>
                 </div>
             </div>
-            <br /><br /><br /><br />
             <input type="button" value="Beregn pris test" name="beregn" onclick="printPris()" class="btn btn-primary" />
-            <input type="button" value="Se tider og priser" name="bestill" onclick="visTider()" class="btn btn-primary" />
+            <input type="button" value="Se tider og priser" name="bestill" onclick="tilAvganger()" class="btn btn-primary" />
         </form>
         <div id="pristest"></div>
     </div>

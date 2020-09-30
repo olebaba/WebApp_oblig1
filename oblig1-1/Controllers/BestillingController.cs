@@ -96,5 +96,10 @@ namespace oblig1_1.Controllers
             return await _db.HentHoldeplasser();
         }
 
+        public Rute FinnEnRute(Rute reise)
+        {
+            return _db.FinnEnRute(reise);
+        }
+
     }
 }
