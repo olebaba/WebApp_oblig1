@@ -97,7 +97,7 @@ namespace oblig1_1.DAL
                 holdeplasser.Add(hS);
                 Rute nyReise = new Rute {Holdeplasser = holdeplasser, Datoer = reise.Datoer, TotalTid = (holdeplasser.Count*60).ToString()};
 
-                nyReise.Holdeplasser.ForEach(i => Console.WriteLine(i.Sted));
+                //nyReise.Holdeplasser.ForEach(i => Console.WriteLine(i.Sted));
 
                 return nyReise;
             }
