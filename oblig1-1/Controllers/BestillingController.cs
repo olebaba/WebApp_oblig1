@@ -43,13 +43,13 @@ namespace oblig1_1.Controllers
 
         }
 
-        public async Task<ActionResult> FinnEnRute(Holdeplass fra, Holdeplass til)
+        public async Task<ActionResult> FinnEnRute(Rute reise)
         {
             if(ModelState.IsValid)
             {
-                Rute rute = _db.FinnEnRute(fra, til);
+                Rute nyRute = _db.FinnEnRute(reise);
                 
-                if(rute.Fra == null || rute.Til == null)
+                if(nyRute == null)
                 {
                     return NotFound("Rute finnes ikke");
                 }
@@ -94,11 +94,6 @@ namespace oblig1_1.Controllers
         public async Task<List<Holdeplass>> HentHoldeplasser()
         {
             return await _db.HentHoldeplasser();
-        }
-
-        public Rute FinnEnRute(Rute reise)
-        {
-            return _db.FinnEnRute(reise);
         }
 
     }
