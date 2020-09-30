@@ -248,6 +248,14 @@ function nyBestilling() {
     
 }
 
+function tilAvganger() {
+    var from = document.getElementById("fra").value;
+    var to = document.getElementById("til").value;
+    var datt = document.getElementById("turDato").value;
+    let vindu = "avganger.html?from=" + from + "&to=" + to + "&goDate=" + datt;
+    window.href = vindu;
+}
+
 function finnRute(fra, til) {
     var url = "Bestillinger/finnEnRute?" + fra + "&" + til;
     var funnetRute = undefined;
