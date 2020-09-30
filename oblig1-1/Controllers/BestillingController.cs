@@ -43,6 +43,20 @@ namespace oblig1_1.Controllers
 
         }
 
+        public async Task<ActionResult> FinnEnRute(Holdeplass fra, Holdeplass til)
+        {
+            if(ModelState.IsValid)
+            {
+                Rute rute = _db.FinnEnRute(fra, til);
+                
+                if(rute.Fra == null || rute.Til == null)
+                {
+                    return NotFound("Rute finnes ikke");
+                }
+            }
+            return BadRequest("Feil i inputvalidering");
+        }
+
         public async Task<ActionResult> Slett(int id)
         {
             bool returOk = await _db.Slett(id);
