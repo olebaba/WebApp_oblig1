@@ -232,10 +232,33 @@ function validerOgVisAvganger() {
     }
 }
 
+function hentVerdi(id) {
+    return document.getElementById(id).value;
+}
+
+function hentBilletter() {
+    let url_billetter = "&pass_0=" + hentVerdi("textinput") + "&pass_1=" + hentVerdi("storbarninput") + "&pass_2=" + hentVerdi("barninput") + "&pass_3=" + hentVerdi("studentinput") + "&pass_4=" + hentVerdi("honinput") + "&pass_5=" + hentVerdi("vernepliktiginput") + "&pass_6=" + hentVerdi("ledsagerinput");
+    //Denne kan brukes i stedet hvis gjort om litt:
+    /*for (let i = 0; i < 7; i++) {
+        let antall_billett = document.getElementsByClassName('field')[i].value;
+        //if (antall_billett > 0) {
+            url_billetter += "&pass_" + i + "=" + antall_billett;
+        //}
+    }*/
+    return url_billetter;
+}
+
 function tilAvganger() {
-    var from = document.getElementById("fra").value;
-    var to = document.getElementById("til").value;
-    var datt = document.getElementById("turDato").value;
-    let vindu = "avganger.html?from=" + from + "&to=" + to + "&goDate=" + datt;
+    var from = hentVerdi("fra");
+    var to = hentVerdi("til");
+    var datt = hentVerdi("turDato");
+    let vindu = "avganger.html?from=" + from + "&to=" + to + "&goDate=" + datt + "&tur=";
+    if (document.getElementById("retur").checked == true) {
+        vindu += "tovei&backDate=" + hentVerdi("retDato");
+    } else {
+        vindu += "envei";
+    }
+    vindu += hentBilletter();
+
     location.href = vindu;
 }
