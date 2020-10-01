@@ -4,11 +4,63 @@ $(function () { //Startfunksjon kaller på visAvganger()
 
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
     //Denne må fullføres
+    hentTittel();
+    hentDato();
     //Hent fra og til fra db?
     hentRuteFraDB();
 
     //Hent billetter fra db?
     settBilletter();
+}
+
+function getUrlParam(param) { //Henter ut parametere fra url
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    return urlParams.get(param);
+}
+
+function hentTittel() { //Henter hvor reisen starter og slutter fra url, og sender videre
+    let v1, v2;
+    if (getUrlParam("steg") == null) {
+        v1 = getUrlParam('from');
+        v2 = getUrlParam('to');
+    } else {
+        v1 = getUrlParam('to');
+        v2 = getUrlParam("from");
+    }
+    settTittel(v1, v2);
+}
+
+function hentDato() { //Henter dato fra url og sender videre
+    sjekkRetur();
+    let url_dato;
+    if (getUrlParam("steg") == null) {
+        url_dato = new Date(getUrlParam('goDate'));
+    } else {
+        url_dato = new Date(getUrlParam('backDate'));
+    }
+    
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var formatert_dato = url_dato.toLocaleDateString("no-NO", options);
+    var reise_dato = formatert_dato.charAt(0).toUpperCase() + formatert_dato.slice(1);
+    settDato(reise_dato);
+}
+
+function hentBilletter() { //Henter billetter fra url og sender videre
+    var billettNavn = [" Voksen", " Barn", " Småbarn", " Student", " Honnør", " Vernepliktig", " Ledsager"];
+    let billetter = "";
+    let counter = 0;
+    for (let i = 0; i < 7; i++) {
+        let billett = getUrlParam("pass_" + i);
+        if (billett > 0) {
+            if (counter > 0) {
+                billetter += ", ";
+            }
+            billetter += billett + billettNavn[i]; 
+        }
+        counter++;
+    }
+    return billetter;
 }
 
 function hentRuteFraDB() {
@@ -54,12 +106,20 @@ function hentRuteFraDB() {
     
 }
 
-function settTittel(fra, til) {
+function sjekkRetur() { //Sjekker om reisen er tur-retur
+    if (getUrlParam("tur") == "tovei") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function settTittel(fra, til) { //Setter hvor reisen starter og slutter
     let tittel = fra + " -> " + til;
     $("#fraOgTil").html(tittel);
 }
 
-function hentDato() {
+function hentDato() { //Henter reisedato fra url
     let url_dato = new Date(getUrlParam('goDate'));
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     var formatert_dato = url_dato.toLocaleDateString("no-NO", options);
@@ -67,18 +127,28 @@ function hentDato() {
     settDato(reise_dato);
 }
 
-function settDato(dato) {
+function settDato(dato) { //Setter reisedato
     $("#datoTittel").html(dato);
 }
 
-function settBilletter() {
-    let bill = "1 Voksen, 2 Barn";
+function settBilletter() { //Setter valgte billetter
+    let bill = hentBilletter();
     $("#billetter").html(bill);
 }
 
 function gaTilbake() {
     location.href = "forside.html";
-} 
+}
+
+function gaVidere() { //Gå til retur-side hvis reisen er tur-retur
+    let steg = "";
+    if (sjekkRetur()) {
+        steg = "avganger.html" + window.location.search + "&steg=2";
+    } else {
+        steg = "betaling.html";
+    }
+    location.href = steg;
+}
 
 function skrivUt(avreiser) {    //Funksjon som skriver ut avganger
     var timer = Math.floor(parseInt(avreiser[0].totaltid) / 60);
