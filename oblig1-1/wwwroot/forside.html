@@ -11,6 +11,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="css/index.css">
     <script src="js/forside.js"></script>
+    <script src="js/validering.js"></script>
+
 </head>
 <body>
     <div class="nav-brand" style="margin: 1em">
@@ -24,10 +26,12 @@
         <form class="form-group">
 
             <label for="fra">Reise fra:</label>
-            <br><input class="form-control input-lg" type="text" id="fra" placeholder="F.eks Oslo Bussterminal">
+            <br><input class="form-control input-lg" type="text" id="fra" onchange = "validerHoldeplassFra(this.value)" placeholder="F.eks Oslo Bussterminal">
+            <span id="feilHoldeplassFra" style="color:red"></span>
             <br><br>
             <label for="til">Reise til:</label>
-            <br><input class="form-control input-lg" type="text" id="til" placeholder="F.eks Skien stasjon">
+            <br><input class="form-control input-lg" type="text" id="til" onchange = "validerHoldeplassTil(this.value)" placeholder="F.eks Skien stasjon">
+            <span id="feilHoldeplassTil" style="color:red"></span>
 
             <br /><br />
             

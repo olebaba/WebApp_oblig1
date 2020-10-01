@@ -25,15 +25,93 @@ function validerMobilnummer(mobilnummer) {
     }
 }
 
-function validerHoldeplass(holdeplass) {
+function validerHoldeplassFra(holdeplass) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
     const ok = regexp.test(holdeplass);
     if (!ok) {
-        $("#feilHoldeplass").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 20 bokstaver");
         return false;
     }
     else {
-        $("#feilHoldeplass").html("");
+        $("#feilHoldeplassFra").html("");
         return true; 
+    }
+}
+
+function validerHoldeplassTil(holdeplass) {
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
+    const ok = regexp.test(holdeplass);
+    if (!ok) {
+        $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        return false;
+    }
+    else {
+        $("#feilHoldeplassTil").html("");
+        return true;
+    }
+}
+
+function validerKortnavn(navn) {
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
+    const ok = regexp.test(navn);
+    if (!ok) {
+        $("#feilKortnavn").html("Navnet må bestå av 2 til 20 bokstaver");
+        return false;
+    }
+    else {
+        $("#feilKortnavn").html("");
+        return true;
+    }
+}
+
+function validerKortnummer(kortnummer) {
+    const regexp = /^[0-9]{16}$/;
+    const ok = regexp.test(kortnummer);
+    if (!ok) {
+        $("#feilKortnummer").html("Kortnummeret må bestå av 16 tall");
+        return false;
+    }
+    else {
+        $("#feilKortnummer").html("");
+        return true;
+    }
+}
+
+function validerUtlop(utlop) {
+    const regexp = /^[0-9]{6}$/;
+    const ok = regexp.test(utlop);
+    if (!ok) {
+        $("#feilUtlop").html("Utløpsdato må bestå av 6 tall");
+        return false;
+    }
+    else {
+        $("#feilUtlop").html("");
+        return true;
+    }
+}
+
+function validerCVC(cvc) {
+    const regexp = /^[0-9]{3}$/;
+    const ok = regexp.test(cvc);
+    if (!ok) {
+        $("#feilCVC").html("CVC må bestå av 3 tall");
+        return false;
+    }
+    else {
+        $("#feilCVC").html("");
+        return true;
+    }
+}
+
+funtion validerVipps(mobilnummer) {
+    const regexp = /^[0-9]{8}$/;
+    const ok = regexp.test(kortnummer);
+    if (!ok) {
+        $("#feilVipps").html("Mobilnummer må bestå av 8 tall");
+        return false;
+    }
+    else {
+        $("#feilVipps").html("");
+        return true;
     }
 }
