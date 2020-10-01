@@ -101,6 +101,7 @@ function hentRuteFraDB() {
     // dersom det skjer en feil når man skal hente rute  
     .fail(function () {
         $("#feil").html("Feil på server - prøv igjen senere");
+        console.log("feil med db");
     }); 
 
     
