@@ -223,6 +223,15 @@ function printPris() {
     }
 }
 
+function validerOgVisAvganger() {
+    const holdeplassFraOk = validerHoldeplassFra($("#fra")).val();
+    const holdeplassTilOk = validerHoldeplassTil($("#til")).val();
+    
+    if (holdeplassFraOk && holdeplassTilOk) {
+        tilAvganger();
+    }
+}
+
 function tilAvganger() {
     var from = document.getElementById("fra").value;
     var to = document.getElementById("til").value;

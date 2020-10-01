@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/betaling.js"></script>
+    <script src="js/validering.js"></script>
 </head>
 <body>
     <div class="nav-brand" style="margin: 1em">
@@ -22,13 +23,15 @@
                 <br />
                 <small class="text-muted"></small>
             </label>
-            <input class="form-control input-lg" type="text" id="kjøperNavn" />
+            <input class="form-control input-lg" type="text" id="kjøperNavn" onchange="validerNavn(this.value)" />
+            <span id="feilNavn" style="color:red"></span>
             <br />
             <label for="reisendeTelefon">
                 Telefonnummer:<br />
                 <small class="text-muted">Billettene sendes til dette nummeret</small>
             </label>
-            <input class="form-control input-lg" type="text" id="reisendeTelefon" />
+            <input class="form-control input-lg" type="text" id="reisendeTelefon" onchange="validerMobilnummer(this.value)" />
+            <span class="feilMobilnummer" style="color:red"></span>
             <br />
             <select class="form-control input-lg" id="betaling" onchange="valgtBetaling()">
                 <option>Velg betaling...</option>
@@ -40,14 +43,16 @@
                 <div class="row">
                     <div class="col">
                         <label for="navn">Navn på kortholder:</label>
-                        <input class="form-control input-lg" type="text" id="navn" />
+                        <input class="form-control input-lg" type="text" id="navn" onchange="validerKortnavn(this.value)" />
+                        <span id="feilKortnavn" style="color:red"></span>
                     </div>
                 </div>
                 <br />
                 <div class="row">
                     <div class="col">
                         <label for="kortnummer">Kortnummer:</label>
-                        <input class="form-control input-lg" type="text" id="kortnummer" />
+                        <input class="form-control input-lg" type="text" id="kortnummer" onchange="validerKortnummer(this.value)" />
+                        <span id="feilKortnummer" style="color:red"></span>
                     </div>
                 </div>
                 <br />
@@ -55,11 +60,13 @@
                 <div class="row">
                     <div class="col-xs-4" id="nederst">
                         <label>Utløpsdato:</label>
-                        <input class="form-control input-lg" type="text" id="utløpsdato" />
+                        <input class="form-control input-lg" type="text" id="utløpsdato" onchange="validerUtlop(this.value)"/>
+                        <span id="feilUtlop" style="color:red"></span>
                     </div>
                     <div class="col-xs-2">
                         <label>CVC:</label>
-                        <input class="form-control input-lg" type="text" id="cvc" />
+                        <input class="form-control input-lg" type="text" id="cvc" onchange="validerCVC(this.value)"/>
+                        <span id="feilCVC" style="color:red"></span>
                     </div>
                 </div>
             </div>
@@ -69,7 +76,8 @@
                     <br />
                     <small class="text-muted">Betalingen blir gjennomført på Vipps</small>
                 </label>
-                <input class="form-control input-lg" type="text" id="telefonnr" />
+                <input class="form-control input-lg" type="text" id="telefonnr" onchange="validerVipps(this.value)" />
+                <span id="feilVipps" style="color:red"></span>
             </div>
             <br /><br />
             <div class="row">
