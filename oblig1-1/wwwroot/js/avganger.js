@@ -2,6 +2,15 @@ $(function () { //Startfunksjon kaller på visAvganger()
     visAvganger();
 });
 
+// validerer holdeplassene fra input på forsiden
+function validerOgHentRute() {
+    const holdeplassFraOk = validerHoldeplass($("#fra")).val();
+    const holdeplassTilOk = validerHoldeplass($("#til")).val();
+    if (holdeplassFraOk && holdeplassTilOk) {
+        hentRuteFraDB();
+    }
+}
+
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
     //Denne må fullføres
     //Hent fra og til fra db?
@@ -44,7 +53,14 @@ function hentRuteFraDB() {
         }
         console.log(avreiser);
         skrivUt(avreiser);
-    });
+    })
+
+    // dersom det skjer en feil når man skal hente rute  
+    .fail(function () {
+        $("#feil").html("Feil på server - prøv igjen senere");
+    }); 
+
+    
 }
 
 function settTittel(fra, til) {
