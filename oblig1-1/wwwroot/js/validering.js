@@ -25,9 +25,9 @@ function validerMobilnummer(mobilnummer) {
     }
 }
 
-function validerHoldeplassFra(holdeplass) {
+function validerHoldeplassFra(fra) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
-    const ok = regexp.test(holdeplass);
+    const ok = regexp.test(fra);
     if (!ok) {
         $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 20 bokstaver");
         return false;
@@ -38,9 +38,9 @@ function validerHoldeplassFra(holdeplass) {
     }
 }
 
-function validerHoldeplassTil(holdeplass) {
+function validerHoldeplassTil(til) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
-    const ok = regexp.test(holdeplass);
+    const ok = regexp.test(til);
     if (!ok) {
         $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 20 bokstaver");
         return false;
@@ -103,7 +103,7 @@ function validerCVC(cvc) {
     }
 }
 
-funtion validerVipps(mobilnummer) {
+function validerVipps(mobilnummer) {
     const regexp = /^[0-9]{8}$/;
     const ok = regexp.test(kortnummer);
     if (!ok) {

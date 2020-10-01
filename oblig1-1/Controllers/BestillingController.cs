@@ -45,6 +45,12 @@ namespace oblig1_1.Controllers
 
         public Rute FinnEnRute(Rute reise) //kan ikke være async
         {
+            if(reise == null)
+            {
+                Console.WriteLine("Fant ikke ruten");
+                return null;
+            }
+            
             return _db.FinnEnRute(reise);
         }
 

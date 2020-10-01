@@ -31,7 +31,7 @@
                 <small class="text-muted">Billettene sendes til dette nummeret</small>
             </label>
             <input class="form-control input-lg" type="text" id="reisendeTelefon" onchange="validerMobilnummer(this.value)" />
-            <span class="feilMobilnummer" style="color:red"></span>
+            <span id="feilMobilnummer" style="color:red"></span>
             <br />
             <select class="form-control input-lg" id="betaling" onchange="valgtBetaling()">
                 <option>Velg betaling...</option>
