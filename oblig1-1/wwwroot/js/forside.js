@@ -1,8 +1,4 @@
-﻿$(function () {
-    console.log("Kjører");
-});
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $("input:radio[name='tur/retur']").change(function () {
         if ($(this).val() == "retur") {
             $("#retDato").show();
@@ -186,24 +182,23 @@ $(document).ready(function () {
         formaterHoldeplass(holdeplasser);
     });
 
-    function formaterHoldeplass(holdeplass) {
-        let avTags = [];
-        for (let i = 0; i < holdeplass.length; i++) {
-            avTags.push(holdeplass[i].sted);
-            console.log(holdeplass[i].sted);
-        }
-            $("#fra").autocomplete({
-                source: avTags,
-                minLength: 1
-            });
-            $("#til").autocomplete({
-                source: avTags,
-                minLength: 1
-            });
-            }
     
-
 });
+
+function formaterHoldeplass(holdeplass) {
+    let avTags = [];
+    for (let i = 0; i < holdeplass.length; i++) {
+        avTags.push(holdeplass[i].sted);
+    }
+    $("#fra").autocomplete({
+        source: avTags,
+        minLength: 1
+    });
+    $("#til").autocomplete({
+        source: avTags,
+        minLength: 1
+    });
+}
 
 function beregnPris() {
     
