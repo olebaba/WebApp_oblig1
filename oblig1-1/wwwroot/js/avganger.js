@@ -144,6 +144,7 @@ function gaTilbake() {
 }
 
 function gaVidere() { //Gå til retur-side hvis reisen er tur-retur
+
     let steg = "";
     if (sjekkRetur()) {
         steg = "avganger.html" + window.location.search + "&steg=2";
@@ -189,8 +190,8 @@ function skrivUt(avreiser, retur) {    //Funksjon som skriver ut avganger
                 "<td>" + timer + " timer og " + minutter + " minutter</td>" +
                 "<td>" + avreise.pris + "kr</td>" +
                 "<td>";
-            for (h in avreise.holdeplasser) {
-                utretur += avreise.holdeplasser[h].sted + ", ";
+            for (h = 0; h < avreise.holdeplasser.length - 1; h++) {
+                utretur += avreise.holdeplasser.reverse()[h].sted + ", ";
             }
             utretur += "</td>" +
                 '<td><input type="button" value="Velg reise"/></td>';
