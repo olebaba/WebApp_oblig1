@@ -50,12 +50,12 @@
             
                 <div id="reiseDato">
                     <label for="reiseDato">Avreise</label>
-                    <input type="date" id="turDato" name="turDato" class="form-control input-lg" />
+                    <input type="date" id="turDato" name="turDato" onchange="validerKnapp()" class="form-control input-lg" />
                 </div>
             
                 <div id="returDato">
                     <label for="retDato" id="retLabel" style="display:none">Retur</label>
-                    <input type="date" style="display:none" id="retDato" name="retDato" class="form-control input-lg" />
+                    <input type="date" style="display:none" id="retDato" name="retDato" onchange="validerKnapp()" class="form-control input-lg" />
                 </div>
             </div><!--Dersom man velger tur/retur skal man få opp en til kalender-->
             <br />

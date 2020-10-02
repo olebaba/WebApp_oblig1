@@ -3,9 +3,11 @@
         if ($(this).val() == "retur") {
             $("#retDato").show();
             $("#retLabel").show();
+            validerKnapp();
         } else {
             $("#retDato").hide();
             $("#retLabel").hide();
+            validerKnapp();
         }
     });
 
@@ -19,7 +21,7 @@
             number++;
             $('#textinput').val(number);
         }
-
+        validerKnapp();
     });
 
     $('#sub').click(function () {
@@ -32,6 +34,7 @@
 
         }
         $('#textinput').val(number);
+        validerKnapp();
     });
 
     $('#add1').click(function () {
@@ -44,6 +47,7 @@
             number++;
             $('#honinput').val(number);
         }
+        validerKnapp();
     });
 
     $('#sub1').click(function () {
@@ -56,6 +60,7 @@
 
         }
         $('#honinput').val(number);
+        validerKnapp();
     });
 
     $('#add2').click(function () {
@@ -68,6 +73,7 @@
             number++;
             $('#barninput').val(number);
         }
+        validerKnapp();
     });
 
     $('#sub2').click(function () {
@@ -80,6 +86,7 @@
 
         }
         $('#barninput').val(number);
+        validerKnapp();
     });
 
     $('#add3').click(function () {
@@ -92,6 +99,7 @@
             number++;
             $('#studentinput').val(number);
         }
+        validerKnapp();
     });
 
     $('#sub3').click(function () {
@@ -104,6 +112,7 @@
 
         }
         $('#studentinput').val(number);
+        validerKnapp();
     });
 
     $('#add4').click(function () {
@@ -116,6 +125,7 @@
             number++;
             $('#storbarninput').val(number);
         }
+        validerKnapp();
     });
 
     $('#sub4').click(function () {
@@ -128,6 +138,7 @@
 
         }
         $('#storbarninput').val(number);
+        validerKnapp();
     });
 
     $('#add5').click(function () {
@@ -140,6 +151,7 @@
             number++;
             $('#vernepliktiginput').val(number);
         }
+        validerKnapp();
     });
 
     $('#sub5').click(function () {
@@ -152,6 +164,7 @@
 
         }
         $('#vernepliktiginput').val(number);
+        validerKnapp();
     });
 
     $('#add6').click(function () {
@@ -164,6 +177,7 @@
             number++;
             $('#ledsagerinput').val(number);
         }
+        validerKnapp();
     });
 
     $('#sub6').click(function () {
@@ -176,6 +190,7 @@
 
         }
         $('#ledsagerinput').val(number);
+        validerKnapp();
     });
 
     $.get("bestilling/HentHoldeplasser", function (holdeplasser) {

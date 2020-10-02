@@ -56,11 +56,31 @@ function validerHoldeplassTil(til) {
 }
 
 function validerKnapp() {
-    if ($("#fra").val() && $("#til").val()) {
+    let fraDato = $("input[name='turDato']").val();
+    let tilDato = $("input[name='retDato']").val();
+    let radio = $("input[name='tur/retur']:checked").val();
+    var antall;
+    antall = $('#textinput').val() * 1 +
+        $('#honinput').val() * 1 +
+        $('#barninput').val() * 1 +
+        $('#studentinput').val() * 1 +
+        $('#storbarninput').val() * 1 +
+        $('#vernepliktiginput').val() * 1 +
+        $('#ledsagerinput').val() * 1;
+    console.log("antall: " + antall);
+    if ($("#fra").val() && $("#til").val() && fraDato != "" && antall > 0) {
         $("#avgangerknapp").prop("disabled", false);
     } else {
         $("#avgangerknapp").prop("disabled", true);
     }
+
+    if (radio == "retur" && tilDato != "") {
+        $("#avgangerknapp").prop("disabled", false);
+    } else if (radio == "retur" && tilDato == "") {
+        $("#avgangerknapp").prop("disabled", true);
+    }
+
+
 }
 
 function validerKortnavn(navn) {
