@@ -1,6 +1,4 @@
-﻿// funksjon som gjør at vi kun viser input-bokser som er relevant til valgt 
-// betalingsmåte 
-function valgtBetaling() {
+﻿function valgtBetaling() {
     var valgt = $('#betaling').val();
     if (valgt == 'kort') {
         $('#kort').show();
@@ -37,12 +35,14 @@ function validerOgBetal() {
 
     if (valgt == 'kort') {
         if (navnOk && telefonOk && kortnavnOk && kortnummerOk && utløpOk && cvcOk) {
-            lagreBestilling();
+            //lagreBestilling();
+            location.href = 'godkjent.html';
         }
     }
     else if (valgt == 'vipps') {
         if (navnOk && telefonOk && vippsOk) {
-            lagreBestilling();
+            //lagreBestilling();
+            location.href='godkjent.html';
         }
     }
 }
@@ -59,7 +59,6 @@ function lagreBestilling() {
         telefon: $("#reisendeTelefon").val()
     }
 
-    // må hente inn pris fra avganger-siden
     const pris = JSON.parse(urlParams.get('pris'));
 
     const bestilling = {
@@ -70,7 +69,7 @@ function lagreBestilling() {
     }
 
     $.post("Bestilling/Lagre", bestilling, function () {
-        window.location.href = 'godkjent.html';
+        location.href = 'godkjent.html';
     })
     .fail(function () {
         $("#feil").html("Feil på server - prøv igjen senere");

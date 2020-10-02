@@ -146,8 +146,10 @@ function gaTilbake() {
 var turJson, returJson, pris;
 
 function gaVidere() { //Gå til retur-side hvis reisen er tur-retur
-    var url = "betaling.html?tur=" + JSON.stringify(turJson) + "retur=" + JSON.stringify(returJson) +
-        "pris=" + ((returJson != undefined) ? (turJson.pris + returJson.pris) : turJson.pris);
+    /*var url = "betaling.html?tur=" + JSON.stringify(turJson) + "retur=" + JSON.stringify(returJson) +
+        "pris=" + ((returJson != undefined) ? (turJson.pris + returJson.pris) : turJson.pris);*/
+    var url = "betaling.html" + window.location.search + "&pris=" + ((returJson != undefined) ? (turJson.pris + returJson.pris) : turJson.pris);
+    
     location.href = url;
 }
 

@@ -11,8 +11,6 @@ namespace oblig1_1.Models
     {
         [Key]
         public int RID { get; set; }
-        // dato skriver DD.MM.YY
-        [RegularExpression(@"^[0-9.]{8}$")]
         public string Datoer { get; set; }
         public virtual List<Holdeplass> Holdeplasser { get; set; }
         public string TotalTid { get; set; }
