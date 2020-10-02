@@ -3,7 +3,7 @@ function validerNavn(navn) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const ok = regexp.test(navn);
     if (!ok) {
-        $("#feilNavn").html("Navnet må bestå av 2 til 20 bokstaver");
+        $("#feilNavn").html("Navnet må bestå av 2 til 30 bokstaver");
         return false;
     }
     else {
@@ -55,7 +55,7 @@ function validerKortnavn(navn) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const ok = regexp.test(navn);
     if (!ok) {
-        $("#feilKortnavn").html("Navnet må bestå av 2 til 20 bokstaver");
+        $("#feilKortnavn").html("Navnet må bestå av 2 til 30 bokstaver");
         return false;
     }
     else {
@@ -105,7 +105,7 @@ function validerCVC(cvc) {
 
 function validerVipps(mobilnummer) {
     const regexp = /^[0-9]{8}$/;
-    const ok = regexp.test(kortnummer);
+    const ok = regexp.test(mobilnummer);
     if (!ok) {
         $("#feilVipps").html("Mobilnummer må bestå av 8 tall");
         return false;
