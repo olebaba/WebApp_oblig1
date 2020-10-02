@@ -3,13 +3,9 @@ $(function () { //Startfunksjon kaller på visAvganger()
 });
 
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
-   
     hentTittel();
-    
     hentDato();
-    
     hentRuteFraDB();
-
     settBilletter();
 }
 
@@ -140,9 +136,7 @@ function gaTilbake() {
 
 var turJson, returJson, pris;
 
-function gaVidere() { //Gå til retur-side hvis reisen er tur-retur
-    /*var url = "betaling.html?tur=" + JSON.stringify(turJson) + "retur=" + JSON.stringify(returJson) +
-        "pris=" + ((returJson != undefined) ? (turJson.pris + returJson.pris) : turJson.pris);*/
+function gaVidere() { 
     var url = "betaling.html" + window.location.search + "&pris=" + ((returJson != undefined) ? (turJson.pris + returJson.pris) : turJson.pris);
     
     location.href = url;
