@@ -17,13 +17,21 @@ function valgtBetaling() {
 }
 
 function validerOgBetal() {
-    const navnOk = validerNavn("#kjøperNavn").val();
-    const telefonOk = validerMobilnumme("#reisendeTelefon").val();
-    const kortnavnOk = validerKortnavn("#navn").val();
-    const kortnummerOk = validerKortnummer("#kortnummer").val();
-    const utløpOk = validerUtlop("#utløpsdato").val();
-    const cvcOk = validerCVC("#cvc").val();
-    const vippsOk = validerVipps("#telefonnr").val();
+    const navn = $("#kjøperNavn").val();
+    const telefon = $("#reisendeTelefon").val();
+    const kortnummer = $("#kortnummer").val();
+    const kortnavn = $("#navn").val();
+    const utløpsdato = $("#utløpsdato").val();
+    const cvc = $("#cvc").val();
+    const kjøperTelefon = $("#telefonnr").val();
+
+    const navnOk = validerNavn(navn);
+    const telefonOk = validerMobilnummer(telefon);
+    const kortnavnOk = validerKortnavn(kortnavn);
+    const kortnummerOk = validerKortnummer(kortnummer);
+    const utløpOk = validerUtlop(utløpsdato);
+    const cvcOk = validerCVC(cvc);
+    const vippsOk = validerVipps(kjøperTelefon);
 
     var valgt = $('#betaling').val();
 
@@ -43,6 +51,8 @@ function lagreBestilling() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
+    const tur = JSON.parse(urlParams.get('tur'));
+    const retur = JSON.parse(urlParams.get('retur'));
 
     const kunde = {
         navn: $("#kjøperNavn").val(),
@@ -50,11 +60,7 @@ function lagreBestilling() {
     }
 
     // må hente inn pris fra avganger-siden
-    const pris = 50;
-
-    const tur = null;
-
-    const retur = null;
+    const pris = JSON.parse(urlParams.get('pris'));
 
     const bestilling = {
         pris: pris,
