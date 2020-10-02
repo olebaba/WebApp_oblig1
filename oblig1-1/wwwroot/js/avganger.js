@@ -192,7 +192,7 @@ function setAvreise(avreiser, retur) {
     var timer = Math.floor(parseInt(avreiser[0].totaltid) / 60);
     var minutter = parseInt(avreiser[0].totaltid) % 60;
     var reisetid = timer + " timer og " + minutter + " minutter"
-    var holdeplasser, pris; 
+    var holdeplasser, pris;
 
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
@@ -210,9 +210,14 @@ function setAvreise(avreiser, retur) {
             "<td>" + reisetid + "</td>" +
             "<td>" + pris + "kr</td>" +
             "<td>";
-        for (h = 0; h < holdeplasser.length - 1; h++) {
-            ut += ((retur) ? holdeplasser.reverse()[h].sted : holdeplasser[h].sted) + ", ";
+        ut += holdeplasser[0].sted;
+        let lengde = holdeplasser.length-1;
+        let visHoldeplasser="";
+        for (h = 1; h < lengde; h++) {
+            visHoldeplasser += ((retur) ? holdeplasser.reverse()[h].sted : holdeplasser[h].sted) + ", ";
         }
+        ut += "<a href='#' data-toggle='tooltip' title='" + visHoldeplasser + "'><br>" + lengde+" stopp <br></a>"
+        ut += holdeplasser[holdeplasser.length - 1].sted;
         ut += "</td>" +
             '<td><input type="button" value="Velg reise" onclick="gaVidere()"/></td>';
     }
