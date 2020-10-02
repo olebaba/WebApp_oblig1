@@ -30,10 +30,12 @@ function validerHoldeplassFra(fra) {
     const ok = regexp.test(fra);
     if (!ok) {
         $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        validerKnapp();
         return false;
     }
     else {
         $("#feilHoldeplassFra").html("");
+        validerKnapp();
         return true; 
     }
 }
@@ -43,11 +45,21 @@ function validerHoldeplassTil(til) {
     const ok = regexp.test(til);
     if (!ok) {
         $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        validerKnapp();
         return false;
     }
     else {
         $("#feilHoldeplassTil").html("");
+        validerKnapp();
         return true;
+    }
+}
+
+function validerKnapp() {
+    if ($("#fra").val() && $("#til").val()) {
+        $("#avgangerknapp").prop("disabled", false);
+    } else {
+        $("#avgangerknapp").prop("disabled", true);
     }
 }
 

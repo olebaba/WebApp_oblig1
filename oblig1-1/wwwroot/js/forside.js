@@ -12,14 +12,14 @@
     $('#add').click(function () {
         $("#sub").prop("disabled", false);
         let number = $('#textinput').val();
-        
+
         if (number >= 9) {
             $("#add").prop("disabled", true);
         } else {
             number++;
             $('#textinput').val(number);
         }
-        
+
     });
 
     $('#sub').click(function () {
@@ -29,7 +29,7 @@
             $("#sub").prop("disabled", true);
         } else {
             number--;
-            
+
         }
         $('#textinput').val(number);
     });
@@ -181,7 +181,6 @@
     $.get("bestilling/HentHoldeplasser", function (holdeplasser) {
         formaterHoldeplass(holdeplasser);
     });
-
     
 });
 
@@ -198,6 +197,7 @@ function formaterHoldeplass(holdeplass) {
                 //Hvis ikke en holdeplass fra listen blir valgt gjøres inputen tom
                 $("#fra").val("");
                 $("#feilHoldeplassFra").html("Vennligst velg en holdeplass fra listen")
+                validerKnapp();
             }
         }
     });
@@ -208,27 +208,10 @@ function formaterHoldeplass(holdeplass) {
             if (!ui.item) {
                 $("#til").val("");
                 $("#feilHoldeplassTil").html("Vennligst velg en holdeplass fra listen")
+                validerKnapp();
             }
         }
     });
-}
-
-function beregnPris() {
-    
-    let pris;
-    pris = $('#textinput').val() * 50 +
-        $('#honinput').val() * 25 +
-        $('#barninput').val() * 20;
-    return pris;
-}
-
-function printPris() {
-    var pris = beregnPris();
-    console.log(pris);
-    $('#pristest').html("Prisen blir " + pris);
-    if (pris == 0) {
-        $('#pristest').html("Du har ikke valgt noen reisende");
-    }
 }
 
 function validerOgVisAvganger() {
