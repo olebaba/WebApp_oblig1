@@ -13,13 +13,13 @@ function visAvganger() {    //Denne henter alle relevante avganger og sender dem
     settBilletter();
 }
 
-function getUrlParam(param) { //Henter ut parametere fra url
+function getUrlParam(param) { //Henter ut parametere fra url. Kode tatt fra nett.
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
     return urlParams.get(param);
 }
 
-function hentTittel() { //Henter hvor reisen starter og slutter fra url, og sender videre
+function hentTittel() { //Henter hvor reisen starter og slutter fra url, og sender videre. Kode tatt fra nett.
     let v1, v2;
     if (getUrlParam("steg") == null) {
         v1 = getUrlParam('from');
@@ -31,7 +31,7 @@ function hentTittel() { //Henter hvor reisen starter og slutter fra url, og send
     settTittel(v1, v2);
 }
 
-function hentDato() { //Henter dato fra url og sender videre
+function hentDato() { //Henter dato fra url og sender videre. Kode tatt fra nett.
     sjekkRetur();
     let url_dato;
     if (getUrlParam("steg") == null) {
@@ -46,7 +46,7 @@ function hentDato() { //Henter dato fra url og sender videre
     settDato(reise_dato);
 }
 
-function hentBilletter() { //Henter billetter fra url og sender videre
+function hentBilletter() { //Henter billetter fra url og sender videre. Noe av kode tatt fra nett.
     var billettNavn = [" Voksen", " Barn", " Småbarn", " Student", " Honnør", " Vernepliktig", " Ledsager"];
     let billetter = "";
     let counter = 0;
@@ -89,7 +89,7 @@ function hentRuteFraDB() {
         var fra = rute.holdeplasser[0];
         var til = rute.holdeplasser[rute.holdeplasser.length - 1];
         settTittel(fra.sted, til.sted);
-        settDato(rute.datoer);
+        //settDato(rute.datoer);
         var holdeplasser = rute.holdeplasser;
         var avgangstider = fra.avgangstider.split(",");
         avreiser = [];
@@ -122,7 +122,7 @@ function settTittel(fra, til) { //Setter hvor reisen starter og slutter
     $("#fraOgTil").html(tittel);
 }
 
-function hentDato() { //Henter reisedato fra url
+function hentDato() { //Henter reisedato fra url. Kode tatt fra nett.
     let url_dato = new Date(getUrlParam('goDate'));
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     var formatert_dato = url_dato.toLocaleDateString("no-NO", options);
@@ -151,45 +151,36 @@ function gaVidere() { //Gå til retur-side hvis reisen er tur-retur
     location.href = url;
 }
 
-function visAvreiser(avreiser, retur) {    //Funksjon som skriver ut avganger
-    
-    /*
-    for (let avreise of avreiser) {
-        holdeplasser = avreise.holdeplasser;
-        pris = avreise.pris;
-        uttur += "<tr>" +
-            "<td>" + avreise.start + "</td>" +
-            "<td>" + reisetid + " </td>" +
-            "<td>" + pris + "kr</td>" +
-            "<td>";
-        for (h in holdeplasser) {
-            uttur += holdeplasser[h].sted + ", ";
-        }
-        uttur += "</td>" +
-            '<td><input type="button" value="Velg reise" onclick="gaVidere()"/></td>';
-
+function formaterTid(tid) { //Formaterer tid til 00:00-format. Noe av kode tatt fra nett.
+    let time, min;
+    if (tid.indexOf(" ") == 0) {
+        tid = tid.substr(1, 4);
     }
-    uttur += "</tr></table>";*/
+    time = tid.substr(0, 2);
+    min = tid.substr(2, 2);
+
+    let nyFormat = time + ":" + min;
+    return nyFormat;
+}
+
+function settAnkomst(avreise, timer, minutter) { //Setter ankomsttid. Noe av kode tatt fra nett.
+    let reise_1 = avreise.substr(0, 2);
+    let reise_2 = avreise.substr(3, 2);
+    let time = parseInt(timer);
+    let min = parseInt(minutter);
+    let reiseDato = new Date(2020, 01, 01, reise_1, reise_2, 0);
+    reiseDato.setHours(reiseDato.getHours() + time);
+    reiseDato.setMinutes(reiseDato.getMinutes() + min);
+    reiseDato = reiseDato.toString();
+    return reiseDato.substr(16, 2) + ":" + reiseDato.substr(19, 2);
+}
+
+function visAvreiser(avreiser, retur) {    //Funksjon som skriver ut avganger
+
     var uttur = setAvreise(avreiser, false);
     $("#avreiser").html(uttur);
     
     if (retur) {
-        /*
-        for (let avreise of avreiser) {
-            pris += avreise.pris;
-            utretur += "<tr>" +
-                "<td>" + avreise.start + "</td>" +
-                "<td>" + timer + " timer og " + minutter + " minutter</td>" +
-                "<td>" + avreise.pris + "kr</td>" +
-                "<td>";
-            for (h = 0; h < holdeplasser.length - 1; h++) {
-                utretur += holdeplasser.reverse()[h].sted + ", ";
-            }
-            utretur += "</td>" +
-                '<td><input type="button" value="Velg reise" onclick="gaVidere()"/></td>';
-
-        }
-        utretur += "</tr></table>";*/
         var utretur = setAvreise(avreiser, true);
         $("#tilbake").after("<br/><br/>" + utretur);
         
@@ -205,14 +196,17 @@ function setAvreise(avreiser, retur) {
 
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>Avreise</th><th>Reisetid</th><th>Pris</th><th>Holdeplasser</th>" +
+        "<th>Avreise</th><th>Ankomst</th><th>Reisetid</th><th>Pris</th><th>Holdeplasser</th>" +
         "<th></th>" +
         "</tr>";
     for (let avreise of avreiser) {
         holdeplasser = avreise.holdeplasser;
         pris = avreise.pris;
+        let avreiseTid = formaterTid(avreise.start);
+        let ankomst = settAnkomst(avreiseTid, timer, minutter);
         ut += "<tr>" +
-            "<td>" + avreise.start + "</td>" +
+            "<td>" + avreiseTid + "</td>" +
+            "<td>" + ankomst + "</td>" +
             "<td>" + reisetid + "</td>" +
             "<td>" + pris + "kr</td>" +
             "<td>";
