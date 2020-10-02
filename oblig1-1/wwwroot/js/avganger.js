@@ -79,6 +79,8 @@ function hentRuteFraDB() {
             fra, til
         ]
     }
+    var retur = false;
+    if (urlParams.get('tur') == 'tovei') retur = true; 
 
     console.log("Reise fra " + fra.sted + " til " + til.sted);
     $.post("Bestilling/FinnEnRute", reise, function (rute) {
@@ -95,7 +97,7 @@ function hentRuteFraDB() {
             avreiser[i] = { start: avgangstider[i], totaltid: rute.totalTid, pris: (rute.holdeplasser.length * 66.6).toFixed(2), holdeplasser }
         }
         console.log(avreiser);
-        skrivUt(avreiser);
+        skrivUt(avreiser, retur);
     })
 
     // dersom det skjer en feil når man skal hente rute  
@@ -116,7 +118,7 @@ function sjekkRetur() { //Sjekker om reisen er tur-retur
 }
 
 function settTittel(fra, til) { //Setter hvor reisen starter og slutter
-    let tittel = fra + " -> " + til;
+    let tittel = fra + " til " + til;
     $("#fraOgTil").html(tittel);
 }
 
@@ -151,7 +153,7 @@ function gaVidere() { //Gå til retur-side hvis reisen er tur-retur
     location.href = steg;
 }
 
-function skrivUt(avreiser) {    //Funksjon som skriver ut avganger
+function skrivUt(avreiser, retur) {    //Funksjon som skriver ut avganger
     var timer = Math.floor(parseInt(avreiser[0].totaltid) / 60);
     var minutter = parseInt(avreiser[0].totaltid) % 60;
     let ut = "<table class='table table-striped'>" +
@@ -168,11 +170,35 @@ function skrivUt(avreiser) {    //Funksjon som skriver ut avganger
         for (h in avreise.holdeplasser) {
             ut += avreise.holdeplasser[h].sted + ", ";
         }
-        ut += "</td>" + 
+        ut += "</td>" +
             '<td><input type="button" value="Velg reise"/></td>';
-            
+
     }
     ut += "</tr></table>";
     $("#avreiser").html(ut);
+    if (retur) {
+        //console.log("reisen er med retur");
+        utretur = "<table class='table table-striped'>" +
+            "<tr>" +
+            "<th>Avreise</th><th>Reisetid</th><th>Pris</th><th>Holdeplasser</th>" +
+            "<th></th>" +
+            "</tr>";
+        for (let avreise of avreiser) {
+            utretur += "<tr>" +
+                "<td>" + avreise.start + "</td>" +
+                "<td>" + timer + " timer og " + minutter + " minutter</td>" +
+                "<td>" + avreise.pris + "kr</td>" +
+                "<td>";
+            for (h in avreise.holdeplasser) {
+                utretur += avreise.holdeplasser[h].sted + ", ";
+            }
+            utretur += "</td>" +
+                '<td><input type="button" value="Velg reise"/></td>';
+
+        }
+        utretur += "</tr></table>";
+        $("#tilbake").after("<br/><br/>" + utretur);
+    }
+    
 }
 

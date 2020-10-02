@@ -2,14 +2,15 @@
     width: 1em;
     height: 2em;
 }
+
 .sabutton {
     margin: 0.9em;
     cursor: pointer;
-    border-radius: 20px;
-    border-width: 1px;
+    border-radius: 1em;
+    border-width: 0.01em;
     background-color: #95b5de;
-    width: 30px;
-    height: 30px;
+    width: 1.5em;
+    height: 1.5em;
     outline: none;
     font-size: 130%;
     flex-direction: row;
@@ -39,7 +40,6 @@ button:active {
 .numContainer {
    width: 100%;
    height: 15em;
-  /* background: aqua;*/
    margin: auto;
    padding: 1em;
 }
@@ -48,14 +48,12 @@ button:active {
     width: 50%;
     height: 33%;
     float: left;
- /*   background: red;*/
     padding: 0.3em;
 }
 
 .field2 {
     margin-left: 50%;
     height: 33%;
-    /*background: pink;*/
     padding: 0.3em;
 }
 
@@ -66,13 +64,11 @@ button:active {
     height: 100%;
     width: 45%;
     float: left;
-  /*  background: gray;*/
     text-align: left;
 }
 
 .fieldbutton {
     height: 100%;
-    /*background: black;*/
     margin-left: 45%;
     text-align: left;
     
@@ -91,8 +87,6 @@ button:active {
 
 .reiseContainer {
    height: 10em;
-    /*background: pink;*/
-    
 }
 input[type="radio"] {
     margin-left: 1.5em;
@@ -100,28 +94,22 @@ input[type="radio"] {
 #reiseDato {
     width: 45%;
     float: left;
-    padding: 5px;
-    /*
-    height: 80%;
-    
-    /*background: red;  */
+    padding: 1em;
 }
 
 #returDato {
     margin-left: 55%;
-   /* height: 80%;/*
-    /*background: cyan; */
-    padding: 5px;
+    padding: 1em;
 }
 
 ul.ui-autocomplete.ui-menu {
     width: 50%;
     background-color: white;
-    border: 1px solid lightgray;
-    border-radius: 5px;
+    border: 0.01em solid lightgray;
+    border-radius: 1em;
     list-style: none;
     margin: auto;
-    padding: 5px;
+    padding: 1em;
     font-size: 150%;
 }
 
