@@ -64,7 +64,7 @@ function validerKnapp() {
 }
 
 function validerKortnavn(navn) {
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
     const ok = regexp.test(navn);
     if (!ok) {
         $("#feilKortnavn").html("Navnet må bestå av 2 til 30 bokstaver");
