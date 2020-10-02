@@ -80,7 +80,6 @@ function validerKnapp() {
         $("#avgangerknapp").prop("disabled", true);
     }
 
-
 }
 
 function validerKortnavn(navn) {
