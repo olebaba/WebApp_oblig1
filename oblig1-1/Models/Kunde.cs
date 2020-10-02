@@ -11,7 +11,7 @@ namespace oblig1_1.Models
     {
         [Key]
         public int KID { get; set; }
-        [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2-20}$")]
+        [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2-30}$")]
         public string Navn { get; set; }
         
         // trenger ikke validere prisklasse siden det ikke er input 
