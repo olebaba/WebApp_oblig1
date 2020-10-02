@@ -245,7 +245,9 @@ function hentVerdi(id) {
 }
 
 function hentBilletter() {
-    let url_billetter = "&pass_0=" + hentVerdi("textinput") + "&pass_1=" + hentVerdi("storbarninput") + "&pass_2=" + hentVerdi("barninput") + "&pass_3=" + hentVerdi("studentinput") + "&pass_4=" + hentVerdi("honinput") + "&pass_5=" + hentVerdi("vernepliktiginput") + "&pass_6=" + hentVerdi("ledsagerinput");
+    let url_billetter = "&pass_0=" + hentVerdi("textinput") + "&pass_1=" + hentVerdi("storbarninput") + "&pass_2=" +
+        hentVerdi("barninput") + "&pass_3=" + hentVerdi("studentinput") + "&pass_4=" + hentVerdi("honinput") + "&pass_5="
+        + hentVerdi("vernepliktiginput") + "&pass_6=" + hentVerdi("ledsagerinput");
     //Denne kan brukes i stedet hvis gjort om litt:
     /*for (let i = 0; i < 7; i++) {
         let antall_billett = document.getElementsByClassName('field')[i].value;
