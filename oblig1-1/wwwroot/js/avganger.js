@@ -3,13 +3,13 @@ $(function () { //Startfunksjon kaller på visAvganger()
 });
 
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
-    //Denne må fullføres
+   
     hentTittel();
+    
     hentDato();
-    //Hent fra og til fra db?
+    
     hentRuteFraDB();
 
-    //Hent billetter fra db?
     settBilletter();
 }
 
@@ -185,7 +185,7 @@ function visAvreiser(avreiser, retur) {    //Funksjon som skriver ut avganger
     
 }
 
-function setAvreise(avreiser, retur) {
+function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til seg
     var timer = Math.floor(parseInt(avreiser[0].totaltid) / 60);
     var minutter = parseInt(avreiser[0].totaltid) % 60;
     var reisetid = timer + " timer og " + minutter + " minutter"
