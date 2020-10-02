@@ -43,18 +43,15 @@ namespace oblig1_1.Controllers
 
         }
 
-        public async Task<ActionResult> FinnEnRute(Rute reise)
+        public Rute FinnEnRute(Rute reise) //kan ikke være async
         {
-            if(ModelState.IsValid)
+            if(reise == null)
             {
-                Rute nyRute = _db.FinnEnRute(reise);
-                
-                if(nyRute == null)
-                {
-                    return NotFound("Rute finnes ikke");
-                }
+                Console.WriteLine("Fant ikke ruten");
+                return null;
             }
-            return BadRequest("Feil i inputvalidering");
+            
+            return _db.FinnEnRute(reise);
         }
 
         public async Task<ActionResult> Slett(int id)
