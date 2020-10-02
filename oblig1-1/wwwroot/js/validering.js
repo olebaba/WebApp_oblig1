@@ -1,6 +1,6 @@
 ﻿// metoder som validerer hver verdi for hver tabell i databasen
 function validerNavn(navn) {
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const ok = regexp.test(navn);
     if (!ok) {
         $("#feilNavn").html("Navnet må bestå av 2 til 20 bokstaver");
@@ -26,7 +26,7 @@ function validerMobilnummer(mobilnummer) {
 }
 
 function validerHoldeplassFra(fra) {
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const ok = regexp.test(fra);
     if (!ok) {
         $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 20 bokstaver");
@@ -39,7 +39,7 @@ function validerHoldeplassFra(fra) {
 }
 
 function validerHoldeplassTil(til) {
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const ok = regexp.test(til);
     if (!ok) {
         $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 20 bokstaver");
@@ -52,7 +52,7 @@ function validerHoldeplassTil(til) {
 }
 
 function validerKortnavn(navn) {
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2-20}$/;
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
     const ok = regexp.test(navn);
     if (!ok) {
         $("#feilKortnavn").html("Navnet må bestå av 2 til 20 bokstaver");
