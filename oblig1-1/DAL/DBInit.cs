@@ -20,7 +20,7 @@ namespace oblig1_1.Models
 
                 var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432", Prisklasse = "Student"};
 
-                var oslo = new Holdeplass { Sted = "Oslo bussterminal", Avgangstider = "0900, 1100" };
+                var oslo = new Holdeplass { Sted = "Oslo bussterminal", Avgangstider = "0830, 0900, 1030, 1100" };
                 var drammen = new Holdeplass { Sted = "Drammen", Avgangstider = "0940, 1140" };
                 var fokserød = new Holdeplass { Sted = "Fokserød", Avgangstider = "1030, 1230" };
                 var skjelsvik = new Holdeplass { Sted = "Skjelsvik", Avgangstider = "1112, 1312" };
@@ -35,7 +35,7 @@ namespace oblig1_1.Models
                 var flekkefjord = new Holdeplass { Sted = "Flekkefjord", Avgangstider = "1600, 1800" };
                 var sandnes = new Holdeplass { Sted = "Sandnes", Avgangstider = "1740, 1940"};
                 var sola = new Holdeplass { Sted = "Stavanger flyplass, Sola", Avgangstider = "1800, 2000"};
-                var stavanger = new Holdeplass { Sted = "Stavanger bussterminal", Avgangstider ="1830, 2030"};
+                var stavanger = new Holdeplass { Sted = "Stavanger bussterminal", Avgangstider ="1515, 1715, 1830, 2030"};
 
                 List<Holdeplass> holdeplasser = new List<Holdeplass>{ 
                     oslo, drammen, fokserød, skjelsvik, tangen, vinterkjær, harebakken, 
@@ -64,18 +64,7 @@ namespace oblig1_1.Models
                 // andre avgangstider for en ny rute, derfor to like holdeplasser 
                 var stavanger2 = new Holdeplass { Sted = "Stavanger", Avgangstider = "1515, 1715"};
 
-                List<Holdeplass> kyst = new List<Holdeplass>();
-                kyst.Add(bergen);
-                kyst.Add(os);
-                kyst.Add(halhjem);
-                kyst.Add(sandvikvåg);
-                kyst.Add(leirvik);
-                kyst.Add(haukås);
-                kyst.Add(aksdal);
-                kyst.Add(mjåsund);
-                kyst.Add(arsvågen);
-                kyst.Add(mortavika);
-                kyst.Add(stavanger2);
+                List<Holdeplass> kyst = new List<Holdeplass> { bergen, os, halhjem, sandvikvåg, leirvik, haukås, aksdal, mjåsund, arsvågen, mortavika, stavanger2 };
 
                 var tur2 = new Rute { Datoer = "01.10.2020, 10.10.2020", Holdeplasser = kyst, TotalTid = "5t 45min" };
                 kyst.Reverse();
@@ -95,18 +84,7 @@ namespace oblig1_1.Models
                 var ølen = new Holdeplass { Sted = "Ølen", Avgangstider = "1545, 1745"};
                 var haugesund = new Holdeplass { Sted = "Haugesund", Avgangstider = "1635, 1835"};
 
-                List<Holdeplass> hauk = new List<Holdeplass>();
-                hauk.Add(oslo2);
-                hauk.Add(kongsberg);
-                hauk.Add(notodden);
-                hauk.Add(sauland);
-                hauk.Add(seljord);
-                hauk.Add(åmot);
-                hauk.Add(haukeligrend);
-                hauk.Add(røldal);
-                hauk.Add(seljestad);
-                hauk.Add(ølen);
-                hauk.Add(haugesund);
+                List<Holdeplass> hauk = new List<Holdeplass> { oslo2, kongsberg, notodden, sauland, seljord, åmot, haukeligrend, røldal, seljestad, ølen, haugesund };
 
                 var tur3 = new Rute { Datoer = "02.10.2020, 10.10.2020", Holdeplasser = hauk, TotalTid = "8t 5min" };
                 hauk.Reverse();
