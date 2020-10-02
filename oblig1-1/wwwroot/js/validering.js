@@ -1,4 +1,4 @@
-﻿// metoder som validerer hver verdi for hver tabell i databasen
+﻿// metoder som validerer hver inputverdi for hver tabell i databasen
 function validerNavn(navn) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
     const ok = regexp.test(navn);
