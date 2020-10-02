@@ -29,11 +29,13 @@ function validerHoldeplassFra(fra) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
     const ok = regexp.test(fra);
     if (!ok) {
-        $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 30 bokstaver");
+        $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        validerKnapp();
         return false;
     }
     else {
         $("#feilHoldeplassFra").html("");
+        validerKnapp();
         return true; 
     }
 }
@@ -42,13 +44,43 @@ function validerHoldeplassTil(til) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
     const ok = regexp.test(til);
     if (!ok) {
-        $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 30 bokstaver");
+        $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        validerKnapp();
         return false;
     }
     else {
         $("#feilHoldeplassTil").html("");
+        validerKnapp();
         return true;
     }
+}
+
+function validerKnapp() {
+    let fraDato = $("input[name='turDato']").val();
+    let tilDato = $("input[name='retDato']").val();
+    let radio = $("input[name='tur/retur']:checked").val();
+    var antall;
+    antall = $('#textinput').val() * 1 +
+        $('#honinput').val() * 1 +
+        $('#barninput').val() * 1 +
+        $('#studentinput').val() * 1 +
+        $('#storbarninput').val() * 1 +
+        $('#vernepliktiginput').val() * 1 +
+        $('#ledsagerinput').val() * 1;
+    console.log("antall: " + antall);
+    if ($("#fra").val() && $("#til").val() && fraDato != "" && antall > 0) {
+        $("#avgangerknapp").prop("disabled", false);
+    } else {
+        $("#avgangerknapp").prop("disabled", true);
+    }
+
+    if (radio == "retur" && tilDato != "") {
+        $("#avgangerknapp").prop("disabled", false);
+    } else if (radio == "retur" && tilDato == "") {
+        $("#avgangerknapp").prop("disabled", true);
+    }
+
+
 }
 
 function validerKortnavn(navn) {
