@@ -37,8 +37,10 @@ namespace oblig1_1.Models
                 var sola = new Holdeplass { Sted = "Stavanger flyplass, Sola", Avgangstider = "1800, 2000"};
                 var stavanger = new Holdeplass { Sted = "Stavanger bussterminal", Avgangstider ="1830, 2030"};
 
-                List<Holdeplass> holdeplasser = new List<Holdeplass>{ oslo, drammen, fokserød, skjelsvik, tangen, vinterkjær, harebakken, grimstad, lillesand, kristiansand, mandal, lyngdal, 
-                                                                        flekkefjord, sandnes, sola, stavanger};
+                List<Holdeplass> holdeplasser = new List<Holdeplass>{ 
+                    oslo, drammen, fokserød, skjelsvik, tangen, vinterkjær, harebakken, 
+                    grimstad, lillesand, kristiansand, mandal, lyngdal, 
+                    flekkefjord, sandnes, sola, stavanger}; //samme som holdeplasser.Add(...)
 
                 var tur1 = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
                 //siden vi har med retur så legger vi holdeplassene inn i motsatt rekkefølge 
@@ -83,7 +85,7 @@ namespace oblig1_1.Models
 
                 var oslo2 = new Holdeplass { Sted = "Oslo", Avgangstider = "0830, 1030" };
                 var kongsberg = new Holdeplass { Sted = "Kongsberg", Avgangstider = "0940, 1140" };
-                var notodden = new Holdeplass { Sted = "Norodden", Avgangstider = "1015, 1215"};
+                var notodden = new Holdeplass { Sted = "Notodden", Avgangstider = "1015, 1215"};
                 var sauland = new Holdeplass { Sted = "Sauland", Avgangstider = "1040, 1240"};
                 var seljord = new Holdeplass { Sted = "Seljord", Avgangstider = "1110, 1310"};
                 var åmot = new Holdeplass { Sted = "Åmot", Avgangstider = "1210, 1410"};
