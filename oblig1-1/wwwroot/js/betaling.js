@@ -17,7 +17,7 @@ function valgtBetaling() {
 }
 
 function validerOgBetal() {
-    const navnOk = validerNavn("#kjøpernavn").val();
+    const navnOk = validerNavn("#kjøperNavn").val();
     const telefonOk = validerMobilnumme("#reisendeTelefon").val();
     const kortnavnOk = validerKortnavn("#navn").val();
     const kortnummerOk = validerKortnummer("#kortnummer").val();
@@ -29,12 +29,45 @@ function validerOgBetal() {
 
     if (valgt == 'kort') {
         if (navnOk && telefonOk && kortnavnOk && kortnummerOk && utløpOk && cvcOk) {
-            location.href = 'godkjent.html';
+            lagreBestilling();
         }
     }
     else if (valgt == 'vipps') {
         if (navnOk && telefonOk && vippsOk) {
-            location.href = 'godkjent.html';
+            lagreBestilling();
         }
     }
+}
+
+function lagreBestilling() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+
+    const kunde = {
+        navn: $("#kjøperNavn").val(),
+        telefon: $("#reisendeTelefon").val()
+    }
+
+    // må hente inn pris fra avganger-siden
+    const pris = 50;
+
+    const tur = null;
+
+    const retur = null;
+
+    const bestilling = {
+        pris: pris,
+        kunde: kunde, 
+        tur: tur,
+        retur: retur
+    }
+
+    $.post("Bestilling/Lagre", bestilling, function () {
+        window.location.href = 'godkjent.html';
+    })
+    .fail(function () {
+        $("#feil").html("Feil på server - prøv igjen senere");
+        console.log("feil med db");
+    }); 
 }

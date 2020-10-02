@@ -111,6 +111,49 @@ namespace oblig1_1.DAL
         {
             try
             {
+                var nyBestilling = new Bestillinger();
+                nyBestilling.Pris = innBestilling.Pris;
+
+                var sjekkKunde = _db.Kunder.Find(innBestilling.Kunde);
+                
+                if (sjekkKunde == null)
+                {
+                    var nyKundeRad = new Kunde();
+                    nyKundeRad = innBestilling.Kunde;
+                    nyBestilling.Kunde = nyKundeRad;
+
+                }
+                else
+                {
+                    nyBestilling.Kunde = sjekkKunde;
+                }
+
+                var sjekkTur = _db.Ruter.Find(innBestilling.Tur);
+
+                if(sjekkTur == null)
+                {
+                    var nyRuteRad = new Rute();
+                    nyRuteRad = innBestilling.Tur;
+                    nyBestilling.Tur = nyRuteRad;
+                }
+                else
+                {
+                    nyBestilling.Tur = sjekkTur;
+                }
+
+                var sjekkRetur = _db.Ruter.Find(innBestilling.Retur);
+
+                if(sjekkRetur == null)
+                {
+                    var nyRetur = new Rute();
+                    nyRetur = innBestilling.Retur;
+                    nyBestilling.Retur = nyRetur;
+                }
+                else
+                {
+                    nyBestilling.Retur = sjekkRetur;
+                }
+
                 _db.Bestillinger.Add(innBestilling);
                 await _db.SaveChangesAsync();
                 return true;
