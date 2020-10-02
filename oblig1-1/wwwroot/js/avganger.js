@@ -143,40 +143,48 @@ function gaTilbake() {
     location.href = "forside.html";
 }
 
+var tur, retur, pris;
+
 function gaVidere() { //Gå til retur-side hvis reisen er tur-retur
 
-    let steg = "";
-    if (sjekkRetur()) {
-        steg = "avganger.html" + window.location.search + "&steg=2";
-    } else {
-        steg = "betaling.html";
-    }
-    location.href = steg;
+    var url = "betaling.html?tur=" + JSON.stringify(tur) + "retur=" + JSON.stringify(retur) + "pris=" + ((retur != undefined) ? (tur.pris + retur.pris) : tur.pris);
+    location.href = url;
 }
 
 function skrivUt(avreiser, retur) {    //Funksjon som skriver ut avganger
     var timer = Math.floor(parseInt(avreiser[0].totaltid) / 60);
     var minutter = parseInt(avreiser[0].totaltid) % 60;
+    var reisetid = timer + " timer og " + minutter + " minutter"
+    var holdeplasser, pris; 
+    
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
         "<th>Avreise</th><th>Reisetid</th><th>Pris</th><th>Holdeplasser</th>" +
         "<th></th>" +
         "</tr>";
     for (let avreise of avreiser) {
+        holdeplasser = avreise.holdeplasser;
+        pris = avreise.pris;
         ut += "<tr>" +
             "<td>" + avreise.start + "</td>" +
-            "<td>" + timer + " timer og " + minutter + " minutter</td>" +
-            "<td>" + avreise.pris + "kr</td>" +
+            "<td>" + reisetid + " </td>" +
+            "<td>" + pris + "kr</td>" +
             "<td>";
-        for (h in avreise.holdeplasser) {
-            ut += avreise.holdeplasser[h].sted + ", ";
+        for (h in holdeplasser) {
+            ut += holdeplasser[h].sted + ", ";
         }
         ut += "</td>" +
-            '<td><input type="button" value="Velg reise"/></td>';
+            '<td><input type="button" value="Velg reise" onclick="gaVidere()"/></td>';
 
     }
     ut += "</tr></table>";
     $("#avreiser").html(ut);
+    tur = {
+        avreise: avreiser.start,
+        reisetid: reisetid,
+        pris: pris,
+        holdeplasser: holdeplasser
+    }
     if (retur) {
         //console.log("reisen er med retur");
         utretur = "<table class='table table-striped'>" +
@@ -185,20 +193,27 @@ function skrivUt(avreiser, retur) {    //Funksjon som skriver ut avganger
             "<th></th>" +
             "</tr>";
         for (let avreise of avreiser) {
+            pris += avreise.pris;
             utretur += "<tr>" +
                 "<td>" + avreise.start + "</td>" +
                 "<td>" + timer + " timer og " + minutter + " minutter</td>" +
                 "<td>" + avreise.pris + "kr</td>" +
                 "<td>";
-            for (h = 0; h < avreise.holdeplasser.length - 1; h++) {
-                utretur += avreise.holdeplasser.reverse()[h].sted + ", ";
+            for (h = 0; h < holdeplasser.length - 1; h++) {
+                utretur += holdeplasser.reverse()[h].sted + ", ";
             }
             utretur += "</td>" +
-                '<td><input type="button" value="Velg reise"/></td>';
+                '<td><input type="button" value="Velg reise" onclick="gaVidere()"/></td>';
 
         }
         utretur += "</tr></table>";
         $("#tilbake").after("<br/><br/>" + utretur);
+        retur = {
+            avreise: avreiser.start,
+            reisetid: reisetid,
+            pris: pris,
+            holdeplasser: holdeplasser.reverse()
+        }
     }
     
 }
