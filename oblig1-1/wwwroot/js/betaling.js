@@ -43,6 +43,8 @@ function lagreBestilling() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
+    const tur = JSON.parse(urlParams.get('tur'));
+    const retur = JSON.parse(urlParams.get('retur'));
 
     const kunde = {
         navn: $("#kjøperNavn").val(),
@@ -50,11 +52,7 @@ function lagreBestilling() {
     }
 
     // må hente inn pris fra avganger-siden
-    const pris = 50;
-
-    const tur = null;
-
-    const retur = null;
+    const pris = JSON.parse(urlParams.get('pris'));
 
     const bestilling = {
         pris: pris,

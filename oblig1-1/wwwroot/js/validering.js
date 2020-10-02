@@ -26,10 +26,10 @@ function validerMobilnummer(mobilnummer) {
 }
 
 function validerHoldeplassFra(fra) {
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
     const ok = regexp.test(fra);
     if (!ok) {
-        $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 30 bokstaver");
         return false;
     }
     else {
@@ -39,10 +39,10 @@ function validerHoldeplassFra(fra) {
 }
 
 function validerHoldeplassTil(til) {
-    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
     const ok = regexp.test(til);
     if (!ok) {
-        $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 30 bokstaver");
         return false;
     }
     else {
