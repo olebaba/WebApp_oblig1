@@ -67,7 +67,6 @@ function validerKnapp() {
         $('#storbarninput').val() * 1 +
         $('#vernepliktiginput').val() * 1 +
         $('#ledsagerinput').val() * 1;
-    console.log("antall: " + antall);
     if ($("#fra").val() && $("#til").val() && fraDato != "" && antall > 0) {
         $("#avgangerknapp").prop("disabled", false);
     } else {

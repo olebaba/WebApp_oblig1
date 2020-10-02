@@ -1,7 +1,6 @@
 ﻿$(function () {
     var url = "Bestilling/HentEn?" + 1;
     $.get(url, function (bestilling) {
-        console.log(bestilling);
         //formaterBestilling(bestilling);
     });
 });
@@ -24,5 +23,4 @@ function formaterBestilling(bestilling) {
 function hentEnBestilling(id) {
     var url = "Bestilling/HentEn?" + id;
     var ut = $.get(url);
-    console.log(ut)
 }

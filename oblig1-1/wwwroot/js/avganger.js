@@ -82,10 +82,7 @@ function hentRuteFraDB() {
     var retur = false;
     if (urlParams.get('tur') == 'tovei') retur = true; 
 
-    console.log("Reise fra " + fra.sted + " til " + til.sted);
     $.post("Bestilling/FinnEnRute", reise, function (rute) {
-        console.log(rute);
-        //console.log(rute.holdeplasser);
         var fra = rute.holdeplasser[0];
         var til = rute.holdeplasser[rute.holdeplasser.length - 1];
         settTittel(fra.sted, til.sted);
@@ -96,14 +93,12 @@ function hentRuteFraDB() {
         for (i = 0; i < avgangstider.length; i++) {
             avreiser[i] = { start: avgangstider[i], totaltid: rute.totalTid, pris: (rute.holdeplasser.length * 66.6).toFixed(2), holdeplasser }
         }
-        console.log(avreiser);
         visAvreiser(avreiser, retur);
     })
 
     // dersom det skjer en feil når man skal hente rute  
     .fail(function () {
         $("#feil").html("Feil på server - prøv igjen senere");
-        console.log("feil med db");
     }); 
 
     

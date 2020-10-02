@@ -73,6 +73,5 @@ function lagreBestilling() {
     })
     .fail(function () {
         $("#feil").html("Feil på server - prøv igjen senere");
-        console.log("feil med db");
     }); 
 }
