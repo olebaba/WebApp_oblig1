@@ -116,7 +116,7 @@ function sjekkRetur() { //Sjekker om reisen er tur-retur
 }
 
 function settTittel(fra, til) { //Setter hvor reisen starter og slutter
-    let tittel = fra + " -> " + til;
+    let tittel = fra + " til " + til;
     $("#fraOgTil").html(tittel);
 }
 
