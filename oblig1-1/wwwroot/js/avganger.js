@@ -210,7 +210,9 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
         ut += "<a href='#' data-toggle='tooltip' title='" + visHoldeplasser + "'><br>" + lengde+" stopp <br></a>"
         ut += holdeplasser[holdeplasser.length - 1].sted;
         ut += "</td>" +
-            '<td><input type="button" value="Velg reise" onclick="gaVidere()"/></td>';
+            '<td><div class="avgCheckBox"><label>' +
+            '<input class="reisevalg" type="checkbox" hidden onChange="reisevalg()"/><span>Velg reise</span>' +
+            '</label></div></td>';
     }
     ut += "</tr></table>";
 
@@ -233,3 +235,19 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
     return ut;
 }
 
+function reisevalg() {
+    console.log("check");
+    var valgtRad;
+    if ($(this).is(':checked')) {
+        valgtRad = this.closest('tr').index();
+    } else {
+        // Checkbox is not checked..
+    }
+
+    var i = 1;
+    for (i; i < $("#avreiser tr").length(); i++) {
+        if (i != valgtRad) {
+            $("#avreiser tr").eq(i).find('input').prop('checked', false);
+        }
+    }
+});
