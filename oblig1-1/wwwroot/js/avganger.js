@@ -185,7 +185,7 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
     var reisetid = timer + " timer og " + minutter + " minutter"
     var holdeplasser, pris;
 
-    let ut = "<table class='table table-striped'>" +
+    let ut = "<table" + ((retur) ? " id='returAvreiser'" : "") + " class='table table-striped'>" +
         "<tr>" +
         "<th>Avreise</th><th>Ankomst</th><th>Reisetid</th><th>Pris</th><th>Holdeplasser</th>" +
         "<th></th>" +
@@ -211,7 +211,7 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
         ut += holdeplasser[holdeplasser.length - 1].sted;
         ut += "</td>" +
             '<td><div class="avgCheckBox"><label>' +
-            '<input class="reisevalg" type="checkbox" hidden onChange="reisevalg()"/><span>Velg reise</span>' +
+            '<input class="reisevalg" type="checkbox" hidden onChange="reisevalg($(this))"/><span>Velg reise</span>' +
             '</label></div></td>';
     }
     ut += "</tr></table>";
@@ -235,19 +235,23 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
     return ut;
 }
 
-function reisevalg() {
-    console.log("check");
+function reisevalg(element) {
+    console.log("check", element);
     var valgtRad;
-    if ($(this).is(':checked')) {
-        valgtRad = this.closest('tr').index();
+    var table;
+    if ($(element).prop('checked')) {
+        valgtRad = element.closest('tr').index();
+        table = element.closest('table').attr('id');
+        console.log(valgtRad);
+        
     } else {
-        // Checkbox is not checked..
+        console.log("not checked", element);
     }
 
     var i = 1;
-    for (i; i < $("#avreiser tr").length(); i++) {
+    for (i; i < $(`#${table} tr`).length; i++) {
         if (i != valgtRad) {
-            $("#avreiser tr").eq(i).find('input').prop('checked', false);
+            $(`#${table} tr`).eq(i).find('input').prop('checked', false);
         }
     }
-});
+};
