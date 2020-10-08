@@ -137,7 +137,8 @@ function gaTilbake() {
 var turJson, returJson, pris;
 
 function gaVidere() { 
-    var url = "betaling.html" + window.location.search + "&pris=" + ((returJson != undefined) ? (turJson.pris + returJson.pris) : turJson.pris);
+    var url = "betaling.html" + window.location.search + "&pris=" +
+        ((returJson != undefined) ? (turJson.pris + returJson.pris) : turJson.pris);
     
     location.href = url;
 }
@@ -183,7 +184,7 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
     var timer = Math.floor(parseInt(avreiser[0].totaltid) / 60);
     var minutter = parseInt(avreiser[0].totaltid) % 60;
     var reisetid = timer + " timer og " + minutter + " minutter"
-    var holdeplasser, pris;
+    var holdeplasser, holdeplasserReverse, pris;
 
     let ut = "<table" + ((retur) ? " id='returAvreiser'" : "") + " class='table table-striped'>" +
         "<tr>" +
@@ -192,6 +193,7 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
         "</tr>";
     for (let avreise of avreiser) {
         holdeplasser = avreise.holdeplasser;
+        holdeplasserReverse = holdeplasser.slice().reverse();
         pris = avreise.pris;
         let avreiseTid = formaterTid(avreise.start);
         let ankomst = settAnkomst(avreiseTid, timer, minutter);
@@ -201,14 +203,14 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
             "<td>" + reisetid + "</td>" +
             "<td>" + pris + "kr</td>" +
             "<td>";
-        ut += holdeplasser[0].sted;
+        ut += ((retur) ? holdeplasserReverse[0].sted : holdeplasser[0].sted);
         let lengde = holdeplasser.length-1;
         let visHoldeplasser="";
         for (h = 1; h < lengde; h++) {
-            visHoldeplasser += ((retur) ? holdeplasser.reverse()[h].sted : holdeplasser[h].sted) + ", ";
+            visHoldeplasser += ((retur) ? holdeplasserReverse[h].sted : holdeplasser[h].sted) + ", ";
         }
-        ut += "<a href='#' data-toggle='tooltip' title='" + visHoldeplasser + "'><br>" + lengde+" stopp <br></a>"
-        ut += holdeplasser[holdeplasser.length - 1].sted;
+        ut += "<a href='#' data-toggle='tooltip' title='" + visHoldeplasser + "'><br>" + lengde + " stopp <br></a>"
+        ut += ((retur) ? holdeplasserReverse[lengde].sted : holdeplasser[lengde].sted);
         ut += "</td>" +
             '<td><div class="avgCheckBox"><label>' +
             '<input class="reisevalg" type="checkbox" hidden onChange="reisevalg($(this))"/><span>Velg reise</span>' +
@@ -221,15 +223,14 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
             avreise: avreiser.start,
             reisetid: reisetid,
             pris: pris,
-            holdeplasser: holdeplasser.reverse()
+            holdeplasser: holdeplasserReverse
         }
-    } else {
-        turJson = {
-            avreise: avreiser.start,
-            reisetid: reisetid,
-            pris: pris,
-            holdeplasser: holdeplasser
-        }
+    }
+    turJson = {
+        avreise: avreiser.start,
+        reisetid: reisetid,
+        pris: pris,
+        holdeplasser: holdeplasser
     }
 
     return ut;
