@@ -67,18 +67,27 @@ function validerKnapp() {
         $('#storbarninput').val() * 1 +
         $('#vernepliktiginput').val() * 1 +
         $('#ledsagerinput').val() * 1;
-    if ($("#fra").val() && $("#til").val() && fraDato != "" && antall > 0) {
+    if ($("#fra").val() && $("#til").val() && fraDato != "" && radio == "tur" && antall > 0) {
+        $("#avgangerknapp").prop("disabled", false);
+    } else if ($("#fra").val() && $("#til").val() && validerDato() && tilDato != "" && antall > 0) {
         $("#avgangerknapp").prop("disabled", false);
     } else {
         $("#avgangerknapp").prop("disabled", true);
     }
 
-    if (radio == "retur" && tilDato != "") {
-        $("#avgangerknapp").prop("disabled", false);
-    } else if (radio == "retur" && tilDato == "") {
-        $("#avgangerknapp").prop("disabled", true);
-    }
+}
 
+function validerDato() {
+    let fraDato = new Date($("input[name='turDato']").val());
+    let tilDato = new Date($("input[name='retDato']").val());
+    let radio = $("input[name='tur/retur']:checked").val();
+    if (radio == "retur") {
+        if (fraDato.getTime() <= tilDato.getTime()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 function validerKortnavn(navn) {
