@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+h2{
+    font: 2em bold;
+}
+
 .nav-brand {
     width: 1em;
     height: 2em;
@@ -126,8 +130,18 @@ ul.ui-autocomplete.ui-menu {
     display: none !important;
 }
 
+label {
+    display: initial;
+}
+
+/*avganger.....................................*/
+
 td{
     max-width: 15em;
+}
+
+.form-group h2{
+    text-align: left;
 }
 
 .avgCheckBox {
@@ -150,9 +164,6 @@ td{
     border-radius: inherit;
 }
 
-label{
-    display: initial;
-}
 
 .avgCheckBox input:checked + span {
     background-color: #629BC9;
