@@ -5,9 +5,8 @@ $(function () { //Startfunksjon kaller på visAvganger()
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
     hentTittel();
     hentDato();
-    hentRuteFraDB();
     settBilletter();
-    setPris();
+    hentRuteFraDB();
 }
 
 function getUrlParam(param) { //Henter ut parametere fra url. Kode tatt fra nett.
@@ -69,7 +68,7 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
 
 var hentetRute;
 
-function hentRuteFraDB() {
+function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
     var fra = {
         sted: getUrlParam('from')
     }
@@ -87,15 +86,19 @@ function hentRuteFraDB() {
     if (getUrlParam('tur') == 'tovei') retur = true; 
 
     $.post("Bestilling/FinnEnRute", reise, function (rute) {
-        formaterRute(rute);
+        formaterRute(rute); //setter verdier i hentetRute
         var fra = rute.holdeplasser[0];
         var til = rute.holdeplasser[rute.holdeplasser.length - 1];
-        var avgangstider = fra.avgangstider.split(",");
         settTittel(fra.sted, til.sted);        
         avreiser = [];
 
-        for (i = 0; i < avgangstider.length; i++) {
-            avreiser[i] = { start: avgangstider[i], totaltid: rute.totalTid, pris: hentetRute.pris, holdeplasser: hentetRute.holdeplasser }
+        for (i = 0; i < hentetRute.holdeplasser.length; i++) {
+            avreiser[i] = {
+                start: rute.holdeplasser[0].avgangstider.split(","), //hentetRute.avreiseTider[i],
+                totaltid: hentetRute.avreiseTider,
+                pris: hentetRute.pris,
+                holdeplasser: hentetRute.holdeplasser
+            }
         }
         visAvreiser(avreiser, retur);
     })
@@ -106,7 +109,7 @@ function hentRuteFraDB() {
     }); 
 }
 
-function formaterRute(rute) {
+function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
     var tider = rute.holdeplasser[0].avgangstider.split(",");
     hentetRute = {
         avreiseTider: tider,
@@ -152,7 +155,7 @@ function gaTilbake() {
 
 var turJson, returJson, pris;
 
-function gaVidere() {
+function gaVidere() { //setter url til betalingssiden med korrekte verdier
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
         "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2));
     
@@ -204,7 +207,7 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
         "<th>Avreise</th><th>Ankomst</th><th>Reisetid</th><th>Pris</th><th>Holdeplasser</th>" +
         "<th></th>" +
         "</tr>";
-    for (let avreise of avreiser) {
+    for (let avreise of avreiser) { //avreise = rute med én tid
         holdeplasser = avreise.holdeplasser;
         holdeplasserReverse = holdeplasser.slice().reverse();
         pris = avreise.pris;
@@ -233,7 +236,7 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
     return ut;
 }
 
-function reisevalg(element) {
+function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil bestille, og setter verdiene som brukes i url-en
     var valgtRad, table;
     if ($(element).prop('checked')) {
         valgtRad = element.closest('tr');
@@ -271,7 +274,3 @@ function reisevalg(element) {
 
     
 };
-
-function setPris(billettinfo) {
-
-}
