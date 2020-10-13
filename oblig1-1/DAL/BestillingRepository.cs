@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using oblig1_1.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace oblig1_1.DAL
@@ -226,6 +228,46 @@ namespace oblig1_1.DAL
         {
             List<Holdeplass> holdeplasser = await _db.Holdeplasser.ToListAsync();
             return holdeplasser;
+        }
+
+        public static byte[] Hashing(string passord, byte[] salt)
+        {
+            return KeyDerivation.Pbkdf2(
+                                password: passord,
+                                salt: salt,
+                                prf: KeyDerivationPrf.HMACSHA512,
+                                iterationCount: 1000,
+                                numBytesRequested: 32);
+        }
+
+        public static byte[] Salt()
+        {
+            var cryptoSP = new RNGCryptoServiceProvider();
+            var salt = new byte[24];
+            cryptoSP.GetBytes(salt);
+            return salt;
+        }
+
+        public async Task<bool> LoggInn(Bruker bruker)
+        {
+            try
+            {
+                Brukere funnetBruker = await _db.Brukere.FirstOrDefaultAsync(b => b.Brukernavn == bruker.Brukernavn);
+
+                // sjekker om passordet til bruker er riktig 
+                byte[] hash = Hashing(bruker.Passord, funnetBruker.Salt);
+                bool ok = hash.SequenceEqual(funnetBruker.Passord);
+                if(!ok)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                // legg til logging når log er opprettet 
+                return false; 
+            }
         }
     }
 }

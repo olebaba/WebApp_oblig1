@@ -145,3 +145,29 @@ function validerVipps(mobilnummer) {
         return true;
     }
 }
+
+function validerBrukernavn(brukernavn) {
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,20}$/;
+    const ok = regexp.test(brukernavn);
+    if (!ok) {
+        $("#feilBrukernavn").html("Brukernavnet må bestå av 2 til 20 bokstaver");
+        return false;
+    }
+    else {
+        $("#feilBrukernavn").html("");
+        return true;
+    }
+}
+
+function validerPassord(passord) {
+    const regexp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const ok = regexp.test(brukernavn);
+    if (!ok) {
+        $("#feilPassord").html("Passordet må bestå av minst 8 tegn, minst en bokstav og ett tall");
+        return false;
+    }
+    else {
+        $("#feilPassord").html("");
+        return true;
+    }
+}

@@ -94,7 +94,19 @@ namespace oblig1_1.Models
 
                 context.Bestillinger.Add(bestilling1);
                 context.Bestillinger.Add(bestilling2);
-                context.Bestillinger.Add(bestilling3); 
+                context.Bestillinger.Add(bestilling3);
+
+                // oppretter en admin-bruker
+                var admin = new Brukere();
+                admin.Brukernavn = "AdminUser";
+                string passord = "admin1234";
+                byte[] salt = BestillingRepository.Salt();
+                byte[] hash = BestillingRepository.Hashing(passord, salt);
+                admin.Passord = hash;
+                admin.Salt = salt;
+                context.Brukere.Add(admin);
+
+
                 context.SaveChanges();
             }
         }
