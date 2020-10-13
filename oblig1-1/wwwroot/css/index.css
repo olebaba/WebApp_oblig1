@@ -1,4 +1,13 @@
-﻿.nav-brand {
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+h2{
+    font: 2em bold;
+}
+
+.nav-brand {
     width: 1em;
     height: 2em;
 }
@@ -121,6 +130,51 @@ ul.ui-autocomplete.ui-menu {
     display: none !important;
 }
 
+label {
+    display: initial;
+}
+
+/*avganger.....................................*/
+
 td{
     max-width: 15em;
+}
+
+.form-group h2{
+    text-align: left;
+}
+
+.avgCheckBox {
+    border-radius: 1em;
+    background-color: white;
+    overflow: auto;
+    border: 0.12em solid;
+}
+
+.avgCheckBox label:hover, .avgCheckBox:hover{
+    cursor: pointer;
+}
+
+.avgCheckBox label span {
+    font-size: 1em;
+    font-weight: 400;
+    text-align: center;
+    padding: 3px 0px;
+    display: block;
+    border-radius: inherit;
+}
+
+
+.avgCheckBox input:checked + span {
+    background-color: #629BC9;
+    color: aliceblue;
+}
+
+.storknapp {
+    color: white;
+    background-color: #F94E4E;
+    border-radius: 3em;
+    padding: 0.5em;
+    width: 15em;
+    font-size: x-large;
 }
