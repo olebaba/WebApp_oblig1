@@ -82,8 +82,7 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
             fra, til
         ]
     }
-    var retur = false;
-    if (getUrlParam('tur') == 'tovei') retur = true; 
+    var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
 
     $.post("Bestilling/FinnEnRute", reise, function (rute) {
         formaterRute(rute); //setter verdier i hentetRute
@@ -92,9 +91,10 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
         settTittel(fra.sted, til.sted);        
         avreiser = [];
 
-        for (i = 0; i < hentetRute.holdeplasser.length; i++) {
+        for (i = 0; i < hentetRute.avreiseTider.length; i++) {
+            console.log(i);
             avreiser[i] = {
-                start: rute.holdeplasser[0].avgangstider.split(","), //hentetRute.avreiseTider[i],
+                start: hentetRute.avreiseTider[i],
                 totaltid: hentetRute.avreiseTider,
                 pris: hentetRute.pris,
                 holdeplasser: hentetRute.holdeplasser
@@ -117,14 +117,16 @@ function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
         pris: totalpris.toFixed(2), 
         holdeplasser: rute.holdeplasser
     };
+    console.log(hentetRute);
 }
 
 function sjekkRetur() { //Sjekker om reisen er tur-retur
-    if (getUrlParam("tur") == "tovei") {
+    /*if (getUrlParam("tur") == "tovei") {
         return true;
     } else {
         return false;
-    }
+    }*/
+    return (getUrlParam("tur") == "tovei")
 }
 
 function settTittel(fra, til) { //Setter hvor reisen starter og slutter
@@ -163,6 +165,7 @@ function gaVidere() { //setter url til betalingssiden med korrekte verdier
 }
 
 function formaterTid(tid) { //Formaterer tid til 00:00-format. Noe av kode tatt fra nett.
+    console.log(tid);
     let time, min;
     if (tid.indexOf(" ") == 0) {
         tid = tid.substr(1, 4);
