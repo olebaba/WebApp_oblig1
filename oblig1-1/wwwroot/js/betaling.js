@@ -53,18 +53,19 @@ function lagreBestilling() {
 
     const tur = JSON.parse(urlParams.get('tur'));
     const retur = JSON.parse(urlParams.get('retur'));
-    const dato = new Date((urlParams.get('dato')));
+    const goDate = new Date((urlParams.get('goDate')));
+    const backDate = new Date((urlParams.get('backDate')));
 
     const bestilltTur = {
-        totalTid: tur.totalTid,
+        totalTid: tur.totalTid, //fiks her
         holdeplasser: tur.holdeplasser,
-        datoer: dato
+        datoer: goDate.toISOString().substr(0,10)
     }
 
     const bestilltRetur = {
         totalTid: retur.totalTid,
         holdeplasser: retur.holdeplasser,
-        datoer: dato
+        datoer: backDate.toISOString().substr(0, 10)
     }
 
     const kunde = {
@@ -80,6 +81,8 @@ function lagreBestilling() {
         tur: bestilltTur,
         retur: bestilltRetur
     }
+
+    console.log(bestilling);
 
     $.post("Bestilling/Lagre", bestilling, function () {
         location.href = 'godkjent.html';

@@ -116,7 +116,8 @@ function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
         totaltid: rute.totaltid,
         pris: totalpris.toFixed(2), 
         holdeplasser: rute.holdeplasser,
-        dato: getUrlParam('goDate')
+        goDate: getUrlParam('goDate'),
+        backDate: getUrlParam('backDate')
     };
     console.log(hentetRute);
 }
@@ -150,7 +151,7 @@ function gaTilbake() {
 function gaVidere() { //setter url til betalingssiden med korrekte verdier
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
         "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2)) +
-        "&dato=" + hentetRute.dato;
+        "&goDate=" + hentetRute.goDate + "&backDate=" + hentetRute.backDate;
     location.href = url;
 }
 
