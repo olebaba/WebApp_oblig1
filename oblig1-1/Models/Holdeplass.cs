@@ -12,6 +12,5 @@ namespace oblig1_1.Models
         public int HID { get; set; }
         [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2-20}$")]
         public string Sted { get; set; }
-        public string Avgangstider { get; set; } 
     }
 }
