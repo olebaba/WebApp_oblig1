@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using oblig1_1.DAL;
 using oblig1_1.Models;
@@ -13,6 +14,9 @@ namespace oblig1_1.Controllers
     public class BestillingController : ControllerBase
     {
         private readonly IBestillingRepository _db;
+
+        private const string _loggetInn = "innlogget";
+
         public BestillingController(IBestillingRepository db)
         {
             _db = db;
@@ -92,6 +96,27 @@ namespace oblig1_1.Controllers
         {
             List<Holdeplass> holdeplasser = await _db.HentHoldeplasser();
             return Ok(holdeplasser);
+        }
+
+        public async Task<ActionResult> LoggInn(Bruker bruker)
+        {
+            if(ModelState.IsValid)
+            {
+                bool returOK = await _db.LoggInn(bruker);
+                if(!returOK)
+                {
+                    HttpContext.Session.SetString(_loggetInn, "");
+                    return Ok(false);
+                }
+                HttpContext.Session.SetString(_loggetInn, "innlogget");
+                return Ok(true);
+            }
+            return BadRequest("Feil i inputvalidering");
+        }
+
+        public void LoggUt()
+        {
+            HttpContext.Session.SetString(_loggetInn, "");
         }
 
     }
