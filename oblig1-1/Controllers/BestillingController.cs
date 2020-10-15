@@ -94,6 +94,10 @@ namespace oblig1_1.Controllers
 
         public async Task<ActionResult> HentHoldeplasser()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
             List<Holdeplass> holdeplasser = await _db.HentHoldeplasser();
             return Ok(holdeplasser);
         }

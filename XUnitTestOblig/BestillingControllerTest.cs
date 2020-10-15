@@ -16,7 +16,7 @@ namespace XUnitTestOblig
     public class BestillingControllerTest
     {
         
-        private const string _loggetInn = "loggetInn";
+        private const string _loggetInn = "innlogget";
         private const string _ikkeLoggetInn = "";
         
 
@@ -54,7 +54,7 @@ namespace XUnitTestOblig
         }
         
         [Fact]
-        public async Task HentAlleLoggetInn()
+        public async Task HentHoldeplasserLoggetInn()
         {
             var kongsberg = new Holdeplass { Sted = "Kongsberg", Avgangstider = "0940, 1140" };
             var notodden = new Holdeplass { Sted = "Notodden", Avgangstider = "1015, 1215" };
@@ -77,7 +77,7 @@ namespace XUnitTestOblig
         }
 
         [Fact]
-        public async Task HentAlleIkkeLoggetInn()
+        public async Task HentHoldeplasserIkkeLoggetInn()
         {
             mockRep.Setup(k => k.HentHoldeplasser()).ReturnsAsync(It.IsAny<List<Holdeplass>>());
 
@@ -87,10 +87,76 @@ namespace XUnitTestOblig
             mockHttpContext.Setup(s => s.Session).Returns(mockSession);
             bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
 
-            var resultat = await bestillingController.HentHoldeplasser as UnauthorizedObjectResult;
+            var resultat = await bestillingController.HentHoldeplasser() as UnauthorizedObjectResult;
 
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke logget inn", resultat.Value);
+        }
+
+        [Fact]
+        public async Task GodkjentInnlogging() {
+            mockRep.Setup(k => k.LoggInn(It.IsAny<Bruker>())).ReturnsAsync(true);
+
+            var bestillingController = new BestillingController(mockRep.Object);
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await bestillingController.LoggInn(It.IsAny<Bruker>()) as OkObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.True((bool)resultat.Value);
+        }
+
+        [Fact]
+        public async Task FeilInnlogging()
+        {
+            mockRep.Setup(k => k.LoggInn(It.IsAny<Bruker>())).ReturnsAsync(false);
+
+            var bestillingController = new BestillingController(mockRep.Object);
+
+            mockSession[_loggetInn] = _ikkeLoggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await bestillingController.LoggInn(It.IsAny<Bruker>()) as OkObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.False((bool)resultat.Value);
+        }
+
+        [Fact]
+        public async Task FeilInputLoggInn()
+        {
+            mockRep.Setup(k => k.LoggInn(It.IsAny<Bruker>())).ReturnsAsync(true);
+
+            var bestillingController = new BestillingController(mockRep.Object);
+
+            bestillingController.ModelState.AddModelError("Brukernavn", "Feil i inputvalidering");
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await bestillingController.LoggInn(It.IsAny<Bruker>()) as BadRequestObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalidering", resultat.Value);
+        }
+
+        [Fact]
+        public void LoggUt()
+        {
+            var bestillingController = new BestillingController(mockRep.Object);
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            bestillingController.LoggUt();
+
+            Assert.Equal(_ikkeLoggetInn, mockSession[_loggetInn]);
         }
 
     }
