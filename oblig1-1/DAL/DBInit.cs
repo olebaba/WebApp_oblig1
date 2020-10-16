@@ -18,7 +18,7 @@ namespace oblig1_1.Models
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432", Prisklasse = "Student"};
+                var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432"};
 
                 var oslo = new Holdeplass { Sted = "Oslo bussterminal", Avgangstider = "0830, 0900, 1030, 1100" };
                 var drammen = new Holdeplass { Sted = "Drammen", Avgangstider = "0940, 1140" };
@@ -49,7 +49,7 @@ namespace oblig1_1.Models
 
                 var bestilling1 = new Bestillinger { Kunde = kunde1, Tur = tur1, Retur = retur1, Pris = 594 };
 
-                var kunde2 = new Kunde { Navn = "Line", Mobilnummer = "49876543", Prisklasse = "voksen" };
+                var kunde2 = new Kunde { Navn = "Line", Mobilnummer = "49876543"};
 
                 var bergen = new Holdeplass { Sted = "Bergen", Avgangstider = "0930, 1130" };
                 var os = new Holdeplass { Sted = "Os", Avgangstider = "1010, 1210" };

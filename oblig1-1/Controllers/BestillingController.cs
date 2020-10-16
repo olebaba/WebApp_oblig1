@@ -32,9 +32,9 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering");
         }
 
-        public async Task<List<Bestillinger>> index()
+        public async Task<List<Bestillinger>> Index()
         {
-            return await _db.index();
+            return await _db.Index();
         }
 
         public async Task<List<Rute>> VisAlleRuter()

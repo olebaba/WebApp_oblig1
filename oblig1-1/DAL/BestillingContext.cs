@@ -11,7 +11,6 @@ namespace oblig1_1.DAL
     // fra forelesningsvideo DAL 
     public class BestillingContext : DbContext
     {
-
         public BestillingContext (DbContextOptions<BestillingContext> options)
             : base(options)
         {

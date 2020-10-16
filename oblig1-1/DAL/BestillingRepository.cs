@@ -19,7 +19,7 @@ namespace oblig1_1.DAL
         }
 
         [HttpPost]
-        public async Task<List<Bestillinger>> index()
+        public async Task<List<Bestillinger>> Index()
         {
             try
             {
@@ -111,8 +111,10 @@ namespace oblig1_1.DAL
         {
             try
             {
-                var nyBestilling = new Bestillinger();
-                nyBestilling.Pris = innBestilling.Pris;
+                var nyBestilling = new Bestillinger
+                {
+                    Pris = innBestilling.Pris
+                };
 
                 var sjekkKunde = _db.Kunder.Find(innBestilling.Kunde);
                 

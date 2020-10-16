@@ -85,6 +85,7 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
     var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
 
     $.post("Bestilling/FinnEnRute", reise, function (rute) {
+        console.log(rute);
         formaterRute(rute); //setter verdier i hentetRute
         var fra = rute.holdeplasser[0];
         var til = rute.holdeplasser[rute.holdeplasser.length - 1];
@@ -113,7 +114,7 @@ function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
     var tider = rute.holdeplasser[0].avgangstider.split(",");
     hentetRute = {
         avreiseTider: tider,
-        totaltid: rute.totaltid,
+        totalTid: rute.totalTid,
         pris: totalpris.toFixed(2), 
         holdeplasser: rute.holdeplasser,
         goDate: getUrlParam('goDate'),
