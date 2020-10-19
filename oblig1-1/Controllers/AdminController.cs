@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using oblig1_1.DAL;
 using oblig1_1.Models;
 using System;
@@ -16,9 +17,12 @@ namespace oblig1_1.Controllers
 
             private const string _loggetInn = "innlogget";
 
-            public AdminController(IBestillingRepository db)
+            private ILogger<AdminController> _log;
+
+        public AdminController(IBestillingRepository db, ILogger<AdminController> log)
             {
                 _db = db;
+                _log = log;
             }
 
 
