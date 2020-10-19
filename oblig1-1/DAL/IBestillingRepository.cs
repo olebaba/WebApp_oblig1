@@ -18,5 +18,6 @@ namespace oblig1_1.DAL
         Task<List<Holdeplass>> HentHoldeplasser();
         Task<bool> LoggInn(Bruker bruker);
         Task<bool> SlettHoldeplass(int id);
+        Task<bool> SlettRute(int id);
     }
 }

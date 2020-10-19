@@ -94,35 +94,11 @@ namespace oblig1_1.Controllers
 
         public async Task<ActionResult> HentHoldeplasser()
         {
-            /* Hvis ikke logget inn vil den ikke returnere holdeplasser
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
-            {
-                return Unauthorized("Ikke logget inn");
-            }*/
             List<Holdeplass> holdeplasser = await _db.HentHoldeplasser();
             return Ok(holdeplasser);
         }
 
-        public async Task<ActionResult> LoggInn(Bruker bruker)
-        {
-            if(ModelState.IsValid)
-            {
-                bool returOK = await _db.LoggInn(bruker);
-                if(!returOK)
-                {
-                    HttpContext.Session.SetString(_loggetInn, "");
-                    return Ok(false);
-                }
-                HttpContext.Session.SetString(_loggetInn, "innlogget");
-                return Ok(true);
-            }
-            return BadRequest("Feil i inputvalidering");
-        }
-
-        public void LoggUt()
-        {
-            HttpContext.Session.SetString(_loggetInn, "");
-        }
+        
 
         
     }

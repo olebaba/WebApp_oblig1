@@ -284,5 +284,20 @@ namespace oblig1_1.DAL
                 return false;
             }
         }
+
+        public async Task<bool> SlettRute(int id)
+        {
+            try
+            {
+                Rute enRute = await _db.Ruter.FindAsync(id);
+                _db.Ruter.Remove(enRute);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

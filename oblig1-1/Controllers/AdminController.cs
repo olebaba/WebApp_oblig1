@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using oblig1_1.DAL;
+using oblig1_1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,29 @@ namespace oblig1_1.Controllers
                 _db = db;
             }
 
-        public async Task<ActionResult> AdminSlett(int id)
+
+        public async Task<ActionResult> LoggInn(Bruker bruker)
+        {
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.LoggInn(bruker);
+                if (!returOK)
+                {
+                    HttpContext.Session.SetString(_loggetInn, "");
+                    return Ok(false);
+                }
+                HttpContext.Session.SetString(_loggetInn, "innlogget");
+                return Ok(true);
+            }
+            return BadRequest("Feil i inputvalidering");
+        }
+
+        public void LoggUt()
+        {
+            HttpContext.Session.SetString(_loggetInn, "");
+        }
+
+        public async Task<ActionResult> SlettHoldeplass(int id)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
@@ -34,5 +57,18 @@ namespace oblig1_1.Controllers
             return Ok("Sletting utført");
         }
 
+        public async Task<ActionResult> SlettRute(int id)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            bool returOK = await _db.SlettRute(id);
+            if (!returOK)
+            {
+                return NotFound("Kunne ikke slette");
+            }
+            return Ok("Sletting utført");
+        }
     }
 }
