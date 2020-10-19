@@ -50,8 +50,9 @@ namespace oblig1_1.Controllers
                 Console.WriteLine("Fant ikke ruten");
                 return null;
             }
-            
-            return _db.FinnEnRute(reise);
+
+            //return _db.FinnEnRute(reise);
+            return null;
         }
 
         public async Task<ActionResult> Slett(int id)

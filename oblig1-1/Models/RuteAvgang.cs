@@ -10,6 +10,7 @@ namespace oblig1_1.Models
     {
         [Key]
         public int RuteAvgangID { get; set; }
-        public string Datoer { get; set; }
+        public DateTime Dato { get; set; }
+        public virtual Rute RID { get; set; }
     }
 }
