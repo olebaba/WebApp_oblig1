@@ -17,6 +17,8 @@ namespace oblig1_1.Controllers
         private readonly IBestillingRepository _db;
 
         private const string _loggetInn = "innlogget";
+
+        public BestillingController(IBestillingRepository db)
         
         private ILogger<BestillingController> _log;
         
