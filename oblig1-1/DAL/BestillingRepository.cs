@@ -53,18 +53,11 @@ namespace oblig1_1.DAL
 
                 foreach (var ruteavgang in alleDBRuteAvganger)
                 {
-                    var holdeplasserIRute = new List<Holdeplass>();
-                    var enRute = new Rute();
-                    var etRuteStopp = new RuteStopp();
                     var enRuteAvgang = new RuteAvgang
                     {
                         Dato = ruteavgang.Dato,
-                        RID = ruteavgang.RID
+                        Rute = ruteavgang.Rute
                     };
-                    foreach (var sted in etRuteStopp.HID.Sted)
-                    {
-                        holdeplasserIRute.Add(sted);
-                    }
                     alleRuteAvganger.Add(enRuteAvgang);
                 }
                 return alleRuteAvganger;
@@ -74,6 +67,26 @@ namespace oblig1_1.DAL
                 _log.LogError("Error i List<Bestillinger> VisAlleRuter: {error}", e);
                 return null;
             }
+        }
+
+        public async Task<List<Holdeplass>> VisHoldeplasserIRute(int id)
+        {
+            try
+            {
+                Rute enRute = await _db.Ruter.FindAsync(id);
+                List<Holdeplass> holdeplasser = new List<Holdeplass>();
+
+                foreach(var rutestopp in enRute.RuteStopp)
+                {
+                    holdeplasser.Add(rutestopp.Holdeplass);
+                }
+                return holdeplasser;
+            }
+            catch
+            {
+                return null;
+            }
+            
         }
 
         public RuteAvgang FinnEnRuteAvgang(RuteAvgang reise) //kan ikke være async pga where
@@ -118,7 +131,7 @@ namespace oblig1_1.DAL
         }
 
         public async Task<bool> Lagre(Bestillinger innBestilling)
-        {
+        {/*
             try
             {
                 var nyBestilling = new Bestillinger();
@@ -173,9 +186,9 @@ namespace oblig1_1.DAL
             {
                 _log.LogError("Error i Lagre: {error}", e);
                 return false;
-            }
-
-            }
+            }*/
+            return false;
+        }
 
         public async Task<bool> Slett(int id)
         {

@@ -12,5 +12,6 @@ namespace oblig1_1.Models
         [Key]
         public int RID { get; set; }
         public string Navn { get; set; }
+        public virtual List<RuteStopp> RuteStopp { get; set; }
     }
 }

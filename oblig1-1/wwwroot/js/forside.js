@@ -270,3 +270,12 @@ function tilAvganger() {
 
     location.href = vindu;
 }
+
+function visHoldeplasserIRute() {
+    $.get("Bestilling/VisHoldeplasserIRute?id=1", function (holdeplasser) {
+        console.log(holdeplasser);
+    })
+        .fail(function () {
+            console.log("Feil!");
+        });
+}
