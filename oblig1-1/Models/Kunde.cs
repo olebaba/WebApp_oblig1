@@ -13,8 +13,6 @@ namespace oblig1_1.Models
         public int KID { get; set; }
         [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2,30}$")]
         public string Navn { get; set; }
-        public string Prisklasse { get; set; }
-        [RegularExpression(@"^[0-9]{8}$")]
         public string Mobilnummer { get; set; }
        // public virtual List<Bestillinger> Bestillinger { get; set; }
     }
