@@ -43,39 +43,40 @@ namespace oblig1_1.DAL
             }
         }
 
-        public async Task<List<Rute>> VisAlleRuter()
-        {/*
+        public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
+            //Hent ruteavganger med tilhørende holdeplasser
+        {
             try
             {
-                List<Rute> alleDBRuter = await _db.Ruter.ToListAsync();
-                List<Rute> alleRuter = new List<Rute>();
+                List<RuteAvgang> alleDBRuteAvganger = await _db.RuteAvganger.ToListAsync();
+                List<RuteAvgang> alleRuteAvganger = new List<RuteAvgang>();
 
-                foreach (var rute in alleDBRuter)
+                foreach (var ruteavgang in alleDBRuteAvganger)
                 {
                     var holdeplasserIRute = new List<Holdeplass>();
-                    var enRute = new Rute
+                    var enRute = new Rute();
+                    var etRuteStopp = new RuteStopp();
+                    var enRuteAvgang = new RuteAvgang
                     {
-                       Datoer = .Datoer,
-                        Holdeplasser = holdeplasserIRute
+                        Dato = ruteavgang.Dato,
+                        RID = ruteavgang.RID
                     };
-                    foreach (var holdeplass in rute.Holdeplasser)
+                    foreach (var sted in etRuteStopp.HID.Sted)
                     {
-                        holdeplasserIRute.Add(holdeplass);
+                        holdeplasserIRute.Add(sted);
                     }
-                    alleRuter.Add(enRute);
+                    alleRuteAvganger.Add(enRuteAvgang);
                 }
-                return alleRuter;
+                return alleRuteAvganger;
             }
             catch (Exception e)
             {
                 _log.LogError("Error i List<Bestillinger> VisAlleRuter: {error}", e);
                 return null;
             }
-            */
-            return null;
         }
 
-        public Rute FinnEnRute(RuteStopp reise) //kan ikke være async pga where
+        public RuteAvgang FinnEnRuteAvgang(RuteAvgang reise) //kan ikke være async pga where
         {
             /*
             Holdeplass fra = reise.;
@@ -118,15 +119,15 @@ namespace oblig1_1.DAL
 
         public async Task<bool> Lagre(Bestillinger innBestilling)
         {
-            /*
             try
             {
                 var nyBestilling = new Bestillinger();
                 nyBestilling.Pris = innBestilling.Pris;
 
+                //Sjekker om kunde finnes i databasen fra før
                 var sjekkKunde = _db.Kunder.Find(innBestilling.Kunde);
 
-                if (sjekkKunde == null)
+                if (sjekkKunde == null) 
                 {
                     var nyKundeRad = new Kunde();
                     nyKundeRad = innBestilling.Kunde;
@@ -137,7 +138,7 @@ namespace oblig1_1.DAL
                 {
                     nyBestilling.Kunde = sjekkKunde;
                 }
-                
+
                 var sjekkTur = _db.Ruter.Find(innBestilling.Tur);
 
                 if(sjekkTur == null)
@@ -172,8 +173,7 @@ namespace oblig1_1.DAL
             {
                 _log.LogError("Error i Lagre: {error}", e);
                 return false;
-            }*/
-            return true;
+            }
 
             }
 

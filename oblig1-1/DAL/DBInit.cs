@@ -41,9 +41,9 @@ namespace oblig1_1.Models
                 context.Rutestopp.Add(rute2Stopp3);
 
                 var ruteavgang = new RuteAvgang { Dato= DateTime.Parse("22/10/2020 12:00:00"), RID = rute };
-                context.Ruteavganger.Add(ruteavgang);
+                context.RuteAvganger.Add(ruteavgang);
                 var ruteavgang2 = new RuteAvgang { Dato = DateTime.Parse("23/10/2020 9:00:00"), RID = OsloDrammenBergen };
-                context.Ruteavganger.Add(ruteavgang2);
+                context.RuteAvganger.Add(ruteavgang2);
 
                 var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432", Prisklasse = "Student" };
                 var kunde2 = new Kunde { Navn = "Zandra", Mobilnummer = "98765432", Prisklasse = "Student" };
