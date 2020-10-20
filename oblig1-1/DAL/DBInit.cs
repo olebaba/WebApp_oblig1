@@ -17,6 +17,8 @@ namespace oblig1_1.Models
                 var context = serviceScope.ServiceProvider.GetService<BestillingContext>();
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
+
+                var student = new Priser { Prisklasse="Student", Pris=30.00};
                 var oslo = new Holdeplass { Sted = "Oslo bussterminal", Sone = 1 };
                 context.Holdeplasser.Add(oslo);
                 var drammen = new Holdeplass { Sted = "Drammen", Sone = 1};
@@ -45,8 +47,8 @@ namespace oblig1_1.Models
                 var ruteavgang2 = new RuteAvgang { Dato = DateTime.Parse("23/10/2020 9:00:00"), RID = OsloDrammenBergen };
                 context.Ruteavganger.Add(ruteavgang2);
 
-                var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432", Prisklasse = "Student" };
-                var kunde2 = new Kunde { Navn = "Zandra", Mobilnummer = "98765432", Prisklasse = "Student" };
+                var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432"};
+                var kunde2 = new Kunde { Navn = "Zandra", Mobilnummer = "98765432"};
 
                 var bestilling1 = new Bestillinger { Kunde = kunde1, Pris = 350, Tur = ruteavgang };
                 context.Bestillinger.Add(bestilling1);
@@ -66,7 +68,7 @@ namespace oblig1_1.Models
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432", Prisklasse = "Student" };
+                var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432"};
                 var oslo = new Holdeplass { Sted = "Oslo bussterminal", Sone = 1 };
                 var drammen = new Holdeplass { Sted = "Drammen", Sone = 1 };
                 var fokserød = new Holdeplass { Sted = "Fokserød" };
@@ -98,7 +100,7 @@ namespace oblig1_1.Models
 
                 //var bestilling1 = new Bestillinger { Kunde = kunde1, Tur = OsloStavanger };
 
-                var kunde2 = new Kunde { Navn = "Line", Mobilnummer = "49876543", Prisklasse = "voksen" };
+                var kunde2 = new Kunde { Navn = "Line", Mobilnummer = "49876543"};
 
                 var bergen = new Holdeplass { Sted = "Bergen" };
                 var os = new Holdeplass { Sted = "Os" };
