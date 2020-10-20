@@ -46,7 +46,7 @@ namespace oblig1_1.Controllers
         {
             return null;
         }
-       public Rute FinnEnRute(RuteAvgang reise) //kan ikke være async
+       public RuteAvgang FinnEnRute(RuteAvgang reise) //kan ikke være async
         {
             if(reise == null)
             {
@@ -95,6 +95,12 @@ namespace oblig1_1.Controllers
         public async Task<List<Holdeplass>> HentHoldeplasser()
         {
             return await _db.HentHoldeplasser();
+        }
+
+
+        public async Task<List<Holdeplass>> VisHoldeplasserIRute(int id)
+        {
+            return await _db.VisHoldeplasserIRute(id);
         }
 
     }

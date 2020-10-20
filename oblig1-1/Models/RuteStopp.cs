@@ -9,10 +9,10 @@ namespace oblig1_1.Models
     public class RuteStopp
     {
         [Key]
-        public int RutestoppID { get; set; }
+        public int ID { get; set; }
         public int RekkefølgeNr { get; set; }
         public TimeSpan StoppTid { get; set; }
-        public virtual Holdeplass HID { get; set; }
-        public virtual Rute RID { get; set; }
+        public virtual Holdeplass Holdeplass { get; set; }
+        //public virtual Rute Rute { get; set; }
     }
 }
