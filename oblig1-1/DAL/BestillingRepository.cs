@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+﻿using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -270,5 +271,42 @@ namespace oblig1_1.DAL
                 return false; 
             }
         }
+
+        public async Task<Holdeplass> HentHoldeplass(int id)
+        {
+            try
+            {
+                Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
+                var hentetHold = new Holdeplass()
+                {
+                    HID = enHoldeplass.HID,
+                    Sted = enHoldeplass.Sted,
+                    Avgangstider = enHoldeplass.Avgangstider
+                };
+                return hentetHold;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass)
+        {
+            try
+            {
+                var enHoldeplass = await _db.Holdeplasser.FindAsync(endreHoldeplass.HID);
+                enHoldeplass.Sted = endreHoldeplass.Sted;
+                enHoldeplass.Avgangstider = endreHoldeplass.Avgangstider;
+
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false; 
+            } 
+        }
+        
     }
 }

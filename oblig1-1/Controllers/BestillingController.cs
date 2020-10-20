@@ -122,5 +122,37 @@ namespace oblig1_1.Controllers
             HttpContext.Session.SetString(_loggetInn, "");
         }
 
+        public async Task<ActionResult> HentHoldeplass(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                Holdeplass enHoldeplass = await _db.HentHoldeplass(id);
+                if(enHoldeplass == null)
+                {
+                    return NotFound("Fant ikke holdeplassen");
+                }
+                return Ok(enHoldeplass);
+            }
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
+        public async Task<ActionResult> EndreHoldeplass(Holdeplass endreHoldeplass)
+        {
+            if(string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized();
+            }
+            if(ModelState.IsValid)
+            {
+                bool returOk = await _db.EndreHoldeplass(endreHoldeplass);
+                if(!returOk)
+                {
+                    return NotFound("Endringen av holdeplassen kunne ikke utføres");
+                }
+                return Ok("Holdeplass endret");
+            }
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
     }
 }

@@ -17,6 +17,8 @@ namespace oblig1_1.DAL
         Rute FinnEnRute(Rute reise);
         Task<List<Holdeplass>> HentHoldeplasser();
         Task<bool> LoggInn(Bruker bruker);
+        Task<Holdeplass> HentHoldeplass(int id);
+        Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass);
 
     }
 }
