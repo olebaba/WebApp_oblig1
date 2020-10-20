@@ -9,9 +9,9 @@ namespace oblig1_1.Models
     public class Holdeplass
     {
         [Key]
-        public int HID { get; set; }
-        [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2,30}$")]
+        public int ID { get; set; }
+        [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2-20}$")]
         public string Sted { get; set; }
-        public string Avgangstider { get; set; } 
+        public int Sone { get; set; }
     }
 }
