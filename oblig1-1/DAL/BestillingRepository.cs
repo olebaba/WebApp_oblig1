@@ -301,7 +301,7 @@ namespace oblig1_1.DAL
         }
 
         public async Task<Holdeplass> HentHoldeplass(int id)
-        {
+        {/*
             try
             {
                 Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
@@ -316,11 +316,13 @@ namespace oblig1_1.DAL
             catch(Exception e)
             {
                 return null;
-            }
+            }*/
+
+            return null;
         }
 
         public async Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass)
-        {
+        {/*
             try
             {
                 var enHoldeplass = await _db.Holdeplasser.FindAsync(endreHoldeplass.HID);
@@ -333,7 +335,9 @@ namespace oblig1_1.DAL
             catch(Exception e)
             {
                 return false; 
-            } 
+            } */
+
+            return false;
         }
         
     }
