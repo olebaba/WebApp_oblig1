@@ -148,10 +148,17 @@ function gaTilbake() {
 var turJson, returJson, pris;
 
 function gaVidere() {
+    console.log("Length: " + $(".avgCheckBox input:checkbox:checked").length);
+    console.log("Class: " + $(".avgCheckBox").length);
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
         "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2));
-    
-    location.href = url;
+
+    console.log("Kommer hit");
+    if ($(".avgCheckBox").length == 4 && $(".avgCheckBox input:checkbox:checked").length > 1) {
+        location.href = url;
+    } else if ($(".avgCheckBox").length == 2) {
+        location.href = url;
+    }
 }
 
 function formaterTid(tid) { //Formaterer tid til 00:00-format. Noe av kode tatt fra nett.

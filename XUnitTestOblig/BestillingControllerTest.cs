@@ -55,7 +55,7 @@ namespace XUnitTestOblig
             Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
             Assert.Equal("Bestillingen er lagret", resultat.Value);
         }
-        
+        */
         [Fact]
         public async Task HentHoldeplasserLoggetInn()
         {
@@ -67,36 +67,36 @@ namespace XUnitTestOblig
             holdListe.Add(notodden);
 
             mockRep.Setup(k => k.HentHoldeplasser()).ReturnsAsync(holdListe);
-            var bestillingController = new BestillingController(mockRep.Object, mockLog.Object);
+            var bestillingController = new AdminController(mockRep.Object, mockLog.Object);
             
             mockSession[_loggetInn] = _loggetInn;
             mockHttpContext.Setup(s => s.Session).Returns(mockSession);
             bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
             
-            var resultat = await bestillingController.HentHoldeplasser() as OkObjectResult;
+            var resultat = await bestillingController.AdminHentHoldeplasser() as OkObjectResult;
 
             Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
             Assert.Equal<List<Holdeplass>>((List<Holdeplass>)resultat.Value, holdListe);
         }
 
-        /*
+        
         [Fact]
         public async Task HentHoldeplasserIkkeLoggetInn()
         {
             mockRep.Setup(k => k.HentHoldeplasser()).ReturnsAsync(It.IsAny<List<Holdeplass>>());
 
-            var bestillingController = new BestillingController(mockRep.Object);
+            var bestillingController = new AdminController(mockRep.Object, mockLog.Object);
 
             mockSession[_loggetInn] = _ikkeLoggetInn;
             mockHttpContext.Setup(s => s.Session).Returns(mockSession);
             bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
 
-            var resultat = await bestillingController.HentHoldeplasser() as UnauthorizedObjectResult;
+            var resultat = await bestillingController.AdminHentHoldeplasser() as UnauthorizedObjectResult;
 
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke logget inn", resultat.Value);
         }
-        */
+        
         
         [Fact]
         public async Task GodkjentInnlogging() {
@@ -210,6 +210,57 @@ namespace XUnitTestOblig
             bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
 
             var resultat = await bestillingController.SlettHoldeplass(It.IsAny<int>()) as UnauthorizedObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke logget inn", resultat.Value);
+        }
+
+        [Fact]
+        public async Task SlettRuteLoggetInn()
+        {
+            mockRep.Setup(k => k.SlettRute(It.IsAny<int>())).ReturnsAsync(true);
+
+            var bestillingController = new AdminController(mockRep.Object, mockLog.Object);
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await bestillingController.SlettRute(It.IsAny<int>()) as OkObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal("Sletting utført", resultat.Value);
+        }
+
+        [Fact]
+        public async Task SlettRuteLoggetInnFeil()
+        {
+            mockRep.Setup(k => k.SlettRute(It.IsAny<int>())).ReturnsAsync(false);
+
+            var bestillingController = new AdminController(mockRep.Object, mockLog.Object);
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await bestillingController.SlettRute(It.IsAny<int>()) as NotFoundObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.NotFound, resultat.StatusCode);
+            Assert.Equal("Kunne ikke slette", resultat.Value);
+        }
+
+        [Fact]
+        public async Task SlettRuteIkkeLoggetInn()
+        {
+            mockRep.Setup(k => k.SlettRute(It.IsAny<int>())).ReturnsAsync(true);
+
+            var bestillingController = new AdminController(mockRep.Object, mockLog.Object);
+
+            mockSession[_loggetInn] = _ikkeLoggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await bestillingController.SlettRute(It.IsAny<int>()) as UnauthorizedObjectResult;
 
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke logget inn", resultat.Value);

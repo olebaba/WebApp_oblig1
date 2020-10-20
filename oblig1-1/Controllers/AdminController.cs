@@ -74,5 +74,15 @@ namespace oblig1_1.Controllers
             }
             return Ok("Sletting utført");
         }
+
+        public async Task<ActionResult> AdminHentHoldeplasser()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            List<Holdeplass> holdeplasser = await _db.HentHoldeplasser();
+            return Ok(holdeplasser);
+        }
     }
 }
