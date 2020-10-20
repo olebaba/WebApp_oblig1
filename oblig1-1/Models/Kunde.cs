@@ -15,6 +15,11 @@ namespace oblig1_1.Models
         public string Navn { get; set; }
         [RegularExpression(@"^[0-9]{8}$")]
         public string Mobilnummer { get; set; }
-        public virtual List<Bestillinger> Bestillinger { get; set; }
+        public virtual List<Bestilling> Bestillinger { get; set; }
+
+        public override string ToString()
+        {
+            return "{Navn: " + Navn + ", Mobilnummer: " + Mobilnummer + "}";
+        }
     }
 }

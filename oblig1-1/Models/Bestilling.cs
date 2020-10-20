@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace oblig1_1.Models
 {
-    public class Bestillinger
+    public class Bestilling
     {
         [Key]
         public int ID { get; set; }
@@ -15,5 +15,10 @@ namespace oblig1_1.Models
         public virtual Kunde Kunde { get; set; }
         public virtual Rute Tur { get; set; }
         public virtual Rute Retur { get; set; }
+
+        public override string ToString()
+        {
+            return "Pris: " + Pris + ", " + Kunde.ToString() + ", " + Tur.ToString() + ", " + Retur.ToString();
+        }
     }
 }

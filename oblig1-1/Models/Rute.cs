@@ -14,5 +14,10 @@ namespace oblig1_1.Models
         public string Datoer { get; set; }
         public virtual List<Holdeplass> Holdeplasser { get; set; }
         public string TotalTid { get; set; }
+
+        public override string ToString()
+        {
+            return "{Datoer: " + Datoer + ", " + string.Join(", ", Holdeplasser) + "TotalTid: " + TotalTid + "}";
+        }
     }
 }

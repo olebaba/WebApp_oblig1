@@ -47,7 +47,7 @@ namespace oblig1_1.Models
                 holdeplasser.Reverse(); 
                 var retur1 = new Rute { Datoer = "27.09.2020, 15.10.2020", Holdeplasser = holdeplasser, TotalTid = "9t 30m" };
 
-                var bestilling1 = new Bestillinger { Kunde = kunde1, Tur = tur1, Retur = retur1, Pris = 594 };
+                var bestilling1 = new Bestilling { Kunde = kunde1, Tur = tur1, Retur = retur1, Pris = 594 };
 
                 var kunde2 = new Kunde { Navn = "Line", Mobilnummer = "49876543"};
 
@@ -70,7 +70,7 @@ namespace oblig1_1.Models
                 kyst.Reverse();
                 var retur2 = new Rute { Datoer = "02.10.2020, 11.10.2020", Holdeplasser = kyst, TotalTid = "5t 45min" };
 
-                var bestilling2 = new Bestillinger { Kunde = kunde2, Tur = tur2, Retur = retur2, Pris = 740 };
+                var bestilling2 = new Bestilling { Kunde = kunde2, Tur = tur2, Retur = retur2, Pris = 740 };
 
                 var oslo2 = new Holdeplass { Sted = "Oslo", Avgangstider = "0830, 1030" };
                 var kongsberg = new Holdeplass { Sted = "Kongsberg", Avgangstider = "0940, 1140" };
@@ -90,7 +90,7 @@ namespace oblig1_1.Models
                 hauk.Reverse();
                 var retur3 = new Rute { Datoer = "03.10.2020, 12.10.2020", Holdeplasser = hauk, TotalTid = "8t 5min" };
 
-                var bestilling3 = new Bestillinger { Kunde = kunde1, Tur = tur3, Retur = retur3, Pris = 690 };
+                var bestilling3 = new Bestilling { Kunde = kunde1, Tur = tur3, Retur = retur3, Pris = 690 };
 
                 context.Bestillinger.Add(bestilling1);
                 context.Bestillinger.Add(bestilling2);

@@ -91,3 +91,12 @@ function lagreBestilling() {
         $("#feil").html("Feil på server - prøv igjen senere. (" + error.responseText + ")");
     }); 
 }
+
+function visEnBestilling() {
+    $.get("Bestilling/HentEn?id=1", function (bestilling) {
+        console.log(bestilling);
+    })
+        .fail((message) => {
+            console.log(message.responseText)
+        });
+}
