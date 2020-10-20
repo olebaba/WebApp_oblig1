@@ -80,6 +80,10 @@ namespace oblig1_1.Controllers
 
         public async Task<ActionResult> Endre(Bestillinger endreBestilling)
         {
+            if(string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized();
+            }
             if (ModelState.IsValid)
             {
                 bool returOk = await _db.Endre(endreBestilling);

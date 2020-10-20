@@ -161,7 +161,7 @@ function validerBrukernavn(brukernavn) {
 
 function validerPassord(passord) {
     const regexp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    const ok = regexp.test(brukernavn);
+    const ok = regexp.test(passord);
     if (!ok) {
         $("#feilPassord").html("Passordet må bestå av minst 8 tegn, minst en bokstav og ett tall");
         return false;

@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="css/index.css">
+    <script src="js/loggInn.js"></script>
+    <script src="js/validering.js"></script>
 </head>
 <body>
     <div class="nav-brand" style="margin: 1em">
@@ -17,12 +19,15 @@
     <div class="container d-flex justify-content-center text-center">
         <form>
             <label for="brukernavn">Brukernavn:</label>
-            <br><input class="form-control input-lg" type="text" id="brukernavn" />
+            <br><input class="form-control input-lg" type="text" id="brukernavn" onchange="validerBrukernavn(this.value)" />
+            <span id="feilBrukernavn" style="color: red"></span>
             <br><br>
             <label for="passord">Passord:</label>
-            <br><input class="form-control input-lg" type="text" id="passord" />
+            <br><input class="form-control input-lg" type="password" id="passord" onchange="validerPassord(this.value)" />
             <br />
-            <input type="button" id="loggInn" value="Logg inn" name="loggInn" class="btn btn-primary" />
+            <span id="feilPassord" style="color: red"></span>
+            <input type="button" id="loggInn" value="Logg inn" name="loggInn" onClick="loggInn()" class="btn btn-primary" />
+            <div id="feil" style="color: red"></div>
         </form>
     </div>
 </body>

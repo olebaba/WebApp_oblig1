@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using oblig1_1.Models;
@@ -257,13 +258,13 @@ namespace oblig1_1.DAL
                 // sjekker om passordet til bruker er riktig 
                 byte[] hash = Hashing(bruker.Passord, funnetBruker.Salt);
                 bool ok = hash.SequenceEqual(funnetBruker.Passord);
-                if(!ok)
+                if(ok)
                 {
                     return true;
                 }
                 return false;
             }
-            catch
+            catch(Exception e)
             {
                 // legg til logging når log er opprettet 
                 return false; 

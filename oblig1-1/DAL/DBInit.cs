@@ -99,13 +99,12 @@ namespace oblig1_1.Models
                 // oppretter en admin-bruker
                 var admin = new Brukere();
                 admin.Brukernavn = "AdminUser";
-                string passord = "admin1234";
+                string passord = "Admin1234";
                 byte[] salt = BestillingRepository.Salt();
                 byte[] hash = BestillingRepository.Hashing(passord, salt);
                 admin.Passord = hash;
                 admin.Salt = salt;
                 context.Brukere.Add(admin);
-
 
                 context.SaveChanges();
             }
