@@ -41,21 +41,25 @@ namespace oblig1_1.Controllers
             return await _db.index();
         }
 
-        public async Task<List<Rute>> VisAlleRuter()
+        public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
         {
-            return await _db.VisAlleRuter();
+            return await _db.VisAlleRuteAvganger();
 
         }
-
-        public Rute FinnEnRute(Rute reise) //kan ikke være async
+        public RuteAvgang FinnEnRuteAvgang(RuteAvgang reise)
+        {
+            return null;
+        }
+       public RuteAvgang FinnEnRute(RuteAvgang reise) //kan ikke være async
         {
             if(reise == null)
             {
                 Console.WriteLine("Fant ikke ruten");
                 return null;
             }
-            
-            return _db.FinnEnRute(reise);
+
+            //return _db.FinnEnRute(reise);
+            return null;
         }
 
         public async Task<ActionResult> Slett(int id)
@@ -80,10 +84,6 @@ namespace oblig1_1.Controllers
 
         public async Task<ActionResult> Endre(Bestillinger endreBestilling)
         {
-            if(string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
-            {
-                return Unauthorized();
-            }
             if (ModelState.IsValid)
             {
                 bool returOk = await _db.Endre(endreBestilling);
@@ -120,6 +120,38 @@ namespace oblig1_1.Controllers
         public void LoggUt()
         {
             HttpContext.Session.SetString(_loggetInn, "");
+        }
+
+        public async Task<ActionResult> HentHoldeplass(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                Holdeplass enHoldeplass = await _db.HentHoldeplass(id);
+                if(enHoldeplass == null)
+                {
+                    return NotFound("Fant ikke holdeplassen");
+                }
+                return Ok(enHoldeplass);
+            }
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
+        public async Task<ActionResult> EndreHoldeplass(Holdeplass endreHoldeplass)
+        {
+            if(string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized();
+            }
+            if(ModelState.IsValid)
+            {
+                bool returOk = await _db.EndreHoldeplass(endreHoldeplass);
+                if(!returOk)
+                {
+                    return NotFound("Endringen av holdeplassen kunne ikke utføres");
+                }
+                return Ok("Holdeplass endret");
+            }
+            return BadRequest("Feil i inputvalidering på server");
         }
 
     }
