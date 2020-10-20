@@ -6,16 +6,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace oblig1_1.DAL
 {
     public class BestillingRepository : IBestillingRepository
     {
         private readonly BestillingContext _db;
+        private ILogger<BestillingRepository> _log;
 
-        public BestillingRepository(BestillingContext db)
+        public BestillingRepository(BestillingContext db, ILogger<BestillingRepository> log)
         {
             _db = db;
+            _log = log;
         }
 
         [HttpPost]
@@ -33,8 +36,9 @@ namespace oblig1_1.DAL
                 }).ToListAsync();
                 return alleBestillinger;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogError("Error i List<Bestillinger> index: {error}", e);
                 return null;
             }
         }
@@ -62,8 +66,9 @@ namespace oblig1_1.DAL
                 }
                 return alleRuter;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogError("Error i List<Bestillinger> VisAlleRuter: {error}", e);
                 return null;
             }
 
@@ -103,6 +108,7 @@ namespace oblig1_1.DAL
             }
             catch
             {
+                _log.LogError("Error i FinnEnRute: {error}", e);
                 return null;
             }
         }
@@ -158,8 +164,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogError("Error i Lagre: {error}", e);
                 return false;
             }
         }
@@ -197,6 +204,7 @@ namespace oblig1_1.DAL
             }
             catch (Exception e)
             {
+                _log.LogError("Error i HentEn: {error}", e);
                 Debug.WriteLine(e.Message);
                 return null;
             }
@@ -216,8 +224,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                _log.LogError("Error i Endre: {error}", e);
                 return false;
             }
         }
