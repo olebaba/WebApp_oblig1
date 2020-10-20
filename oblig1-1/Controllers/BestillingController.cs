@@ -37,13 +37,16 @@ namespace oblig1_1.Controllers
             return await _db.index();
         }
 
-        public async Task<List<Rute>> VisAlleRuter()
+        public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
         {
-            return await _db.VisAlleRuter();
+            return await _db.VisAlleRuteAvganger();
 
         }
-
-        public Rute FinnEnRute(Rute reise) //kan ikke være async
+        public RuteAvgang FinnEnRuteAvgang(RuteAvgang reise)
+        {
+            return null;
+        }
+       public Rute FinnEnRute(RuteAvgang reise) //kan ikke være async
         {
             if(reise == null)
             {
