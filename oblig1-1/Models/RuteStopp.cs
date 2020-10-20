@@ -13,6 +13,6 @@ namespace oblig1_1.Models
         public int RekkefølgeNr { get; set; }
         public TimeSpan StoppTid { get; set; }
         public virtual Holdeplass Holdeplass { get; set; }
-        //public virtual Rute Rute { get; set; }
+        public virtual Rute Rute { get; set; }
     }
 }

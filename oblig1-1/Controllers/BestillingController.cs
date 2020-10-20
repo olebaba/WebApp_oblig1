@@ -49,15 +49,11 @@ namespace oblig1_1.Controllers
             return await _db.VisAlleRuteAvganger();
 
         }
-        public RuteAvgang FinnEnRuteAvgang(RuteAvgang reise)
+       public RuteAvgang FinnEnRuteAvgang(Holdeplass fra, Holdeplass til, DateTime dato) //kan ikke være async
         {
-            return null;
-        }
-       public RuteAvgang FinnEnRute(RuteAvgang reise) //kan ikke være async
-        {
-            if(reise == null)
+            if(fra == null || til == null || dato == null)
             {
-                Console.WriteLine("Fant ikke ruten");
+                Console.WriteLine("Fant ikke ruten, trist");
                 return null;
             }
 
