@@ -202,6 +202,7 @@
 function formaterHoldeplass(holdeplass) {
     let avTags = [];
     for (let i = 0; i < holdeplass.length; i++) {
+        console.log(holdeplass[i].sted);
         avTags.push(holdeplass[i].sted);
     }
     $("#fra").autocomplete( {

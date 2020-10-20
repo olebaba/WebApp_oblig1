@@ -157,6 +157,7 @@ namespace oblig1_1.Models
 
 
                 context.SaveChanges();
+                */
             }
         }
     }

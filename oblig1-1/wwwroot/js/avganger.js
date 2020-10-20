@@ -101,10 +101,10 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
                     totaltid: hentetRute.avreiseTider,
                     pris: hentetRute.pris,
                     holdeplasser: hentetRute.holdeplasser
-            }
-          
-            visAvreiser(avreiser, retur);
+                }
 
+                visAvreiser(avreiser, retur);
+            }
         }
     })
 
@@ -170,7 +170,6 @@ function gaVidere() { //setter url til betalingssiden med korrekte verdier
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
         "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2));
 
-    console.log("Kommer hit");
     if ($(".avgCheckBox").length == 4 && $(".avgCheckBox input:checkbox:checked").length > 1) {
         location.href = url;
     } else if ($(".avgCheckBox").length == 2) {
