@@ -44,7 +44,7 @@ namespace oblig1_1.DAL
         }
 
         public async Task<List<Rute>> VisAlleRuter()
-        {
+        {/*
             try
             {
                 List<Rute> alleDBRuter = await _db.Ruter.ToListAsync();
@@ -55,7 +55,7 @@ namespace oblig1_1.DAL
                     var holdeplasserIRute = new List<Holdeplass>();
                     var enRute = new Rute
                     {
-                        Datoer = rute.Datoer,
+                       Datoer = .Datoer,
                         Holdeplasser = holdeplasserIRute
                     };
                     foreach (var holdeplass in rute.Holdeplasser)
@@ -71,12 +71,14 @@ namespace oblig1_1.DAL
                 _log.LogError("Error i List<Bestillinger> VisAlleRuter: {error}", e);
                 return null;
             }
-
+            */
+            return null;
         }
 
-        public Rute FinnEnRute(Rute reise) //kan ikke være async pga where
+        public Rute FinnEnRute(RuteStopp reise) //kan ikke være async pga where
         {
-            Holdeplass fra = reise.Holdeplasser[0];
+            /*
+            Holdeplass fra = reise.;
             Holdeplass til = reise.Holdeplasser[1];
             
             try
@@ -110,18 +112,20 @@ namespace oblig1_1.DAL
             {
                 _log.LogError("Error i FinnEnRute: {error}", e);
                 return null;
-            }
+            }*/
+            return null;
         }
 
         public async Task<bool> Lagre(Bestillinger innBestilling)
         {
+            /*
             try
             {
                 var nyBestilling = new Bestillinger();
                 nyBestilling.Pris = innBestilling.Pris;
 
                 var sjekkKunde = _db.Kunder.Find(innBestilling.Kunde);
-                
+
                 if (sjekkKunde == null)
                 {
                     var nyKundeRad = new Kunde();
@@ -133,7 +137,7 @@ namespace oblig1_1.DAL
                 {
                     nyBestilling.Kunde = sjekkKunde;
                 }
-
+                
                 var sjekkTur = _db.Ruter.Find(innBestilling.Tur);
 
                 if(sjekkTur == null)
@@ -168,8 +172,10 @@ namespace oblig1_1.DAL
             {
                 _log.LogError("Error i Lagre: {error}", e);
                 return false;
+            }*/
+            return true;
+
             }
-        }
 
         public async Task<bool> Slett(int id)
         {
