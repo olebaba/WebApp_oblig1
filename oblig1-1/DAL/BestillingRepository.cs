@@ -254,7 +254,7 @@ namespace oblig1_1.DAL
             try
             {
                 Brukere funnetBruker = await _db.Brukere.FirstOrDefaultAsync(b => b.Brukernavn == bruker.Brukernavn);
-
+                if (funnetBruker == null) return false;
                 // sjekker om passordet til bruker er riktig 
                 byte[] hash = Hashing(bruker.Passord, funnetBruker.Salt);
                 bool ok = hash.SequenceEqual(funnetBruker.Passord);
