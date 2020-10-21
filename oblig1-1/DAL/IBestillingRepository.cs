@@ -17,6 +17,7 @@ namespace oblig1_1.DAL
         public List<RuteAvgang> FinnEnRuteAvgang(Holdeplass fra, Holdeplass til, DateTime dato);
         Task<List<Holdeplass>> HentHoldeplasser();
         Task<List<Holdeplass>> VisHoldeplasserIRute(int id);
+        Rute FinnRute(Holdeplass holdeplass);
 
     }
 }
