@@ -103,15 +103,20 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering");
         }
 
-        public async Task<List<Holdeplass>> HentHoldeplasser()
+        public async Task<List<Holdeplass>> HentAlleHoldeplasser() 
         {
-            return await _db.HentHoldeplasser();
+            return await _db.HentAlleHoldeplasser();
         }
 
 
         public async Task<List<Holdeplass>> VisHoldeplasserIRute(int id)
         {
             return await _db.VisHoldeplasserIRute(id);
+        }
+
+        public Rute FinnRute(Holdeplass holdeplass)
+        {
+            return _db.FinnRute(holdeplass);
         }
 
     }

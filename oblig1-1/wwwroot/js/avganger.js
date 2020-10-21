@@ -88,7 +88,6 @@ function hentRuteFraDB() {
             var fra = rute.holdeplasser[0];
             var til = rute.holdeplasser[rute.holdeplasser.length - 1];
             settTittel(fra.sted, til.sted);
-        //settDato(rute.datoer);
             var holdeplasser = rute.holdeplasser;
             var avgangstider = fra.avgangstider.split(",");
             avreiser = [];

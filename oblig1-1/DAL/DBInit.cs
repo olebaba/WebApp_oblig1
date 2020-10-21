@@ -28,8 +28,8 @@ namespace oblig1_1.Models
                 
 
                 var ruteStopp = new RuteStopp { RekkefølgeNr = 1, StoppTid = TimeSpan.FromMinutes(0), Holdeplass = oslo};
-                var ruteStopp1 = new RuteStopp { RekkefølgeNr = 1, StoppTid = TimeSpan.FromMinutes(20), Holdeplass = sandvika};
-                var ruteStopp2 = new RuteStopp { RekkefølgeNr = 2, StoppTid = TimeSpan.FromMinutes(40), Holdeplass = drammen};
+                var ruteStopp1 = new RuteStopp { RekkefølgeNr = 2, StoppTid = TimeSpan.FromMinutes(20), Holdeplass = sandvika};
+                var ruteStopp2 = new RuteStopp { RekkefølgeNr = 3, StoppTid = TimeSpan.FromMinutes(40), Holdeplass = drammen};
                 context.Rutestopp.Add(ruteStopp);
                 context.Rutestopp.Add(ruteStopp1);
                 context.Rutestopp.Add(ruteStopp2);
