@@ -171,3 +171,43 @@ function validerPassord(passord) {
         return true;
     }
 }
+
+function validerRekkefolge(rekkefolge) {
+    const regexp = /^[0-9]{1,3}$/;
+    const ok = regexp.test(rekkefolge);
+    if (!ok) {
+        $("#feilRNr").html("RekkefølgeNr må bestå av 1 til 3 sammenhengende tall");
+        return false;
+    }
+    else {
+        $("#feilRNr").html("");
+        return true;
+    }
+}
+
+function validerTid(stoppTid) {
+    const regexp = /^([0-1]?\d|2[0-3]):([0-5]?\d):([0-5]?\d)$/;
+    const ok = regexp.test(stoppTid);
+    if (!ok) {
+        $("#feilTid").html("StoppTid må være på formen HH:MM:SS");
+        return false;
+    }
+    else {
+        $("#feilTid").html("");
+        return true; 
+    }
+}
+
+function validerSone(sone) {
+    const regexp = /^[0-9]{1,3}$/;
+    const ok = regexp.test(sone);
+    if (!ok) {
+        $("#feilSone").html("Sone må bestå av 1 til 3 sammenhengende tall");
+        return false;
+    }
+    else {
+        $("#feilSone").html("");
+        return true;
+    }
+}
+

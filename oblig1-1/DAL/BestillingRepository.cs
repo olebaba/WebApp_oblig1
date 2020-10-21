@@ -298,9 +298,9 @@ namespace oblig1_1.DAL
                 Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
                 var hentetHold = new Holdeplass()
                 {
-                    HID = enHoldeplass.HID,
+                    ID = enHoldeplass.ID,
                     Sted = enHoldeplass.Sted,
-                    Avgangstider = enHoldeplass.Avgangstider
+                    Sone = enHoldeplass.Sone
                 };
                 return hentetHold;
             }
@@ -314,9 +314,9 @@ namespace oblig1_1.DAL
         {
             try
             {
-                var enHoldeplass = await _db.Holdeplasser.FindAsync(endreHoldeplass.HID);
+                var enHoldeplass = await _db.Holdeplasser.FindAsync(endreHoldeplass.ID);
                 enHoldeplass.Sted = endreHoldeplass.Sted;
-                enHoldeplass.Avgangstider = endreHoldeplass.Avgangstider;
+                enHoldeplass.Sone = endreHoldeplass.Sone;
 
                 await _db.SaveChangesAsync();
                 return true;
@@ -325,6 +325,80 @@ namespace oblig1_1.DAL
             {
                 return false; 
             } 
+        }
+
+        public async Task<List<RuteStopp>> HentRuteStopp()
+        {
+            List<RuteStopp> alleRuteStopp = await _db.Rutestopp.ToListAsync();
+            return alleRuteStopp;
+        }
+
+        public async Task<RuteStopp> EtRuteStopp(int id)
+        {
+            try
+            {
+                RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
+
+                var hentetRS = new RuteStopp()
+                {
+                    ID = etRS.ID,
+                    RekkefølgeNr = etRS.RekkefølgeNr,
+                    StoppTid = etRS.StoppTid,
+                    Holdeplass = etRS.Holdeplass
+                };
+                return hentetRS;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> SlettRS(int id)
+        {
+            try
+            {
+                RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
+                _db.Rutestopp.Remove(etRS);
+                await _db.SaveChangesAsync();
+                return true; 
+            }
+            catch(Exception e)
+            {
+                return false; 
+            }
+        }
+
+        public async Task<bool> EndreRS(RuteStopp endreRS)
+        {
+            try
+            {
+                var etRS = await _db.Rutestopp.FindAsync(endreRS.ID);
+                if(etRS.Holdeplass.Sted != endreRS.Holdeplass.Sted)
+                {
+                    var sjekkHID = _db.Holdeplasser.Find(endreRS.Holdeplass.ID);
+                    if(sjekkHID == null)
+                    {
+                        var holdeplassRad = new Holdeplass();
+                        holdeplassRad.Sted = endreRS.Holdeplass.Sted;
+                        holdeplassRad.Sone = endreRS.Holdeplass.Sone;
+                        etRS.Holdeplass = holdeplassRad;
+                    }
+                    else
+                    {
+                        etRS.Holdeplass = endreRS.Holdeplass;
+                    }
+                }
+                etRS.RekkefølgeNr = endreRS.RekkefølgeNr;
+                etRS.StoppTid = endreRS.StoppTid;
+
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
         }
         
     }

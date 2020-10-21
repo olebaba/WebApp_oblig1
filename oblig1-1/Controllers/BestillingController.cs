@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using oblig1_1.DAL;
 using oblig1_1.Models;
@@ -154,5 +155,44 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
+        public async Task<List<RuteStopp>> HentRuteStopp()
+        {
+            return await _db.HentRuteStopp();
+        }
+
+        public async Task<ActionResult> EtRuteStopp(int id)
+        {
+            if(ModelState.IsValid)
+            {
+                RuteStopp etRS = await _db.EtRuteStopp(id);
+                if(etRS == null)
+                {
+                    return NotFound("Fant ikke rutestopp");
+                }
+                return Ok(etRS);
+            }
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
+        public async Task<ActionResult> EndreRS(RuteStopp rutestopp)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized();
+            }
+            if(ModelState.IsValid)
+            {
+                bool returOK = await _db.EndreRS(rutestopp);
+                if(!returOK)
+                {
+                    return NotFound("Endringen av holdeplassen kunne ikke utføres");
+                }
+                return Ok("Holdeplass endret");
+            }
+            return BadRequest("Feil i inputvalidering på server");
+        } 
+
     }
+
+    
 }
