@@ -13,11 +13,11 @@ namespace oblig1_1.Models
         [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2-20}$")]
         public string Sted { get; set; }
         public int Sone { get; set; }
-
+        /*
         public override string ToString()
         {
             return "{Sted: " + Sted + ", Avgangstider: " + Avgangstider + "}";
         }
-        
+        */
     }
 }
