@@ -19,7 +19,7 @@ namespace oblig1_1.DAL
         }
 
         [HttpPost]
-        public async Task<List<Bestillinger>> index()
+        public async Task<List<Bestillinger>> Index()
         {
             try
             {

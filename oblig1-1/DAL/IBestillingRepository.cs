@@ -9,7 +9,7 @@ namespace oblig1_1.DAL
     public interface IBestillingRepository
     {
         Task<List<RuteAvgang>> VisAlleRuteAvganger();
-        Task<List<Bestillinger>> index();
+        Task<List<Bestillinger>> Index();
         Task<bool> Lagre(Bestillinger innBestilling);
         Task<bool> Slett(int id);
         Task<Bestillinger> HentEn(int id);
