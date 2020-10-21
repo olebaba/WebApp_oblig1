@@ -84,30 +84,38 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
     }
     var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
 
-    $.post("Bestilling/FinnEnRute", reise, function (rute) {
-        console.log(rute);
-        formaterRute(rute); //setter verdier i hentetRute
-        var fra = rute.holdeplasser[0];
-        var til = rute.holdeplasser[rute.holdeplasser.length - 1];
-        settTittel(fra.sted, til.sted);        
-        avreiser = [];
-
-        for (i = 0; i < hentetRute.avreiseTider.length; i++) {
-            console.log(i);
-            avreiser[i] = {
-                start: hentetRute.avreiseTider[i],
-                totaltid: hentetRute.avreiseTider,
-                pris: hentetRute.pris,
-                holdeplasser: hentetRute.holdeplasser
+    $.post("Bestilling/FinnEnRute", reise, function (rute) {        
+        if (rute == null) {
+            visFeilmelding("Ingen ruter for denne reisen kunne bli funnet.");
+        } else {
+            formaterRute(rute); //setter verdier i hentetRute
+            var fra = rute.holdeplasser[0];
+            var til = rute.holdeplasser[rute.holdeplasser.length - 1];
+            settTittel(fra.sted, til.sted);
+            avreiser = [];
+          
+            for (i = 0; i < hentetRute.avreiseTider.length; i++) {
+                console.log(i);
+                avreiser[i] = {
+                    start: hentetRute.avreiseTider[i],
+                    totaltid: hentetRute.avreiseTider,
+                    pris: hentetRute.pris,
+                    holdeplasser: hentetRute.holdeplasser
             }
+          
+            visAvreiser(avreiser, retur);
+
         }
-        visAvreiser(avreiser, retur);
     })
 
     // dersom det skjer en feil når man skal hente rute  
     .fail(function () {
         $("#feil").html("Feil på server - prøv igjen senere");
     }); 
+}
+           
+function visFeilmelding(melding) {
+    $("#avreiser").after('<p style="color:red">' + melding + '</p>');
 }
 
 function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
@@ -121,6 +129,15 @@ function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
         backDate: getUrlParam('backDate')
     };
     console.log(hentetRute);
+}
+
+function sjekkRetur() { //Sjekker om reisen er tur-retur
+    /*if (getUrlParam("tur") == "tovei") {
+        return true;
+    } else {
+        return false;
+    }*/
+    return (getUrlParam("tur") == "tovei")
 }
 
 function settTittel(fra, til) { //Setter hvor reisen starter og slutter
