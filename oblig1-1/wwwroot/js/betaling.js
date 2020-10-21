@@ -35,14 +35,14 @@ function validerOgBetal() {
 
     if (valgt == 'kort') {
         if (navnOk && telefonOk && kortnavnOk && kortnummerOk && utløpOk && cvcOk) {
-            //lagreBestilling();
-            location.href = 'godkjent.html';
+            lagreBestilling();
+            //location.href = 'godkjent.html';
         }
     }
     else if (valgt == 'vipps') {
         if (navnOk && telefonOk && vippsOk) {
-            //lagreBestilling();
-            location.href='godkjent.html';
+            lagreBestilling();
+            //location.href='godkjent.html';
         }
     }
 }
@@ -53,25 +53,50 @@ function lagreBestilling() {
 
     const tur = JSON.parse(urlParams.get('tur'));
     const retur = JSON.parse(urlParams.get('retur'));
+    const goDate = new Date((urlParams.get('goDate')));
+    const backDate = new Date((urlParams.get('backDate')));
+
+    const bestilltTur = {
+        totalTid: tur.totalTid, //fiks her
+        holdeplasser: tur.holdeplasser,
+        datoer: goDate.toISOString().substr(0,10)
+    }
+
+    const bestilltRetur = {
+        totalTid: retur.totalTid,
+        holdeplasser: retur.holdeplasser,
+        datoer: backDate.toISOString().substr(0, 10)
+    }
 
     const kunde = {
         navn: $("#kjøperNavn").val(),
-        telefon: $("#reisendeTelefon").val()
+        mobilnummer: $("#reisendeTelefon").val()
     }
 
     const pris = JSON.parse(urlParams.get('pris'));
 
     const bestilling = {
         pris: pris,
-        kunde: kunde, 
-        tur: tur,
-        retur: retur
+        kunde: kunde,
+        tur: bestilltTur,
+        retur: bestilltRetur
     }
+
+    console.log(bestilling);
 
     $.post("Bestilling/Lagre", bestilling, function () {
         location.href = 'godkjent.html';
     })
-    .fail(function () {
-        $("#feil").html("Feil på server - prøv igjen senere");
+    .fail(function (error) {
+        $("#feil").html("Feil på server - prøv igjen senere. (" + error.responseText + ")");
     }); 
+}
+
+function visEnBestilling() {
+    $.get("Bestilling/HentEn?id=1", function (bestilling) {
+        console.log(bestilling);
+    })
+        .fail((message) => {
+            console.log(message.responseText)
+        });
 }

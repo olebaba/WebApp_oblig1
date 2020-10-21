@@ -2,6 +2,10 @@ $(function () { //Startfunksjon kaller på visAvganger()
     visAvganger();
 });
 
+var hentetRute = {};
+var totalpris;
+var turJson, returJson, pris;
+
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
     hentTittel();
     hentDato();
@@ -27,8 +31,8 @@ function hentTittel() { //Henter hvor reisen starter og slutter fra url, og send
     settTittel(v1, v2);
 }
 
+/*
 function hentDato() { //Henter dato fra url og sender videre. Kode tatt fra nett.
-    sjekkRetur();
     let url_dato;
     if (getUrlParam("steg") == null) {
         url_dato = new Date(getUrlParam('goDate'));
@@ -40,9 +44,7 @@ function hentDato() { //Henter dato fra url og sender videre. Kode tatt fra nett
     var formatert_dato = url_dato.toLocaleDateString("no-NO", options);
     var reise_dato = formatert_dato.charAt(0).toUpperCase() + formatert_dato.slice(1);
     settDato(reise_dato);
-}
-
-var totalpris;
+}*/
 
 function hentBilletter() { //Henter billetter fra url og sender videre.
     var billettNavn = [" Voksen", " Barn", " Småbarn", " Student", " Honnør", " Vernepliktig", " Ledsager"];
@@ -65,8 +67,6 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
     totalpris = pris;
     return billetter;
 }
-
-var hentetRute;
 
 function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
     var fra = {
@@ -122,9 +122,11 @@ function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
     var tider = rute.holdeplasser[0].avgangstider.split(",");
     hentetRute = {
         avreiseTider: tider,
-        totaltid: rute.totaltid,
+        totalTid: rute.totalTid,
         pris: totalpris.toFixed(2), 
-        holdeplasser: rute.holdeplasser
+        holdeplasser: rute.holdeplasser,
+        goDate: getUrlParam('goDate'),
+        backDate: getUrlParam('backDate')
     };
     console.log(hentetRute);
 }
@@ -164,12 +166,10 @@ function gaTilbake() {
     location.href = "forside.html";
 }
 
-var turJson, returJson, pris;
-
 function gaVidere() { //setter url til betalingssiden med korrekte verdier
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
-        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2));
-    
+        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2)) +
+        "&goDate=" + hentetRute.goDate + "&backDate=" + hentetRute.backDate;
     location.href = url;
 }
 
@@ -268,19 +268,21 @@ function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil
     if (table == "avreiser") {
         turJson = {
             avreise: hentetRute.avreiseTider[valgtRad-1],
-            reisetid: hentetRute.totalTid,
+            totalTid: hentetRute.totalTid,
             pris: hentetRute.pris,
             startsted: hentetRute.holdeplasser[0],
-            reisemal: hentetRute.holdeplasser[hentetRute.holdeplasser.length-1]
+            reisemal: hentetRute.holdeplasser[hentetRute.holdeplasser.length - 1],
+            holdeplasser: hentetRute.holdeplasser
         };
     }
     if (table == "returAvreiser") {
         returJson = {
             avreise: hentetRute.avreiseTider[valgtRad-1],
-            reisetid: hentetRute.totalTid,
+            totalTid: hentetRute.totalTid,
             pris: hentetRute.pris,
             startsted: hentetRute.holdeplasser[hentetRute.holdeplasser.length-1],
-            reisemal: hentetRute.holdeplasser[0]
+            reisemal: hentetRute.holdeplasser[0],
+            holdeplasser: hentetRute.holdeplasser
         };
     }
 

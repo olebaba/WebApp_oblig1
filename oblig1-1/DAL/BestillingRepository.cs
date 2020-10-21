@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace oblig1_1.DAL
 {
@@ -21,11 +19,11 @@ namespace oblig1_1.DAL
         }
 
         [HttpPost]
-        public async Task<List<Bestillinger>> index()
+        public async Task<List<Bestilling>> Index()
         {
             try
             {
-                List<Bestillinger> alleBestillinger = await _db.Bestillinger.Select(best => new Bestillinger
+                List<Bestilling> alleBestillinger = await _db.Bestillinger.Select(best => new Bestilling
                 {
                     ID = best.ID,
                     Kunde = best.Kunde,
@@ -35,63 +33,45 @@ namespace oblig1_1.DAL
                 }).ToListAsync();
                 return alleBestillinger;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i List<Bestillinger> index: {error}", e);
                 return null;
             }
         }
 
-        public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
-            //Hent ruteavganger med tilhørende holdeplasser
+        public async Task<List<Rute>> VisAlleRuter()
         {
             try
             {
-                List<RuteAvgang> alleDBRuteAvganger = await _db.RuteAvganger.ToListAsync();
-                List<RuteAvgang> alleRuteAvganger = new List<RuteAvgang>();
+                List<Rute> alleDBRuter = await _db.Ruter.ToListAsync();
+                List<Rute> alleRuter = new List<Rute>();
 
-                foreach (var ruteavgang in alleDBRuteAvganger)
+                foreach (var rute in alleDBRuter)
                 {
-                    var enRuteAvgang = new RuteAvgang
+                    var holdeplasserIRute = new List<Holdeplass>();
+                    var enRute = new Rute
                     {
-                        Dato = ruteavgang.Dato,
-                        Rute = ruteavgang.Rute
+                        Datoer = rute.Datoer,
+                        Holdeplasser = holdeplasserIRute
                     };
-                    alleRuteAvganger.Add(enRuteAvgang);
+                    foreach (var holdeplass in rute.Holdeplasser)
+                    {
+                        holdeplasserIRute.Add(holdeplass);
+                    }
+                    alleRuter.Add(enRute);
                 }
-                return alleRuteAvganger;
-            }
-            catch (Exception e)
-            {
-                Log.Error("Error i List<Bestillinger> VisAlleRuter: {error}", e);
-                return null;
-            }
-        }
-
-        public async Task<List<Holdeplass>> VisHoldeplasserIRute(int id)
-        {
-            try
-            {
-                Rute enRute = await _db.Ruter.FindAsync(id);
-                List<Holdeplass> holdeplasser = new List<Holdeplass>();
-
-                foreach(var rutestopp in enRute.RuteStopp)
-                {
-                    holdeplasser.Add(rutestopp.Holdeplass);
-                }
-                return holdeplasser;
+                return alleRuter;
             }
             catch
             {
                 return null;
             }
-            
+
         }
 
-        public RuteAvgang FinnEnRuteAvgang(RuteAvgang reise) //kan ikke være async pga where
+        public Rute FinnEnRute(Rute reise) //kan ikke være async pga where
         {
-            /*
-            Holdeplass fra = reise.;
+            Holdeplass fra = reise.Holdeplasser[0];
             Holdeplass til = reise.Holdeplasser[1];
             
             try
@@ -121,97 +101,76 @@ namespace oblig1_1.DAL
 
                 return nyReise;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i FinnEnRute: {error}", e);
                 return null;
-            }*/
-            return null;
+            }
         }
 
-        public async Task<bool> Lagre(Bestillinger innBestilling)
-        {/*
+        public async Task<bool> Lagre(Bestilling innBestilling)
+        {
+            Console.WriteLine(innBestilling.ToString());
             try
             {
-                var nyBestilling = new Bestillinger();
-                nyBestilling.Pris = innBestilling.Pris;
+                var nyBestilling = new Bestilling();
+                nyBestilling = innBestilling;
+                /*
+                var nyTur = new Rute(){
+                    Datoer = innBestilling.Tur.Datoer,
+                    TotalTid = innBestilling.Tur.TotalTid,
+                    Holdeplasser = innBestilling.Tur.Holdeplasser,
+                };
+                nyBestilling.Tur = nyTur;
 
-                //Sjekker om kunde finnes i databasen fra før
-                var sjekkKunde = _db.Kunder.Find(innBestilling.Kunde);
-
-                if (sjekkKunde == null) 
+                var nyRetur = new Rute()
                 {
-                    var nyKundeRad = new Kunde();
-                    nyKundeRad = innBestilling.Kunde;
-                    nyBestilling.Kunde = nyKundeRad;
+                    Datoer = innBestilling.Retur.Datoer,
+                    TotalTid = innBestilling.Retur.TotalTid,
+                    Holdeplasser = innBestilling.Retur.Holdeplasser,
+                };
+                nyBestilling.Retur = nyRetur;
 
-                }
-                else
+                var nyKunde = new Kunde()
                 {
-                    nyBestilling.Kunde = sjekkKunde;
-                }
+                    Mobilnummer = innBestilling.Kunde.Mobilnummer,
+                    Navn = innBestilling.Kunde.Navn,
+                };
+                nyBestilling.Kunde = nyKunde;
+                */
+                Console.WriteLine(nyBestilling.ToString());
 
-                var sjekkTur = _db.Ruter.Find(innBestilling.Tur);
-
-                if(sjekkTur == null)
-                {
-                    var nyRuteRad = new Rute();
-                    nyRuteRad = innBestilling.Tur;
-                    nyBestilling.Tur = nyRuteRad;
-                }
-                else
-                {
-                    nyBestilling.Tur = sjekkTur;
-                }
-
-                var sjekkRetur = _db.Ruter.Find(innBestilling.Retur);
-
-                if(sjekkRetur == null)
-                {
-                    var nyRetur = new Rute();
-                    nyRetur = innBestilling.Retur;
-                    nyBestilling.Retur = nyRetur;
-                }
-                else
-                {
-                    nyBestilling.Retur = sjekkRetur;
-                }
-
-                _db.Bestillinger.Add(innBestilling);
+                _db.Bestillinger.Add(nyBestilling);
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Lagre: {error}", e);
                 return false;
-            }*/
-            return false;
+            }
         }
 
         public async Task<bool> Slett(int id)
         {
             try
             {
-                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
+                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
                 _db.Bestillinger.Remove(enBestilling);
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Slett: {error}", e);
                 return false;
             }
         }
 
-        public async Task<Bestillinger> HentEn(int id)
+        public async Task<Bestilling> HentEn(int id)
         {
             try
             {
-                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
-                if (enBestilling == null) return null; //finner ikke id i DB (tror jeg heh)
-                var hentetBestilling = new Bestillinger()
+                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
+                if (enBestilling == null) return null; //finner ikke id i DB
+                var hentetBestilling = new Bestilling()
                 {
                     ID = enBestilling.ID,
                     Kunde = enBestilling.Kunde,
@@ -223,18 +182,17 @@ namespace oblig1_1.DAL
             }
             catch (Exception e)
             {
-                Log.Error("Error i HentEn: {error}", e);
                 Debug.WriteLine(e.Message);
                 return null;
             }
             
         }
 
-        public async Task<bool> Endre(Bestillinger endreBestilling)
+        public async Task<bool> Endre(Bestilling endreBestilling)
         {
             try
             {
-                Bestillinger enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
+                Bestilling enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
                 enBestillling.Kunde = endreBestilling.Kunde;
                 enBestillling.Pris = endreBestilling.Pris;
                 enBestillling.Tur = endreBestilling.Tur;
@@ -243,9 +201,8 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Endre: {error}", e);
                 return false;
             }
         }
