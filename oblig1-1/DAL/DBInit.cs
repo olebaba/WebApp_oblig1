@@ -72,7 +72,7 @@ namespace oblig1_1.Models
             }
         }
         public static void InitOld(IApplicationBuilder app)
-        {
+        {/*
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<BestillingContext>();
@@ -106,8 +106,8 @@ namespace oblig1_1.Models
 
                 var OsloStavangerStopp = new RuteStopp { RekkefølgeNr = 1 };
                 //siden vi har med retur så legger vi holdeplassene inn i motsatt rekkefølge 
-                /* holdeplasser.Reverse(); 
-                 var StavangerOslo = new Rute {  };*/
+                holdeplasser.Reverse(); 
+                 var StavangerOslo = new Rute {  };
 
                 //var bestilling1 = new Bestillinger { Kunde = kunde1, Tur = OsloStavanger };
 
@@ -128,12 +128,10 @@ namespace oblig1_1.Models
 
                 List<Holdeplass> kyst = new List<Holdeplass> { bergen, os, halhjem, sandvikvåg, leirvik, haukås, aksdal, mjåsund, arsvågen, mortavika, stavanger };
 
-
-                /*                var tur2 = new Rute { Datoer = "01.10.2020, 10.10.2020", Holdeplasser = kyst, TotalTid = "5t 45min" };
-                                kyst.Reverse();
-                                var retur2 = new Rute { Datoer = "02.10.2020, 11.10.2020", Holdeplasser = kyst, TotalTid = "5t 45min" };*/
-                /*
-                                var bestilling2 = new Bestillinger { Kunde = kunde2, Tur = tur2, Retur = retur2, Pris = 740 };
+                var tur2 = new Rute { Datoer = "01.10.2020, 10.10.2020", Holdeplasser = kyst, TotalTid = "5t 45min" };
+                kyst.Reverse();
+                var retur2 = new Rute { Datoer = "02.10.2020, 11.10.2020", Holdeplasser = kyst, TotalTid = "5t 45min" };
+                var bestilling2 = new Bestillinger { Kunde = kunde2, Tur = tur2, Retur = retur2, Pris = 740 };
 
                                 var oslo2 = new Holdeplass { Sted = "Oslo", Avgangstider = "0830, 1030" };
                                 var kongsberg = new Holdeplass { Sted = "Kongsberg", Avgangstider = "0940, 1140" };
@@ -149,18 +147,18 @@ namespace oblig1_1.Models
 
                                 List<Holdeplass> hauk = new List<Holdeplass> { oslo2, kongsberg, notodden, sauland, seljord, åmot, haukeligrend, røldal, seljestad, ølen, haugesund };
 
-                                /*                var tur3 = new Rute { Datoer = "02.10.2020, 10.10.2020", Holdeplasser = hauk, TotalTid = "8t 5min" };
-                                                hauk.Reverse();
-                                                var retur3 = new Rute { Datoer = "03.10.2020, 12.10.2020", Holdeplasser = hauk, TotalTid = "8t 5min" };*/
+                /*                var tur3 = new Rute { Datoer = "02.10.2020, 10.10.2020", Holdeplasser = hauk, TotalTid = "8t 5min" };
+                                hauk.Reverse();
+                                var retur3 = new Rute { Datoer = "03.10.2020, 12.10.2020", Holdeplasser = hauk, TotalTid = "8t 5min" };
 
                 //var bestilling3 = new Bestillinger { Kunde = kunde1, Tur = tur3, Retur = retur3, Pris = 690 };
+                
+                context.Bestillinger.Add(bestilling1);
+                context.Bestillinger.Add(bestilling2);
+                context.Bestillinger.Add(bestilling3);
 
-                /*   context.Bestillinger.Add(bestilling1);
-                   context.Bestillinger.Add(bestilling2);
-                   context.Bestillinger.Add(bestilling3);
-               */
-
-            }
+                
+            }*/
         }
     }
 }
