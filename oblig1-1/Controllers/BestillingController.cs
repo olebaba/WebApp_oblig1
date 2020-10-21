@@ -49,7 +49,7 @@ namespace oblig1_1.Controllers
             return await _db.VisAlleRuteAvganger();
 
         }
-       public RuteAvgang FinnEnRuteAvgang(Holdeplass fra, Holdeplass til, DateTime dato) //kan ikke være async
+       public List<RuteAvgang> FinnEnRuteAvgang(Holdeplass fra, Holdeplass til, DateTime dato) //kan ikke være async
         {
             if(fra == null || til == null || dato == null)
             {
@@ -57,8 +57,7 @@ namespace oblig1_1.Controllers
                 return null;
             }
 
-            //return _db.FinnEnRute(reise);
-            return null;
+            return _db.FinnEnRuteAvgang(fra, til, dato);
         }
 
         public async Task<ActionResult> Slett(int id)

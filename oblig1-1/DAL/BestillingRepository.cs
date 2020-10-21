@@ -96,11 +96,12 @@ namespace oblig1_1.DAL
         public List<RuteAvgang> FinnEnRuteAvgang(Holdeplass fra, Holdeplass til, DateTime dato) //kan ikke være async pga where
         {
             try {
+                Console.WriteLine(fra.Sted);
                 List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
                 List<Rute> potensielleRuter = new List<Rute>();
                 //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID
 
-                //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID som har holdeplassID tilsvarende tilID
+                //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID, som har holdeplassID tilsvarende tilID
                 //rekkefølgenr større enn fraID sitt rekkefølgenr
                 //3.Hvis vi finner en eller flere, legger dette til i listen av rutekandidater
                 foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
