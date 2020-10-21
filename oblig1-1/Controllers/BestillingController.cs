@@ -42,13 +42,16 @@ namespace oblig1_1.Controllers
             return await _db.index();
         }
 
-        public async Task<List<Rute>> VisAlleRuter()
+        public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
         {
-            return await _db.VisAlleRuter();
+            return await _db.VisAlleRuteAvganger();
 
         }
-
-        public Rute FinnEnRute(Rute reise) //kan ikke være async
+        public RuteAvgang FinnEnRuteAvgang(RuteAvgang reise)
+        {
+            return null;
+        }
+       public RuteAvgang FinnEnRute(RuteAvgang reise) //kan ikke være async
         {
             if(reise == null)
             {
@@ -99,9 +102,20 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering");
         }
 
-        public async Task<List<Holdeplass>> HentHoldeplasser()
+        public async Task<List<Holdeplass>> HentAlleHoldeplasser() 
         {
-            return await _db.HentHoldeplasser();
+            return await _db.HentAlleHoldeplasser();
+        }
+
+
+        public async Task<List<Holdeplass>> VisHoldeplasserIRute(int id)
+        {
+            return await _db.VisHoldeplasserIRute(id);
+        }
+
+        public Rute FinnRute(Holdeplass holdeplass)
+        {
+            return _db.FinnRute(holdeplass);
         }
 
     }

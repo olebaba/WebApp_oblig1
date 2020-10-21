@@ -10,7 +10,7 @@ namespace oblig1_1.Models
     public class Kunde
     {
         [Key]
-        public int KID { get; set; }
+        public int ID { get; set; }
         [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2,30}$")]
         public string Navn { get; set; }
         public string Mobilnummer { get; set; }

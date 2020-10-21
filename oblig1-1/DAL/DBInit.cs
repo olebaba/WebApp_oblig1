@@ -21,31 +21,37 @@ namespace oblig1_1.Models
                 var student = new Priser { Prisklasse="Student", Pris=30.00};
                 var oslo = new Holdeplass { Sted = "Oslo bussterminal", Sone = 1 };
                 context.Holdeplasser.Add(oslo);
+                var sandvika = new Holdeplass { Sted = "Sandvika", Sone = 1 };
+                context.Holdeplasser.Add(sandvika);
                 var drammen = new Holdeplass { Sted = "Drammen", Sone = 1};
                 context.Holdeplasser.Add(drammen);
-                var bergen = new Holdeplass { Sted = "Bergen", Sone = 5 };
+                //var bergen = new Holdeplass { Sted = "Bergen", Sone = 5 };
 
-                var rute = new Rute { Navn = "OsloDrammen" };
-                context.Ruter.Add(rute);
-                var OsloDrammenBergen = new Rute { Navn = "OsloDrammenBergen" };
-                context.Ruter.Add(OsloDrammenBergen);
+                
 
-                var ruteStopp = new RuteStopp { RekkefølgeNr = 1, StoppTid = TimeSpan.FromMinutes(0), HID = oslo, RID = rute};
-                var ruteStopp2 = new RuteStopp { RekkefølgeNr = 2, StoppTid = TimeSpan.FromMinutes(40), HID = drammen, RID = rute };
+                var ruteStopp = new RuteStopp { RekkefølgeNr = 1, StoppTid = TimeSpan.FromMinutes(0), Holdeplass = oslo};
+                var ruteStopp1 = new RuteStopp { RekkefølgeNr = 2, StoppTid = TimeSpan.FromMinutes(20), Holdeplass = sandvika};
+                var ruteStopp2 = new RuteStopp { RekkefølgeNr = 3, StoppTid = TimeSpan.FromMinutes(40), Holdeplass = drammen};
                 context.Rutestopp.Add(ruteStopp);
+                context.Rutestopp.Add(ruteStopp1);
                 context.Rutestopp.Add(ruteStopp2);
 
-                var rute2Stopp = new RuteStopp { RekkefølgeNr = 1, StoppTid = TimeSpan.FromMinutes(0), HID = oslo, RID = OsloDrammenBergen };
-                var rute2Stopp2 = new RuteStopp { RekkefølgeNr = 2, StoppTid = TimeSpan.FromMinutes(40), HID = drammen, RID = OsloDrammenBergen };
-                var rute2Stopp3 = new RuteStopp { RekkefølgeNr = 3, StoppTid = TimeSpan.FromMinutes(6*60), HID = bergen, RID = OsloDrammenBergen };
+                var osloDrammen = new Rute { Navn = "Oslo-Drammen", RuteStopp = new List<RuteStopp> { ruteStopp, ruteStopp1, ruteStopp2 } };
+                context.Ruter.Add(osloDrammen);
+                var OsloDrammenBergen = new Rute { Navn = "Oslo-Bergen" };
+                context.Ruter.Add(OsloDrammenBergen);
+
+                /*var rute2Stopp = new RuteStopp { RekkefølgeNr = 1, StoppTid = TimeSpan.FromMinutes(0), Holdeplass = oslo, Rute = OsloDrammenBergen };
+                var rute2Stopp2 = new RuteStopp { RekkefølgeNr = 2, StoppTid = TimeSpan.FromMinutes(40), Holdeplass = drammen, Rute = OsloDrammenBergen };
+                var rute2Stopp3 = new RuteStopp { RekkefølgeNr = 3, StoppTid = TimeSpan.FromMinutes(6*60), Holdeplass = bergen, Rute = OsloDrammenBergen };
                 context.Rutestopp.Add(rute2Stopp);
                 context.Rutestopp.Add(rute2Stopp2);
-                context.Rutestopp.Add(rute2Stopp3);
+                context.Rutestopp.Add(rute2Stopp3);*/
 
-                var ruteavgang = new RuteAvgang { Dato= DateTime.Parse("22/10/2020 12:00:00"), RID = rute };
-                context.Ruteavganger.Add(ruteavgang);
-                var ruteavgang2 = new RuteAvgang { Dato = DateTime.Parse("23/10/2020 9:00:00"), RID = OsloDrammenBergen };
-                context.Ruteavganger.Add(ruteavgang2);
+                var ruteavgang = new RuteAvgang { Dato= DateTime.Parse("22/10/2020 12:00:00"), Rute = osloDrammen }; 
+                context.RuteAvganger.Add(ruteavgang);
+                var ruteavgang2 = new RuteAvgang { Dato = DateTime.Parse("23/10/2020 9:00:00"), Rute = osloDrammen };
+                context.RuteAvganger.Add(ruteavgang2);
 
                 var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432"};
                 var kunde2 = new Kunde { Navn = "Zandra", Mobilnummer = "98765432"};

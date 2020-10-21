@@ -9,8 +9,8 @@ namespace oblig1_1.Models
     public class RuteAvgang
     {
         [Key]
-        public int RuteAvgangID { get; set; }
+        public int ID { get; set; }
         public DateTime Dato { get; set; }
-        public virtual Rute RID { get; set; }
+        public virtual Rute Rute { get; set; } //Rute id?
     }
 }
