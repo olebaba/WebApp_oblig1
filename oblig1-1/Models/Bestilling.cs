@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace oblig1_1.Models
 {
-    public class Bestilling
+    public class Bestillinger
     {
         [Key]
         public int ID { get; set; }
