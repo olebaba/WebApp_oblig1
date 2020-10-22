@@ -352,6 +352,8 @@ namespace oblig1_1.DAL
             {
                 RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
 
+                //Holdeplass holdeplass = await _db.Holdeplasser.FindAsync(etRS.Holdeplass.ID);
+
                 var hentetRS = new RuteStopp()
                 {
                     ID = etRS.ID,
@@ -387,10 +389,10 @@ namespace oblig1_1.DAL
             try
             {
                 var etRS = await _db.Rutestopp.FindAsync(endreRS.ID);
-                if(etRS.Holdeplass.Sted != endreRS.Holdeplass.Sted)
+                if(etRS.Holdeplass.ID != endreRS.Holdeplass.ID)
                 {
-                    var sjekkHID = _db.Holdeplasser.Find(endreRS.Holdeplass.ID);
-                    if(sjekkHID == null)
+                    var sjekkHoldeplass = _db.Holdeplasser.Find(endreRS.Holdeplass.ID);
+                    if(sjekkHoldeplass == null)
                     {
                         var holdeplassRad = new Holdeplass();
                         holdeplassRad.Sted = endreRS.Holdeplass.Sted;
@@ -411,6 +413,40 @@ namespace oblig1_1.DAL
             catch(Exception e)
             {
                 return false;
+            }
+        }
+
+        public async Task<bool> LagreRS(RuteStopp innRS)
+        {
+            try
+            {
+                var nyRS = new RuteStopp();
+                nyRS.RekkefølgeNr = innRS.RekkefølgeNr;
+                nyRS.StoppTid = innRS.StoppTid;
+
+                // sjekker om holdeplass allerede ligger i databasen, legger til ny dersom den ikke gjør det 
+                
+                var sjekkHoldeplass = await _db.Holdeplasser.FindAsync(innRS.Holdeplass.ID);
+                if(sjekkHoldeplass == null)
+                {
+                    var nyHoldeplass = new Holdeplass();
+                    nyHoldeplass.Sted = innRS.Holdeplass.Sted;
+                    nyHoldeplass.Sone = innRS.Holdeplass.Sone;
+                    nyRS.Holdeplass = nyHoldeplass;
+                }
+                else
+                {
+                    nyRS.Holdeplass.Sone = innRS.Holdeplass.Sone; 
+                    nyRS.Holdeplass = sjekkHoldeplass;
+                }
+                _db.Rutestopp.Add(nyRS);
+                await _db.SaveChangesAsync();
+                return true; 
+            }
+            catch(Exception e)
+            {
+                _log.LogInformation(e.Message);
+                return false; 
             }
         }
         
