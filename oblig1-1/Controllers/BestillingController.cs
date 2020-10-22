@@ -258,6 +258,26 @@ namespace oblig1_1.Controllers
             _log.LogInformation("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
+
+        public async Task<ActionResult> LagreRute(Rute innRute)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized();
+            }
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.LagreRute(innRute);
+                if (!returOK)
+                {
+                    _log.LogInformation("Lagring av Rute kunne ikke utføres");
+                    return NotFound("Lagring av Rute kunne ikke utføres");
+                }
+                return Ok("Rute lagret");
+            }
+            _log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
+        } 
     }
 
     

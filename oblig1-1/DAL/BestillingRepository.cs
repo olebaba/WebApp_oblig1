@@ -514,6 +514,26 @@ namespace oblig1_1.DAL
             }
         }
 
+        // lagrer en tom rute
+        public async Task<bool> LagreRute(Rute innRute)
+        {
+            try
+            {
+                var nyRute = new Rute();
+                nyRute.Navn = innRute.Navn;
+                List<RuteStopp> tom = new List<RuteStopp>();
+                nyRute.RuteStopp = tom;
+
+                _db.Ruter.Add(nyRute);
+                await _db.SaveChangesAsync();
+                return true; 
+            }
+            catch(Exception e)
+            {
+                return false; 
+            }
+        }
+
         public async Task<List<Priser>> HentPriser()
         {
             List<Priser> priser = await _db.Priser.ToListAsync();

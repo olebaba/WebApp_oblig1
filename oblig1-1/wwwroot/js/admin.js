@@ -1,5 +1,5 @@
 ﻿$(function () {
-    //hentHoldeplasser();
+    hentHoldeplasser();
     //hentRuter();
     hentRS();
     hentPriser();
@@ -54,8 +54,8 @@ function slettRS(id) {
     });
 }
 
-/*function hentHoldeplasser() {
-    $.get("Bestilling/HentHoldeplasser", function (holdeplasser) {
+function hentHoldeplasser() {
+    $.get("Bestilling/HentAlleHoldeplasser", function (holdeplasser) {
         formaterHoldeplasser(holdeplasser);
     })
     .fail(function (feil) {
@@ -80,7 +80,7 @@ function formaterHoldeplasser(holdeplasser) {
     $("#holdeplasser").html(ut);
 }
 
-function hentRuter() {
+/*function hentRuter() {
     $.get("Bestilling/VisAlleRuter", function (ruter) {
         formaterRuter(rute);
     })
@@ -104,7 +104,7 @@ function formaterRuter(ruter) {
             "</tr>";
     }
     ut += "</table>";
-    $("#holdeplasser").html(ut);
+    $("#ruter").html(ut);
 }*/
 
 
