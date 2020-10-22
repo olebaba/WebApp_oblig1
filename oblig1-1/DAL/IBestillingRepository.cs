@@ -20,6 +20,7 @@ namespace oblig1_1.DAL
         Task<bool> LoggInn(Bruker bruker);
         Task<Holdeplass> HentHoldeplass(int id);
         Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass);
+        Task<bool> LagreHoldeplass(Holdeplass innHS);
         Task<List<RuteStopp>> HentRuteStopp();
         Task<RuteStopp> EtRuteStopp(int id);
         Task<bool> SlettRS(int id);

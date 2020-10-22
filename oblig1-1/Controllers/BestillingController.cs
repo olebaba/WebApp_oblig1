@@ -169,6 +169,24 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
+        public async Task<ActionResult> LagreHoldeplass(Holdeplass innHoldeplass)
+        {
+            if(string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized();
+            }
+            if(ModelState.IsValid)
+            {
+                bool lagreOK = await _db.LagreHoldeplass(innHoldeplass);
+                if(!lagreOK)
+                {
+                    return BadRequest("Holdeplass kunne ikke lagres");
+                }
+                return Ok("Holdeplass lagret");
+            }
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
         public async Task<ActionResult> HentRuteStopp()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
