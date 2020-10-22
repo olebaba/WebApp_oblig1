@@ -481,6 +481,24 @@ namespace oblig1_1.DAL
             }
             return null;
         }
+        public RuteAvgang NyRuteAvgang(string[] argumenter)
+        {
+            string ruteNavn = argumenter[0];
+            string avgangsTidString = argumenter[1];
+            DateTime avgangsTid = DateTime.ParseExact(avgangsTidString, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            Rute rute = _db.Ruter.Where(r => r.Navn == ruteNavn).FirstOrDefault();
+            if (rute != null)
+            {
+                RuteAvgang nyRuteAvgang = new RuteAvgang();
+                nyRuteAvgang.Rute = rute;
+                nyRuteAvgang.Dato = avgangsTid;
+                _db.RuteAvganger.Add(nyRuteAvgang);
+                _db.SaveChanges();
+                return nyRuteAvgang;
+            }
+            return null;
+        }
 
         public async Task<bool> LagreRS(RuteStopp innRS)
         {

@@ -23,6 +23,7 @@ namespace oblig1_1.DAL
         Task<List<RuteStopp>> HentRuteStopp();
         Task<RuteStopp> EtRuteStopp(int id);
         RuteStopp NyttRuteStopp(string[] argumenter);
+        RuteAvgang NyRuteAvgang(string[] argumenter);
         Task<bool> SlettRS(int id);
         Task<bool> EndreRS(RuteStopp endreRS);
         Task<bool> LagreRS(RuteStopp innRS);
