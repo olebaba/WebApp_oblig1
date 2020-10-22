@@ -283,6 +283,3 @@ function tilAvganger() {
     location.href = vindu;
 }
 
-
-
-}
