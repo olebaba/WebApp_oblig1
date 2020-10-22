@@ -8,27 +8,24 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace oblig1_1.DAL
 {
     public class BestillingRepository : IBestillingRepository
     {
         private readonly BestillingContext _db;
-        private ILogger<BestillingRepository> _log;
 
-        public BestillingRepository(BestillingContext db, ILogger<BestillingRepository> log)
+        public BestillingRepository(BestillingContext db)
         {
             _db = db;
-            _log = log;
         }
 
         [HttpPost]
-        public async Task<List<Bestillinger>> index()
+        public async Task<List<Bestilling>> Index()
         {
             try
             {
-                List<Bestillinger> alleBestillinger = await _db.Bestillinger.Select(best => new Bestillinger
+                List<Bestilling> alleBestillinger = await _db.Bestillinger.Select(best => new Bestilling
                 {
                     ID = best.ID,
                     Kunde = best.Kunde,
@@ -38,15 +35,14 @@ namespace oblig1_1.DAL
                 }).ToListAsync();
                 return alleBestillinger;
             }
-            catch (Exception e)
+            catch
             {
-                _log.LogError("Error i List<Bestillinger> index: {error}", e);
                 return null;
             }
         }
 
         public async Task<List<Rute>> VisAlleRuter()
-        {/*
+        {
             try
             {
                 List<Rute> alleDBRuter = await _db.Ruter.ToListAsync();
@@ -57,7 +53,7 @@ namespace oblig1_1.DAL
                     var holdeplasserIRute = new List<Holdeplass>();
                     var enRute = new Rute
                     {
-                       Datoer = .Datoer,
+                        Datoer = rute.Datoer,
                         Holdeplasser = holdeplasserIRute
                     };
                     foreach (var holdeplass in rute.Holdeplasser)
@@ -68,19 +64,16 @@ namespace oblig1_1.DAL
                 }
                 return alleRuter;
             }
-            catch (Exception e)
+            catch
             {
-                _log.LogError("Error i List<Bestillinger> VisAlleRuter: {error}", e);
                 return null;
             }
-            */
-            return null;
+
         }
 
-        public Rute FinnEnRute(RuteStopp reise) //kan ikke være async pga where
+        public Rute FinnEnRute(Rute reise) //kan ikke være async pga where
         {
-            /*
-            Holdeplass fra = reise.;
+            Holdeplass fra = reise.Holdeplasser[0];
             Holdeplass til = reise.Holdeplasser[1];
             
             try
@@ -112,78 +105,57 @@ namespace oblig1_1.DAL
             }
             catch
             {
-                _log.LogError("Error i FinnEnRute: {error}", e);
                 return null;
-            }*/
-            return null;
+            }
         }
 
-        public async Task<bool> Lagre(Bestillinger innBestilling)
+        public async Task<bool> Lagre(Bestilling innBestilling)
         {
-            /*
+            Console.WriteLine(innBestilling.ToString());
             try
             {
-                var nyBestilling = new Bestillinger();
-                nyBestilling.Pris = innBestilling.Pris;
+                var nyBestilling = new Bestilling();
+                nyBestilling = innBestilling;
+                /*
+                var nyTur = new Rute(){
+                    Datoer = innBestilling.Tur.Datoer,
+                    TotalTid = innBestilling.Tur.TotalTid,
+                    Holdeplasser = innBestilling.Tur.Holdeplasser,
+                };
+                nyBestilling.Tur = nyTur;
 
-                var sjekkKunde = _db.Kunder.Find(innBestilling.Kunde);
-
-                if (sjekkKunde == null)
+                var nyRetur = new Rute()
                 {
-                    var nyKundeRad = new Kunde();
-                    nyKundeRad = innBestilling.Kunde;
-                    nyBestilling.Kunde = nyKundeRad;
+                    Datoer = innBestilling.Retur.Datoer,
+                    TotalTid = innBestilling.Retur.TotalTid,
+                    Holdeplasser = innBestilling.Retur.Holdeplasser,
+                };
+                nyBestilling.Retur = nyRetur;
 
-                }
-                else
+                var nyKunde = new Kunde()
                 {
-                    nyBestilling.Kunde = sjekkKunde;
-                }
-                
-                var sjekkTur = _db.Ruter.Find(innBestilling.Tur);
+                    Mobilnummer = innBestilling.Kunde.Mobilnummer,
+                    Navn = innBestilling.Kunde.Navn,
+                };
+                nyBestilling.Kunde = nyKunde;
+                */
+                Console.WriteLine(nyBestilling.ToString());
 
-                if(sjekkTur == null)
-                {
-                    var nyRuteRad = new Rute();
-                    nyRuteRad = innBestilling.Tur;
-                    nyBestilling.Tur = nyRuteRad;
-                }
-                else
-                {
-                    nyBestilling.Tur = sjekkTur;
-                }
-
-                var sjekkRetur = _db.Ruter.Find(innBestilling.Retur);
-
-                if(sjekkRetur == null)
-                {
-                    var nyRetur = new Rute();
-                    nyRetur = innBestilling.Retur;
-                    nyBestilling.Retur = nyRetur;
-                }
-                else
-                {
-                    nyBestilling.Retur = sjekkRetur;
-                }
-
-                _db.Bestillinger.Add(innBestilling);
+                _db.Bestillinger.Add(nyBestilling);
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                _log.LogError("Error i Lagre: {error}", e);
                 return false;
-            }*/
-            return true;
-
             }
+        }
 
         public async Task<bool> Slett(int id)
         {
             try
             {
-                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
+                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
                 _db.Bestillinger.Remove(enBestilling);
                 await _db.SaveChangesAsync();
                 return true;
@@ -194,13 +166,13 @@ namespace oblig1_1.DAL
             }
         }
 
-        public async Task<Bestillinger> HentEn(int id)
+        public async Task<Bestilling> HentEn(int id)
         {
             try
             {
-                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
-                if (enBestilling == null) return null; //finner ikke id i DB (tror jeg heh)
-                var hentetBestilling = new Bestillinger()
+                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
+                if (enBestilling == null) return null; //finner ikke id i DB
+                var hentetBestilling = new Bestilling()
                 {
                     ID = enBestilling.ID,
                     Kunde = enBestilling.Kunde,
@@ -212,18 +184,17 @@ namespace oblig1_1.DAL
             }
             catch (Exception e)
             {
-                _log.LogError("Error i HentEn: {error}", e);
                 Debug.WriteLine(e.Message);
                 return null;
             }
             
         }
 
-        public async Task<bool> Endre(Bestillinger endreBestilling)
+        public async Task<bool> Endre(Bestilling endreBestilling)
         {
             try
             {
-                Bestillinger enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
+                Bestilling enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
                 enBestillling.Kunde = endreBestilling.Kunde;
                 enBestillling.Pris = endreBestilling.Pris;
                 enBestillling.Tur = endreBestilling.Tur;
@@ -232,9 +203,8 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                _log.LogError("Error i Endre: {error}", e);
                 return false;
             }
         }
@@ -313,6 +283,30 @@ namespace oblig1_1.DAL
             {
                 return false;
             }
+        }
+        
+        public async Task<List<Priser>> HentPriser()
+        {
+            List<Priser> priser = await _db.Priser.ToListAsync();
+            return priser;
+        }
+
+        public async Task<bool> EndrePriser(Priser pris)
+        {
+            try
+            {
+                var endreObjekt = await _db.Priser.FindAsync(pris.PrisID);
+                
+                endreObjekt.Pris1Sone = pris.Pris1Sone;
+                endreObjekt.Pris2Sone = pris.Pris2Sone;
+                endreObjekt.Pris3Sone = pris.Pris3Sone;
+                await _db.SaveChangesAsync();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

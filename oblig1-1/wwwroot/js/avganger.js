@@ -2,6 +2,10 @@ $(function () { //Startfunksjon kaller på visAvganger()
     visAvganger();
 });
 
+var hentetRute = {};
+var totalpris;
+var turJson, returJson, pris;
+
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
     hentTittel();
     hentDato();
@@ -27,8 +31,8 @@ function hentTittel() { //Henter hvor reisen starter og slutter fra url, og send
     settTittel(v1, v2);
 }
 
+/*
 function hentDato() { //Henter dato fra url og sender videre. Kode tatt fra nett.
-    sjekkRetur();
     let url_dato;
     if (getUrlParam("steg") == null) {
         url_dato = new Date(getUrlParam('goDate'));
@@ -40,9 +44,7 @@ function hentDato() { //Henter dato fra url og sender videre. Kode tatt fra nett
     var formatert_dato = url_dato.toLocaleDateString("no-NO", options);
     var reise_dato = formatert_dato.charAt(0).toUpperCase() + formatert_dato.slice(1);
     settDato(reise_dato);
-}
-
-var totalpris;
+}*/
 
 function hentBilletter() { //Henter billetter fra url og sender videre.
     var billettNavn = [" Voksen", " Barn", " Småbarn", " Student", " Honnør", " Vernepliktig", " Ledsager"];
@@ -60,13 +62,96 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
             pris += billettPriser[i];
         }
         counter++;
-
+        
     }
     totalpris = pris;
     return billetter;
 }
 
-var hentetRute;
+function beregnPris(array) {
+    for (i = 0; i < array.length; i++) {
+        console.log("YES " + array[i]);
+    }
+    let billetter = hentBilletter();
+
+    let num = 1;
+    let j = 0;
+    for (let i = 1; i < array.length; i++) {
+        for (j = 0; j < i; j++) {
+            if (array[i] === array[j]) {
+                break;
+            }
+        }
+        if (i === j) {
+            num++;
+        }
+    }
+    console.log("Num" + num);
+
+    $.post("bestilling/HentPriser", function (priser) {
+        var bill = billetter.split(',');
+        let totPris = 0;
+        let sonePris = 0;
+        let antall = 0;
+        for (let i = 0; i < array.length; i++) {
+            var name = bill[i];
+            console.log("BILETE "+name)
+            if (i > 0) {
+                var sName = name.substr(3, 20);
+                console.log("SNAME "+sName);
+            } else {
+                var sName = name.substr(2, 20);
+                console.log("SNAME2 " + sName);
+            }
+            if (sName === "Voksen") {
+                if (num === 1) {
+                    sonePris = priser[0].pris1Sone;
+                } else if (num === 2) {
+                    sonePris = priser[0].pris2Sone;
+                } else if (num === 3) {
+                    sonePris = priser[0].pris3Sone;
+                } else if (num === 4) {
+                    sonePris = priser[0].pris4Sone;
+                }
+            } else if (sName === "Barn") {
+                if (num === 1) {
+                    sonePris = priser[1].pris1Sone;
+                } else if (num === 2) {
+                    sonePris = priser[1].pris2Sone;
+                } else if (num === 3) {
+                    sonePris = priser[1].pris3Sone;
+                } else if (num === 4) {
+                    sonePris = priser[1].pris4Sone;
+                }
+            } else if (sName === "Honnør") {
+                if (num === 1) {
+                    sonePris = priser[2].pris1Sone;
+                } else if (num === 2) {
+                    sonePris = priser[2].pris2Sone;
+                } else if (num === 3) {
+                    sonePris = priser[2].pris3Sone;
+                } else if (num === 4) {
+                    sonePris = priser[2].pris4Sone;
+                }
+            }
+            if (i > 0) {
+                antall = name.substr(1, 2);
+            } else {
+                antall = name.substr(0, 2);
+            }
+            console.log("Runde: " + i);
+            totPris += sonePris * antall;
+
+        }
+        console.log("PIRSERN12: " + totPris);
+        for (let i = 0; i < priser.length; i++) {
+            console.log("P: " + priser[i].prisklasse);
+            
+        }
+        
+    });
+}
+
 
 function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
     var fra = {
@@ -106,6 +191,12 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
                 visAvreiser(avreiser, retur);
             }
         }
+        var array = [];
+        for (i = 0; i < rute.holdeplasser.length; i++) {
+            array.push(rute.holdeplasser[i].sone);
+            
+        }
+        beregnPris(array);
     })
 
     // dersom det skjer en feil når man skal hente rute  
@@ -122,9 +213,11 @@ function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
     var tider = rute.holdeplasser[0].avgangstider.split(",");
     hentetRute = {
         avreiseTider: tider,
-        totaltid: rute.totaltid,
+        totalTid: rute.totalTid,
         pris: totalpris.toFixed(2), 
-        holdeplasser: rute.holdeplasser
+        holdeplasser: rute.holdeplasser,
+        goDate: getUrlParam('goDate'),
+        backDate: getUrlParam('backDate')
     };
     console.log(hentetRute);
 }
@@ -164,17 +257,18 @@ function gaTilbake() {
     location.href = "forside.html";
 }
 
-var turJson, returJson, pris;
-
 function gaVidere() { //setter url til betalingssiden med korrekte verdier
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
-        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2));
+        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris)) +
+        "&goDate=" + hentetRute.goDate + "&backDate=" + hentetRute.backDate;
+    location.href = url;
 
     if ($(".avgCheckBox").length == 4 && $(".avgCheckBox input:checkbox:checked").length > 1) {
         location.href = url;
     } else if ($(".avgCheckBox").length == 2) {
         location.href = url;
     }
+        
 }
 
 function formaterTid(tid) { //Formaterer tid til 00:00-format. Noe av kode tatt fra nett.
@@ -234,7 +328,7 @@ function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til 
             "<td>" + ankomst + "</td>" +
             "<td>" + reisetid + "</td>" +
             "<td>" + pris + "kr</td>" +
-            "<td>";
+            "<td id='textHoldeplass'>";
         ut += ((retur) ? holdeplasserReverse[0].sted : holdeplasser[0].sted);
         let lengde = holdeplasser.length-1;
         let visHoldeplasser="";
@@ -272,19 +366,21 @@ function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil
     if (table == "avreiser") {
         turJson = {
             avreise: hentetRute.avreiseTider[valgtRad-1],
-            reisetid: hentetRute.totalTid,
+            totalTid: hentetRute.totalTid,
             pris: hentetRute.pris,
             startsted: hentetRute.holdeplasser[0],
-            reisemal: hentetRute.holdeplasser[hentetRute.holdeplasser.length-1]
+            reisemal: hentetRute.holdeplasser[hentetRute.holdeplasser.length - 1],
+            holdeplasser: hentetRute.holdeplasser
         };
     }
     if (table == "returAvreiser") {
         returJson = {
             avreise: hentetRute.avreiseTider[valgtRad-1],
-            reisetid: hentetRute.totalTid,
+            totalTid: hentetRute.totalTid,
             pris: hentetRute.pris,
             startsted: hentetRute.holdeplasser[hentetRute.holdeplasser.length-1],
-            reisemal: hentetRute.holdeplasser[0]
+            reisemal: hentetRute.holdeplasser[0],
+            holdeplasser: hentetRute.holdeplasser
         };
     }
 

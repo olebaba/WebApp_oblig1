@@ -17,8 +17,8 @@
 <body>
     <div class="nav-brand" style="margin: 1em">
         <a href="forside.html">
-            <img src="logo.png" style="width:11em; height:2em;"/>
-            
+            <img src="logo.png" style="width:11em; height:2em;" />
+
         </a>
     </div>
     <div class="container d-flex justify-content-center text-center">
@@ -34,30 +34,30 @@
             <span id="feilHoldeplassTil" style="color:red"></span>
 
             <br /><br />
-            
+
             <div class="turretur">
                 <div class="form-check form-check-inline">
                     <input type="radio" class="form-check-input" id="tur" name="tur/retur" value="tur" checked="checked" />
                     <label for="tur">Én vei</label>
                     <input type="radio" id="retur" class="form-check-input" name="tur/retur" value="retur" />
                     <label for="retur">Tur/Retur</label><br /><br />
-                
+
                 </div>
             </div>
             <br />
 
-           <div class="reiseContainer">
-            
+            <div class="reiseContainer">
+
                 <div id="reiseDato">
                     <label for="reiseDato">Avreise</label>
                     <input type="date" id="turDato" name="turDato" onchange="validerKnapp()" class="form-control input-lg" />
                 </div>
-            
+
                 <div id="returDato">
                     <label for="retDato" id="retLabel" style="display:none">Retur</label>
                     <input type="date" style="display:none" id="retDato" name="retDato" onchange="validerKnapp()" class="form-control input-lg" />
                 </div>
-               <span id="feilDato" style="color:red"></span>
+                <span id="feilDato" style="color:red"></span>
             </div>
             <br />
             <label for="numContainer">Reisende:</label>
@@ -138,6 +138,35 @@
             <input type="button" id="avgangerknapp" value="Se tider og priser" name="bestill" onclick="tilAvganger()" class="btn btn-primary" disabled="disabled" />
         </form>
         <div id="pristest"></div>
+    </div>
+
+    <br />
+
+    <div class="container">
+        <h2>Endre pris</h2>
+        <div id="output"></div>
+
+        <div id="feil2"></div>
+    </div>
+    <div class="container">
+        <table class='table table-striped'>
+            <tr>
+                <td>Pris for 1 sone</td>
+                <td><input type="text" id="1sone" /></td>
+            </tr>
+            <tr>
+                <td>Pris for 2 soner</td>
+                <td><input type="text" id="2sone" /></td>
+            </tr>
+            <tr>
+                <td>Pris for 3 soner</td>
+                <td><input type="text" id="3sone" /></td>
+            </tr>
+            <tr>
+                <td>Pris for 4 soner</td>
+                <td><input type="text" id="4sone" /></td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

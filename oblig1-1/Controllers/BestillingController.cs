@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace oblig1_1.Controllers
 {
@@ -23,40 +24,43 @@ namespace oblig1_1.Controllers
         public BestillingController(IBestillingRepository db, ILogger<BestillingController> log)
         {
             _db = db;
-            _log = log;
         }
 
-        public async Task<ActionResult> Lagre(Bestillinger innBestilling)
+        public async Task<ActionResult> Lagre(Bestilling innBestilling)
         {
             if (ModelState.IsValid)
             {
                 bool returOk = await _db.Lagre(innBestilling);
                 if(!returOk)
                 {
-                    _log.LogInformation("Bestillingen kunne ikke lagres");
+                    Log.Information("Bestillingen kunne ikke lagres");
                     return BadRequest("Bestillingen kunne ikke lagres");
                 }
                 return Ok("Bestillingen er lagret");
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Bestillingen kunne ikke lagres: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering");
         }
 
-        public async Task<List<Bestillinger>> index()
+        public async Task<List<Bestilling>> Index()
         {
-            return await _db.index();
+            return await _db.Index();
         }
 
-        public async Task<List<Rute>> VisAlleRuter()
+        public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
         {
-            return await _db.VisAlleRuter();
+            return await _db.VisAlleRuteAvganger();
 
         }
-
-        public Rute FinnEnRute(Rute reise) //kan ikke være async
+        public RuteAvgang FinnEnRuteAvgang(RuteAvgang reise)
+        {
+            return null;
+        }
+       public RuteAvgang FinnEnRute(RuteAvgang reise) //kan ikke være async
         {
             if(reise == null)
             {
+                Log.Information("Fant ikke ruten");
                 Console.WriteLine("Fant ikke ruten");
                 return null;
             }
@@ -70,7 +74,7 @@ namespace oblig1_1.Controllers
             bool returOk = await _db.Slett(id);
             if(!returOk)
             {
-                _log.LogInformation("Sletting ble ikke utført");
+                Log.Information("Sletting ble ikke utført");
                 return NotFound("Sletting ble ikke utført");
             }
             return Ok("Bestillingen er slettet");
@@ -78,35 +82,55 @@ namespace oblig1_1.Controllers
 
         public async Task<ActionResult> HentEn(int id)
         {
-            Bestillinger bestilling = await _db.HentEn(id);
+            Bestilling bestilling = await _db.HentEn(id);
             if (bestilling == null)
             {
-                _log.LogInformation("Bestillingen ikke funnet");
+                Log.Information("Bestillingen ikke funnet");
                 return NotFound("Bestillingen ikke funnet");
             }
             return Ok(bestilling);
         }
 
-        public async Task<ActionResult> Endre(Bestillinger endreBestilling)
+        public async Task<ActionResult> Endre(Bestilling endreBestilling)
         {
             if (ModelState.IsValid)
             {
                 bool returOk = await _db.Endre(endreBestilling);
                 if (!returOk)
                 {
-                    _log.LogInformation("Endring av bestilling kunne ikke utføres");
+                    Log.Information("Endring av bestilling kunne ikke utføres");
                     return NotFound("Endring av bestilling kunne ikke utføres");
                 }
                 return Ok("Bestillingen ble endret");
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Endring av bestilling kunne ikke utføres: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering");
         }
 
-        public async Task<ActionResult> HentHoldeplasser()
+        public async Task<List<Holdeplass>> HentAlleHoldeplasser() 
         {
-            List<Holdeplass> holdeplasser = await _db.HentHoldeplasser();
-            return Ok(holdeplasser);
+            return await _db.HentAlleHoldeplasser();
+        }
+
+
+        public async Task<List<Holdeplass>> VisHoldeplasserIRute(int id)
+        {
+            return await _db.VisHoldeplasserIRute(id);
+        }
+
+        public Rute FinnRute(Holdeplass holdeplass)
+        {
+            return _db.FinnRute(holdeplass);
+        }
+        
+        public async Task<List<Priser>> HentPriser()
+        {
+            return await _db.HentPriser();
+        }
+        
+        public async Task<bool> EndrePriser(Priser pris)
+        {
+            return await _db.EndrePriser(pris);
         }
 
         

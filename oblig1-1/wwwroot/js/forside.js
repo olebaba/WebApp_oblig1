@@ -193,20 +193,24 @@
         validerKnapp();
     });
 
-    $.get("bestilling/HentHoldeplasser", function (holdeplasser) {
-        formaterHoldeplass(holdeplasser);
+    $.get("Bestilling/HentAlleHoldeplasser", function (holdeplasser) {
+        formaterFraHoldeplass(holdeplasser);
     });
+
+    hentPriser();
     
 });
 
-function formaterHoldeplass(holdeplass) {
-    let avTags = [];
-    for (let i = 0; i < holdeplass.length; i++) {
-        console.log(holdeplass[i].sted);
-        avTags.push(holdeplass[i].sted);
+var startHoldeplass, sluttHoldeplass;
+
+function formaterFraHoldeplass(holdeplasser) {
+    let steder = [];
+    
+    for (i in holdeplasser) {
+        steder.push(holdeplasser[i].sted);
     }
     $("#fra").autocomplete( {
-        source: avTags,
+        source: steder,
         minLength: 1,
         change: function (event, ui) {
             if (!ui.item) {
@@ -215,10 +219,13 @@ function formaterHoldeplass(holdeplass) {
                 $("#feilHoldeplassFra").html("Vennligst velg en holdeplass fra listen")
                 validerKnapp();
             }
+            for (h in holdeplasser) {
+                if (holdeplasser[h].sted == $("#fra").val()) startHoldeplass = holdeplasser[h];
+            }
         }
     });
     $("#til").autocomplete({
-        source: avTags,
+        source: steder,
         minLength: 1,
         change: function (event, ui) {
             if (!ui.item) {
@@ -226,13 +233,17 @@ function formaterHoldeplass(holdeplass) {
                 $("#feilHoldeplassTil").html("Vennligst velg en holdeplass fra listen")
                 validerKnapp();
             }
+            for (h in holdeplasser) {
+                if (holdeplasser[h].sted == $("#til").val()) sluttHoldeplass = holdeplasser[h];
+            }
         }
     });
 }
 
+
 function validerOgVisAvganger() {
-    const holdeplassFraOk = validerHoldeplassFra($("#fra")).val();
-    const holdeplassTilOk = validerHoldeplassTil($("#til")).val();
+    const holdeplassFraOk = validerHoldeplassFra(hentVerdi("#fra"));
+    const holdeplassTilOk = validerHoldeplassTil(hentVerdi("#til"));
     
     if (holdeplassFraOk && holdeplassTilOk) {
         tilAvganger();
@@ -258,8 +269,8 @@ function hentBilletter() {
 }
 
 function tilAvganger() {
-    var from = hentVerdi("fra");
-    var to = hentVerdi("til");
+    var from = JSON.stringify(startHoldeplass);
+    var to = JSON.stringify(sluttHoldeplass);
     var datt = hentVerdi("turDato");
     let vindu = "avganger.html?from=" + from + "&to=" + to + "&goDate=" + datt + "&tur=";
     if (document.getElementById("retur").checked == true) {
@@ -270,4 +281,53 @@ function tilAvganger() {
     vindu += hentBilletter();
 
     location.href = vindu;
+}
+
+function hentPriser() {
+    $.post("Bestilling/HentPriser", function (priser) {
+        formaterPriser(priser);
+    });
+}
+
+function formaterPriser(priser) {
+    let ut = "<table class='table table-striped'>" +
+        "<tr>" +
+        "<th>Prisklasse</th><th>Pris for 1 sone</th><th>Pris for 2 soner</th><th>Pris for 3 soner</th><th>Pris for 4 soner</th><th></th>" +
+        "</tr>";
+    for (let i = 0; i < priser.length; i++) {
+        ut += "<tr>" +
+            "<td>" + priser[i].prisklasse + "</td>" +
+            "<td>" + priser[i].pris1Sone + "</td>" +
+            "<td>" + priser[i].pris2Sone + "</td>" +
+            "<td>" + priser[i].pris3Sone + "</td>" +
+            "<td>" + priser[i].pris4Sone + "</td>" +
+            "<td> <button class='btn btn-primary' onclick='endrePriser(" + priser[i].prisID + ")'>Endre priser</button></td>" +
+
+            "</tr>";
+    }
+    ut += "</table>";
+    $('#output').html(ut);
+}
+
+function endrePriser(objekt) {
+    console.log("TEST");
+    const priser = {
+        prisID: objekt,
+        pris1Sone: $("#1sone").val(),
+        pris2Sone: $("#2sone").val(),
+        pris3Sone: $("#3sone").val(),
+        pris4Sone: $("#4sone").val(),
+    };
+    const url = "Bestilling/EndrePriser?pris=" + priser;
+    console.log(priser.pris1Sone);
+    $.post(url, function (OK) {
+        if (OK) {
+             window.location.href = 'forside.html';
+        }
+        else {
+            console.log("BAD TRY");
+        }
+    })
+
+
 }
