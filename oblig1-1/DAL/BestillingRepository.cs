@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Serilog;
 
 namespace oblig1_1.DAL
 {
@@ -39,8 +40,9 @@ namespace oblig1_1.DAL
                 }).ToListAsync();
                 return alleBestillinger;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i index: {error}", e);
                 return null;
             }
         }
@@ -68,8 +70,9 @@ namespace oblig1_1.DAL
                 }
                 return alleRuter;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i VisAlleRuter: {error}", e);
                 return null;
             }*/
             return null;
@@ -114,7 +117,9 @@ namespace oblig1_1.DAL
                 }*/
                 return ruteavganger;
             }
-            catch {
+            catch (Exception e) 
+            {
+                Log.Error("Error i FinnEnRuteAvgang: {error}", e);
                 return null;
             }
 
@@ -149,9 +154,9 @@ namespace oblig1_1.DAL
 
                 return nyReise;
             }
-            catch
+            catch (Exception e)
             {
-                _log.LogError("Error i FinnEnRute: {error}", e);
+                Log.Error("Error i FinnEnRute: {error}", e);
                 return null;
             }*/
         }
@@ -214,8 +219,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i Lagre: {error}", e);
                 return false;
             }
             */
@@ -231,8 +237,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i Slett: {error}", e);
                 return false;
             }
         }
@@ -255,6 +262,7 @@ namespace oblig1_1.DAL
             }
             catch (Exception e)
             {
+                Log.Error("Error i HentEn: {error}", e);
                 Debug.WriteLine(e.Message);
                 return null;
             }
@@ -274,8 +282,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i Endre: {error}", e);
                 return false;
             }
         }
@@ -321,7 +330,7 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
-                // legg til logging når log er opprettet 
+                Log.Error("Error i LoggInn: {error}", e);
                 return false; 
             }
         }
@@ -341,6 +350,7 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
+                Log.Error("Error i HentHoldeplass: {error}", e);
                 return null;
             }*/
 
@@ -360,6 +370,7 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
+                Log.Error("Error i EndreHoldeplass: {error}", e);
                 return false; 
             } */
 
@@ -391,6 +402,7 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
+                Log.Error("Error i EtRuteStopp: {error}", e);
                 return null;
             }
         }
@@ -406,6 +418,7 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
+                Log.Error("Error i SlettRS: {error}", e);
                 return false; 
             }
         }
@@ -438,6 +451,7 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
+                Log.Error("Error i EndreRS: {error}", e);
                 return false;
             }
         }
@@ -472,7 +486,7 @@ namespace oblig1_1.DAL
             catch(Exception e)
             {
                 //Fikk opp at _log ikk
-                //_log.LogInformation(e.Message);
+                Log.Error("Error i LagreRS: {error}", e);
                 return false; 
             }
         }
