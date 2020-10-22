@@ -15,6 +15,6 @@ namespace oblig1_1.Models
         [RegularExpression(@"^([0-1]?\d|2[0-3]):([0-5]?\d):([0-5]?\d)$")]
         public TimeSpan StoppTid { get; set; }
         public virtual Holdeplass Holdeplass { get; set; }
-        //public virtual Rute Rute { get; set; }
+        public virtual Rute Rute { get; set; }
     }
 }

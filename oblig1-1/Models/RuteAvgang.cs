@@ -11,6 +11,6 @@ namespace oblig1_1.Models
         [Key]
         public int ID { get; set; }
         public DateTime Dato { get; set; }
-        public virtual Rute Rute { get; set; } //Rute id?
+        public virtual Rute Rute { get; set; }
     }
 }

@@ -70,7 +70,11 @@ function hentRuteFraDB() {
     var til = {
         sted: urlParams.get('to')
     }
-
+    var onsketReise = {
+        fra: urlParams.get('from'),
+        til: urlParams.get('to'),
+        dato: urlParams.get('goDate')
+    }
     var reise = {
         datoer: urlParams.get('goDate'),
         holdeplasser: [
@@ -80,7 +84,7 @@ function hentRuteFraDB() {
     var retur = false;
     if (urlParams.get('tur') == 'tovei') retur = true; 
 
-    $.post("Bestilling/FinnEnRute", reise, function (rute) {
+    $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (rute) {
         if (rute == null) {
             visFeilmelding("Ingen ruter for denne reisen kunne bli funnet.");
         } else {
