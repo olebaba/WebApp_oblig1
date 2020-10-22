@@ -144,20 +144,17 @@ function endrePriser(objekt) {
         pris3Sone: $("#3sone").val(),
         pris4Sone: $("#4sone").val(),
     };
-    const url = "Bestilling/EndrePriser?pris=" + priser;
-    console.log(priser.pris1Sone);
-    /*
-    $.post(url, function (OK) {
-        if (OK) {
-             window.location.href = 'forside.html';
-        }
-        else {
-            console.log("BAD TRY");
-        }
-    })
-    */
+
     $.post("Admin/EndrePriser", priser, function () {
         window.location.href = 'admin.html';
         //console.log(priser.prisID + " , " + priser.prisklasse + " , " + priser.pris1Sone + " , " + priser.pris2Sone + " , " + priser.pris3Sone + " , " + priser.pris4Sone);
-    });
+    })
+        .fail(function (feil) {
+            if (feil.status === 401) {
+                window.location.href = 'innlogging.html';
+            } else {
+                $("#feil").html("Feil på server - prøv igjen senere");
+            }
+
+        });
 }
