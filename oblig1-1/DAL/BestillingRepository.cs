@@ -21,11 +21,11 @@ namespace oblig1_1.DAL
         }
 
         [HttpPost]
-        public async Task<List<Bestilling>> Index()
+        public async Task<List<Bestillinger>> Index()
         {
             try
             {
-                List<Bestilling> alleBestillinger = await _db.Bestillinger.Select(best => new Bestilling
+                List<Bestillinger> alleBestillinger = await _db.Bestillinger.Select(best => new Bestillinger
                 {
                     ID = best.ID,
                     Kunde = best.Kunde,
@@ -109,12 +109,12 @@ namespace oblig1_1.DAL
             }
         }
 
-        public async Task<bool> Lagre(Bestilling innBestilling)
+        public async Task<bool> Lagre(Bestillinger innBestilling)
         {
             Console.WriteLine(innBestilling.ToString());
             try
             {
-                var nyBestilling = new Bestilling();
+                var nyBestilling = new Bestillinger();
                 nyBestilling = innBestilling;
                 /*
                 var nyTur = new Rute(){
@@ -155,7 +155,7 @@ namespace oblig1_1.DAL
         {
             try
             {
-                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
+                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
                 _db.Bestillinger.Remove(enBestilling);
                 await _db.SaveChangesAsync();
                 return true;
@@ -166,13 +166,13 @@ namespace oblig1_1.DAL
             }
         }
 
-        public async Task<Bestilling> HentEn(int id)
+        public async Task<Bestillinger> HentEn(int id)
         {
             try
             {
-                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
+                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
                 if (enBestilling == null) return null; //finner ikke id i DB
-                var hentetBestilling = new Bestilling()
+                var hentetBestilling = new Bestillinger()
                 {
                     ID = enBestilling.ID,
                     Kunde = enBestilling.Kunde,
@@ -190,11 +190,11 @@ namespace oblig1_1.DAL
             
         }
 
-        public async Task<bool> Endre(Bestilling endreBestilling)
+        public async Task<bool> Endre(Bestillinger endreBestilling)
         {
             try
             {
-                Bestilling enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
+                Bestillinger enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
                 enBestillling.Kunde = endreBestilling.Kunde;
                 enBestillling.Pris = endreBestilling.Pris;
                 enBestillling.Tur = endreBestilling.Tur;

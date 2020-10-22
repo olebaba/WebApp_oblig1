@@ -26,7 +26,7 @@ namespace oblig1_1.Controllers
             _db = db;
         }
 
-        public async Task<ActionResult> Lagre(Bestilling innBestilling)
+        public async Task<ActionResult> Lagre(Bestillinger innBestilling)
         {
             if (ModelState.IsValid)
             {
@@ -42,7 +42,7 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering");
         }
 
-        public async Task<List<Bestilling>> Index()
+        public async Task<List<Bestillinger>> Index()
         {
             return await _db.Index();
         }
@@ -82,7 +82,7 @@ namespace oblig1_1.Controllers
 
         public async Task<ActionResult> HentEn(int id)
         {
-            Bestilling bestilling = await _db.HentEn(id);
+            Bestillinger bestilling = await _db.HentEn(id);
             if (bestilling == null)
             {
                 Log.Information("Bestillingen ikke funnet");
@@ -91,7 +91,7 @@ namespace oblig1_1.Controllers
             return Ok(bestilling);
         }
 
-        public async Task<ActionResult> Endre(Bestilling endreBestilling)
+        public async Task<ActionResult> Endre(Bestillinger endreBestilling)
         {
             if (ModelState.IsValid)
             {
