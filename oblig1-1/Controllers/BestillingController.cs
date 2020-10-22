@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace oblig1_1.Controllers
 {
@@ -14,13 +15,10 @@ namespace oblig1_1.Controllers
     public class BestillingController : ControllerBase
     {
         private readonly IBestillingRepository _db;
-        
-        private ILogger<BestillingController> _log;
-        
-        public BestillingController(IBestillingRepository db, ILogger<BestillingController> log)
+                
+        public BestillingController(IBestillingRepository db)
         {
             _db = db;
-            _log = log;
         }
 
         public async Task<ActionResult> Lagre(Bestillinger innBestilling)
@@ -30,12 +28,12 @@ namespace oblig1_1.Controllers
                 bool returOk = await _db.Lagre(innBestilling);
                 if(!returOk)
                 {
-                    _log.LogInformation("Bestillingen kunne ikke lagres");
+                    Log.Information("Bestillingen kunne ikke lagres");
                     return BadRequest("Bestillingen kunne ikke lagres");
                 }
                 return Ok("Bestillingen er lagret");
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Bestillingen kunne ikke lagres: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering");
         }
 
@@ -54,6 +52,7 @@ namespace oblig1_1.Controllers
         {
             if(reise == null)
             {
+                Log.Information("Kunne ikke finne rute");
                 Console.WriteLine("Fant ikke ruten");
                 return null;
             }
@@ -67,7 +66,7 @@ namespace oblig1_1.Controllers
             bool returOk = await _db.Slett(id);
             if(!returOk)
             {
-                _log.LogInformation("Sletting ble ikke utført");
+                Log.Information("Sletting ble ikke utført");
                 return NotFound("Sletting ble ikke utført");
             }
             return Ok("Bestillingen er slettet");
@@ -78,7 +77,7 @@ namespace oblig1_1.Controllers
             Bestillinger bestilling = await _db.HentEn(id);
             if (bestilling == null)
             {
-                _log.LogInformation("Bestillingen ikke funnet");
+                Log.Information("Bestillingen ikke funnet");
                 return NotFound("Bestillingen ikke funnet");
             }
             return Ok(bestilling);
@@ -91,12 +90,12 @@ namespace oblig1_1.Controllers
                 bool returOk = await _db.Endre(endreBestilling);
                 if (!returOk)
                 {
-                    _log.LogInformation("Endring av bestilling kunne ikke utføres");
+                    Log.Information("Endring av bestilling kunne ikke utføres");
                     return NotFound("Endring av bestilling kunne ikke utføres");
                 }
                 return Ok("Bestillingen ble endret");
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Endring av bestilling kunne ikke utføres: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering");
         }
 
