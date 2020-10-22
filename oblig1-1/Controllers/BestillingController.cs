@@ -18,11 +18,9 @@ namespace oblig1_1.Controllers
     {
         private readonly IBestillingRepository _db;
         
-        private ILogger<BestillingController> _log;
-
         private const string _loggetInn = "innlogget";
 
-        public BestillingController(IBestillingRepository db, ILogger<BestillingController> log)
+        public BestillingController(IBestillingRepository db)
         {
             _db = db;
         }
@@ -118,14 +116,14 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.LoggInn(bruker);
                 if(!returOK)
                 {
-                    _log.LogInformation("Innloggingen feilet for bruker" + bruker.Brukernavn);
+                    Log.Information("Innloggingen feilet for bruker" + bruker.Brukernavn);
                     HttpContext.Session.SetString(_loggetInn, "");
                     return Ok(false);
                 }
                 HttpContext.Session.SetString(_loggetInn, "innlogget");
                 return Ok(true);
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Innlogging feilet: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering");
         }
 
@@ -145,7 +143,7 @@ namespace oblig1_1.Controllers
                 }
                 return Ok(enHoldeplass);
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Fant ikke holdeplassen: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
 
@@ -164,7 +162,7 @@ namespace oblig1_1.Controllers
                 }
                 return Ok("Holdeplass endret");
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
 
@@ -180,12 +178,12 @@ namespace oblig1_1.Controllers
                 RuteStopp etRS = await _db.EtRuteStopp(id);
                 if(etRS == null)
                 {
-                    _log.LogInformation("Fant ikke rutestopp");
+                    Log.Information("Fant ikke rutestopp");
                     return NotFound("Fant ikke rutestopp");
                 }
                 return Ok(etRS);
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Fant ikke rutestopp: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
 
@@ -200,12 +198,12 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.EndreRS(rutestopp);
                 if(!returOK)
                 {
-                    _log.LogInformation("Endringen av RuteStopp kunne ikke utføres");
+                    Log.Information("Endringen av RuteStopp kunne ikke utføres");
                     return NotFound("Endringen av RuteStopp kunne ikke utføres");
                 }
                 return Ok("Rutestopp endret");
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Endringen av RuteStopp kunne ikke utføres: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         } 
 
@@ -220,12 +218,12 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.LagreRS(innRS);
                 if (!returOK)
                 {
-                    _log.LogInformation("Lagring av RuteStopp kunne ikke utføres");
+                    Log.Information("Lagring av RuteStopp kunne ikke utføres");
                     return NotFound("Lagring av RuteStopp kunne ikke utføres");
                 }
                 return Ok("Rutestopp endret");
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Lagring av RuteStopp kunne ikke utføres: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
     }
