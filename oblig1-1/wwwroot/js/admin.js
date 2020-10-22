@@ -9,7 +9,12 @@ function hentRS() {
         formaterRS(rutestopp);
     })
     .fail(function (feil) {
-        $("#feil").html("Feil på server - prøv igjen senere");
+        if (feil.status == 401) {
+            window.location.href = 'innlogging.html';
+        }
+        else {
+            $("#feil").html("Feil på server - prøv igjen senere");
+        }
     });
 }
 
