@@ -6,11 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 namespace oblig1_1.Models
 {
-    public class RuteAvgang
+    public class Priser
     {
         [Key]
-        public int ID { get; set; }
-        public DateTime Dato { get; set; }
-        public virtual Rute Rute { get; set; }
+        public int PrisID { get; set; }
+        public string Prisklasse { get; set; }
+        public double Pris { get; set; }
     }
 }
