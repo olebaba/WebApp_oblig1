@@ -99,6 +99,7 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
         if (rute == null) {
             visFeilmelding("Ingen ruter for denne reisen kunne bli funnet.");
         } else {
+            console.log(rute);
             formaterRute(rute); //setter verdier i hentetRute
             var fra = rute.holdeplasser[0];
             var til = rute.holdeplasser[rute.holdeplasser.length - 1];

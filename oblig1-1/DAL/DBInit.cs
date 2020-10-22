@@ -51,7 +51,7 @@ namespace oblig1_1.Models
                 context.Holdeplasser.Add(sola);
                 context.Holdeplasser.Add(stavanger);
 
-                var OsloStavanger = new Rute { Navn = "OsloStavanger" };
+                var OsloStavanger = new Rute { Navn = "Oslo-Stavanger" };
                 context.Ruter.Add(OsloStavanger);
 
                 var RuteOsloStavangerStoppOslo = new RuteStopp { Holdeplass = oslo, Rute = OsloStavanger, RekkefølgeNr = 1, StoppTid = TimeSpan.FromMinutes(0) };
