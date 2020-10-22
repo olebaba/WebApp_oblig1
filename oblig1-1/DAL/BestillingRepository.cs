@@ -120,7 +120,7 @@ namespace oblig1_1.DAL
                     }
                         
                 }*/
-                return ruteavganger;
+                return null;
             }
             catch {
                 return null;
