@@ -3,6 +3,7 @@
     //hentRuter();
     hentRS();
     hentPriser();
+    hentHoldeplasser();
 });
 
 function hentRS() {
@@ -157,4 +158,46 @@ function endrePriser(objekt) {
             }
 
         });
+}
+
+
+function hentHoldeplasser() {
+    $.post("Admin/AdminHentHoldeplasser", function (holdeplasser) {
+        formaterHoldeplasser(holdeplasser);
+    });
+}
+
+function formaterHoldeplasser(holdeplasser) {
+    let ut = "<table class='table table-striped'>" +
+        "<tr>" +
+        "<th>Sted</th><th>Sone</th><th></th>" +
+        "</tr>";
+    for (let i = 0; i < holdeplasser.length; i++) {
+        ut += "<tr>" +
+            "<td>" + holdeplasser[i].sted + "</td>" +
+            "<td>" + holdeplasser[i].sone + "</td>" +
+            "<td> <button class='btn btn-danger' onclick='slettHoldeplass(" + holdeplasser[i].id + ")'>Slett</button></td>" +
+
+            "</tr>";
+    }
+    ut += "</table>";
+    $('#holdeplassoutput').html(ut);
+}
+
+function slettHoldeplass(id) {
+    console.log("ID "+id)
+    const url = "Admin/SlettHoldeplass?id=" + id;
+
+    $.post(url, function () {
+        window.location.href = 'admin.html';
+    });
+        /*
+        .fail(function (feil) {
+            if (feil.status === 401) {
+                window.location.href = 'innlogging.html';
+            } else {
+                $("#feil").html("Feil på server - prøv igjen senere");
+            }
+
+        });*/
 }

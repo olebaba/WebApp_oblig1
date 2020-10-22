@@ -484,12 +484,13 @@ namespace oblig1_1.DAL
                 Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
                 _db.Holdeplasser.Remove(enHoldeplass);
                 await _db.SaveChangesAsync();
-                return true;
             }
-            catch
+            catch(Exception e)
             {
+                Console.Write(e.Message);
                 return false;
             }
+            return true;
         }
 
         public async Task<List<Priser>> HentPriser()
