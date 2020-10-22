@@ -69,10 +69,13 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
 }
 
 function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
-    var onsketReise = [
-        getUrlParam('from'),
-        getUrlParam('to')
-    ]
+    var onsketReise = {
+        holdeplasser: [
+            getUrlParam('from'),
+            getUrlParam('to'),
+            "{" + getUrlParam('goDate') + "}"
+    ]}
+    console.log(onsketReise);
     var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
 
     $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (rute) {
