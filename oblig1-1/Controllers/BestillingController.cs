@@ -228,12 +228,6 @@ namespace oblig1_1.Controllers
             _log.LogInformation("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
-
-        public Rute FinnRute(Holdeplass holdeplass)
-        {
-            return _db.FinnRute(holdeplass);
-        }
-        */
     }
 
     

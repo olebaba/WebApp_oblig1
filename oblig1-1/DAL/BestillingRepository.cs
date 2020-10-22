@@ -471,7 +471,8 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
-                _log.LogInformation(e.Message);
+                //Fikk opp at _log ikk
+                //_log.LogInformation(e.Message);
                 return false; 
             }
         }
