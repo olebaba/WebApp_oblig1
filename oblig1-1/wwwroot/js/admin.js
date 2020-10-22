@@ -185,11 +185,29 @@ function formaterHoldeplasser(holdeplasser) {
 }
 
 function slettHoldeplass(id) {
-    console.log("ID "+id)
+    console.log("ID " + id)
     const url = "Admin/SlettHoldeplass?id=" + id;
+    $.get("Bestilling/HentRuteStopp", function (rutestopp) {
+        for (let i = 0; i < rutestopp.length; i++) {
+            if (rutestopp[i].holdeplass.id === id) {
+                const url2 = "Admin/SlettRS?id=" + rutestopp[i].id;
+                $.post(url2, function () {
+                    console.log("DELETED");
+                    $.post(url, function () {
+                        window.location.href = 'admin.html';
+                    });
+                });
+                break;
+            } else {
+                console.log("Fant ikke");
+            }
+        }
 
-    $.post(url, function () {
-        window.location.href = 'admin.html';
+        
+        console.log("HGÅR UHJIT");
+        $.post(url, function () {
+            window.location.href = 'admin.html';
+        });
     });
         /*
         .fail(function (feil) {
