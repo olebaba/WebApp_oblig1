@@ -15,12 +15,12 @@ function lagreHold() {
     $.post(url, holdeplass, function () {
         window.location.href = 'admin.html';
     })
-        .fail(function (feil) {
-            if (feil.status == 401) {
-                window.location.href = 'innlogging.html';
-            }
-            else {
-                $("#feil").html("Feil på server - prøv igjen senere");
-            }
-        });
+    .fail(function (feil) {
+        if (feil.status == 401) {
+            window.location.href = 'innlogging.html';
+        }
+        else {
+            $("#feil").html("Feil på server - prøv igjen senere");
+        }
+    });
 }

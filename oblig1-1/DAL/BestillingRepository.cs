@@ -512,13 +512,50 @@ namespace oblig1_1.DAL
             }
         }
 
+        public async Task<List<Rute>> AlleRuter()
+        {
+            try
+            {
+                List<Rute> alleRuter = await _db.Ruter.Select(r => new Rute
+                {
+                    RID = r.RID,
+                    Navn = r.Navn,
+                    RuteStopp = r.RuteStopp
+                }).ToListAsync();
+                return alleRuter;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<Rute> EnRute(int id)
+        {
+            try
+            {
+                Rute enRute = await _db.Ruter.FindAsync(id);
+                var hentetRute = new Rute()
+                {
+                    RID = enRute.RID,
+                    Navn = enRute.Navn,
+                    RuteStopp = enRute.RuteStopp
+                };
+                return hentetRute;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
         // lagrer en tom rute
-        public async Task<bool> LagreRute(Rute innRute)
+        public async Task<bool> LagreRute(string navn)
         {
             try
             {
                 var nyRute = new Rute();
-                nyRute.Navn = innRute.Navn;
+                nyRute.Navn = navn;
                 List<RuteStopp> tom = new List<RuteStopp>();
                 nyRute.RuteStopp = tom;
 

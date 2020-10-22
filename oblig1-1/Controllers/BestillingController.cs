@@ -259,7 +259,27 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
-        public async Task<ActionResult> LagreRute(Rute innRute)
+        public async Task<ActionResult> AlleRuter()
+        {
+            List<Rute> alleRuter = await _db.AlleRuter();
+            return Ok(alleRuter);
+        }
+
+        public async Task<ActionResult> EnRute(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                Rute enRute = await _db.EnRute(id);
+                if(enRute == null)
+                {
+                    return NotFound("Fant ikke ruten");
+                }
+                return Ok(enRute);
+            }
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
+        public async Task<ActionResult> LagreRute(String navn)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
@@ -267,7 +287,7 @@ namespace oblig1_1.Controllers
             }
             if (ModelState.IsValid)
             {
-                bool returOK = await _db.LagreRute(innRute);
+                bool returOK = await _db.LagreRute(navn);
                 if (!returOK)
                 {
                     _log.LogInformation("Lagring av Rute kunne ikke utføres");

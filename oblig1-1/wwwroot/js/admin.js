@@ -1,9 +1,42 @@
 ﻿$(function () {
     hentHoldeplasser();
+    hentRuteAvgang();
     //hentRuter();
     hentRS();
     hentPriser();
 });
+
+function hentRuteAvgang() {
+    $.get("Bestilling/AlleRA", function (ruteavgang) {
+        formaterRA(ruteavgang);
+    })
+        .fail(function (feil) {
+            if (feil.status == 401) {
+                window.location.href = 'innlogging.html';
+            }
+            else {
+                $("#feil").html("Feil på server - prøv igjen senere");
+            }
+        });
+}
+
+function formaterRA(ruteavgang) {
+    let ut = "<table class='table table-striped'>" +
+        "<tr>" +
+        "<th>Dato</th><th>Rute</th><th></th><th></th>" +
+        "</tr>";
+    for (let ra of ruteavgang) {
+        ut += "<tr>" +
+            "<td>" + ra.Dato + "</td>" +
+            "<td>" + ra.rute.navn + "</td>" +
+            "<td>" + ra.rute.rutestopp + "</td>" +
+            "<td> <a class='btn btn-primary' href='endreRuteA.html?id=" + ra.id + "'>Endre</a></td>" +
+            "<td> <button class='btn btn-danger' onclick='slettRA(" + ra.id + ")'>Slett</button></td>" +
+            "</tr>";
+    }
+    ut += "</table>";
+    $("#ruteavgang").html(ut);
+}
 
 function hentRS() {
     $.get("Bestilling/HentRuteStopp", function (rutestopp) {
@@ -80,8 +113,8 @@ function formaterHoldeplasser(holdeplasser) {
     $("#holdeplasser").html(ut);
 }
 
-/*function hentRuter() {
-    $.get("Bestilling/VisAlleRuter", function (ruter) {
+function hentRuter() {
+    $.get("Bestilling/AlleRuter", function (ruter) {
         formaterRuter(rute);
     })
     .fail(function (feil) {
@@ -92,20 +125,18 @@ function formaterHoldeplasser(holdeplasser) {
 function formaterRuter(ruter) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>Datoer</th><th>Holdeplasser</th><th>Totaltid</th><th></th><th></th>" +
+        "<th>Navn</th><th></th><th></th>" +
         "</tr>";
     for (let rute of ruter) {
         ut += "<tr>" +
-            "<td>" + rute.dato + "</td>" +
-            "<td>" + rute.holdeplasser + "</td>" +
-            "<td>" + rute.totaltid + "</td>" +
+            "<td>" + rute.navn + "</td>" +
             "<td> <a class='btn btn-primary' href='endreRute.html?id=" + rute.id + "'>Endre</a></td>" +
             "<td> <button class='btn btn-danger' onclick='slettRute(" + rute.id + ")'>Slett</button></td>" +
             "</tr>";
     }
     ut += "</table>";
     $("#ruter").html(ut);
-}*/
+}
 
 
 function hentPriser() {

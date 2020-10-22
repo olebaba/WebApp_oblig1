@@ -27,7 +27,9 @@ namespace oblig1_1.DAL
         Task<bool> EndreRS(RuteStopp endreRS);
         Task<bool> LagreRS(RuteStopp innRS);
         Task<bool> SlettHoldeplass(int id);
-        Task<bool> LagreRute(Rute innRute);
+        Task<List<Rute>> AlleRuter();
+        Task<Rute> EnRute(int id);
+        Task<bool> LagreRute(string navn);
         Task<List<Priser>> HentPriser();
         Task<bool> EndrePriser(Priser pris);
     }
