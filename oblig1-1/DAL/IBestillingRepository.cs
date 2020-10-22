@@ -16,6 +16,8 @@ namespace oblig1_1.DAL
         Task<bool> Endre(Bestilling endreBestilling);
         Rute FinnEnRute(Rute reise);
         Task<List<Holdeplass>> HentHoldeplasser();
+        Task<List<Priser>> HentPriser();
+        Task<bool> EndrePriser(Priser pris);
 
     }
 }

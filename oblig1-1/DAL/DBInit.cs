@@ -20,22 +20,22 @@ namespace oblig1_1.Models
 
                 var kunde1 = new Kunde { Navn = "Ole", Mobilnummer = "98765432"};
 
-                var oslo = new Holdeplass { Sted = "Oslo bussterminal", Avgangstider = "0830, 0900, 1030, 1100" };
-                var drammen = new Holdeplass { Sted = "Drammen", Avgangstider = "0940, 1140" };
-                var fokserød = new Holdeplass { Sted = "Fokserød", Avgangstider = "1030, 1230" };
-                var skjelsvik = new Holdeplass { Sted = "Skjelsvik", Avgangstider = "1112, 1312" };
-                var tangen = new Holdeplass { Sted = "Tangen", Avgangstider = "1140, 1340" };
-                var vinterkjær = new Holdeplass { Sted = "Vinterkjær", Avgangstider = "1203, 1403" };
-                var harebakken = new Holdeplass { Sted = "Harebakken", Avgangstider = "1230, 1430" };
-                var grimstad = new Holdeplass { Sted = "Grimstad", Avgangstider = "1245, 1445" };
-                var lillesand = new Holdeplass { Sted = "Lillesand", Avgangstider = "1300, 1500" };
-                var kristiansand = new Holdeplass { Sted = "Kristiansand", Avgangstider = "1400, 1600"};
-                var mandal = new Holdeplass { Sted = "Mandal", Avgangstider = "1430, 1630" };
+                var oslo = new Holdeplass { Sted = "Oslo bussterminal", Avgangstider = "0830, 0900, 1030, 1100", Sone = 1 };
+                var drammen = new Holdeplass { Sted = "Drammen", Avgangstider = "0940, 1140", Sone = 1 };
+                var fokserød = new Holdeplass { Sted = "Fokserød", Avgangstider = "1030, 1230", Sone = 2 };
+                var skjelsvik = new Holdeplass { Sted = "Skjelsvik", Avgangstider = "1112, 1312", Sone = 2 };
+                var tangen = new Holdeplass { Sted = "Tangen", Avgangstider = "1140, 1340", Sone = 2 };
+                var vinterkjær = new Holdeplass { Sted = "Vinterkjær", Avgangstider = "1203, 1403", Sone = 3 };
+                var harebakken = new Holdeplass { Sted = "Harebakken", Avgangstider = "1230, 1430", Sone = 2 };
+                var grimstad = new Holdeplass { Sted = "Grimstad", Avgangstider = "1245, 1445", Sone = 3 };
+                var lillesand = new Holdeplass { Sted = "Lillesand", Avgangstider = "1300, 1500", Sone = 3 };
+                var kristiansand = new Holdeplass { Sted = "Kristiansand", Avgangstider = "1400, 1600", Sone = 3 };
+                var mandal = new Holdeplass { Sted = "Mandal", Avgangstider = "1430, 1630", Sone = 4 };
                 var lyngdal = new Holdeplass { Sted = "Lyngdal", Avgangstider = "1510, 1710" };
                 var flekkefjord = new Holdeplass { Sted = "Flekkefjord", Avgangstider = "1600, 1800" };
-                var sandnes = new Holdeplass { Sted = "Sandnes", Avgangstider = "1740, 1940"};
-                var sola = new Holdeplass { Sted = "Stavanger flyplass, Sola", Avgangstider = "1800, 2000"};
-                var stavanger = new Holdeplass { Sted = "Stavanger bussterminal", Avgangstider ="1515, 1715, 1830, 2030"};
+                var sandnes = new Holdeplass { Sted = "Sandnes", Avgangstider = "1740, 1940", Sone = 4 };
+                var sola = new Holdeplass { Sted = "Stavanger flyplass, Sola", Avgangstider = "1800, 2000", Sone = 4 };
+                var stavanger = new Holdeplass { Sted = "Stavanger bussterminal", Avgangstider ="1515, 1715, 1830, 2030", Sone = 4 };
 
                 List<Holdeplass> holdeplasser = new List<Holdeplass>{ 
                     oslo, drammen, fokserød, skjelsvik, tangen, vinterkjær, harebakken, 
@@ -62,7 +62,7 @@ namespace oblig1_1.Models
                 var arsvågen = new Holdeplass { Sted = "Arsvågen", Avgangstider = "1405, 1605"};
                 var mortavika = new Holdeplass { Sted = "Mortavika", Avgangstider = "1445, 1645"};
                 // andre avgangstider for en ny rute, derfor to like holdeplasser 
-                var stavanger2 = new Holdeplass { Sted = "Stavanger", Avgangstider = "1515, 1715"};
+                var stavanger2 = new Holdeplass { Sted = "Stavanger", Avgangstider = "1515, 1715", Sone = 4 };
 
                 List<Holdeplass> kyst = new List<Holdeplass> { bergen, os, halhjem, sandvikvåg, leirvik, haukås, aksdal, mjåsund, arsvågen, mortavika, stavanger2 };
 
@@ -72,8 +72,8 @@ namespace oblig1_1.Models
 
                 var bestilling2 = new Bestilling { Kunde = kunde2, Tur = tur2, Retur = retur2, Pris = 740 };
 
-                var oslo2 = new Holdeplass { Sted = "Oslo", Avgangstider = "0830, 1030" };
-                var kongsberg = new Holdeplass { Sted = "Kongsberg", Avgangstider = "0940, 1140" };
+                var oslo2 = new Holdeplass { Sted = "Oslo", Avgangstider = "0830, 1030", Sone = 1 };
+                var kongsberg = new Holdeplass { Sted = "Kongsberg", Avgangstider = "0940, 1140", Sone = 2 };
                 var notodden = new Holdeplass { Sted = "Notodden", Avgangstider = "1015, 1215"};
                 var sauland = new Holdeplass { Sted = "Sauland", Avgangstider = "1040, 1240"};
                 var seljord = new Holdeplass { Sted = "Seljord", Avgangstider = "1110, 1310"};
@@ -94,7 +94,14 @@ namespace oblig1_1.Models
 
                 context.Bestillinger.Add(bestilling1);
                 context.Bestillinger.Add(bestilling2);
-                context.Bestillinger.Add(bestilling3); 
+                context.Bestillinger.Add(bestilling3);
+
+                var voksen = new Priser { Prisklasse = "Voksen", Pris1Sone = 40, Pris2Sone = 60, Pris3Sone = 80, Pris4Sone = 100 };
+                var barn = new Priser { Prisklasse = "Barn", Pris1Sone = 20, Pris2Sone = 30, Pris3Sone = 40, Pris4Sone = 50 };
+                var honnør = new Priser { Prisklasse = "Honnør", Pris1Sone = 25, Pris2Sone = 40, Pris3Sone = 50, Pris4Sone = 60 };
+                context.Priser.Add(voksen);
+                context.Priser.Add(barn);
+                context.Priser.Add(honnør);
                 context.SaveChanges();
             }
         }

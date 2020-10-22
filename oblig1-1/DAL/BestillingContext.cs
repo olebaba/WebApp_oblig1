@@ -21,6 +21,7 @@ namespace oblig1_1.DAL
         public DbSet<Rute> Ruter { get; set; }
         public DbSet<Holdeplass> Holdeplasser { get; set; }
         public DbSet<Bestilling> Bestillinger { get; set; }
+        public DbSet<Priser> Priser { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

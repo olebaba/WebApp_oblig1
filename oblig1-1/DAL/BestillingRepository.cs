@@ -212,5 +212,29 @@ namespace oblig1_1.DAL
             List<Holdeplass> holdeplasser = await _db.Holdeplasser.ToListAsync();
             return holdeplasser;
         }
+        
+        public async Task<List<Priser>> HentPriser()
+        {
+            List<Priser> priser = await _db.Priser.ToListAsync();
+            return priser;
+        }
+
+        public async Task<bool> EndrePriser(Priser pris)
+        {
+            try
+            {
+                var endreObjekt = await _db.Priser.FindAsync(pris.PrisID);
+                
+                endreObjekt.Pris1Sone = pris.Pris1Sone;
+                endreObjekt.Pris2Sone = pris.Pris2Sone;
+                endreObjekt.Pris3Sone = pris.Pris3Sone;
+                await _db.SaveChangesAsync();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
