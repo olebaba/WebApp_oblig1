@@ -10,23 +10,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace oblig1_1.DAL
 {
     public class BestillingRepository : IBestillingRepository
     {
         private readonly BestillingContext _db;
-        private ILogger<BestillingRepository> _log;
 
-        public BestillingRepository(BestillingContext db, ILogger<BestillingRepository> log)
+        public BestillingRepository(BestillingContext db)
         {
             _db = db;
-            _log = log;
         }
 
         [HttpPost]
-        public async Task<List<Bestillinger>> index()
+        public async Task<List<Bestillinger>> Index()
         {
             try
             {
@@ -40,71 +39,57 @@ namespace oblig1_1.DAL
                 }).ToListAsync();
                 return alleBestillinger;
             }
-            catch (Exception e)
+            catch
             {
-                _log.LogError("Error i List<Bestillinger> index: {error}", e);
                 return null;
             }
         }
 
         public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
-            //Hent ruteavganger med tilhørende holdeplasser
-        {
+        {/*
             try
             {
                 List<RuteAvgang> alleDBRuteAvganger = await _db.RuteAvganger.ToListAsync();
                 List<RuteAvgang> alleRuteAvganger = new List<RuteAvgang>();
 
-                foreach (var ruteavgang in alleDBRuteAvganger)
+                foreach (var rute in alleDBRuteAvganger)
                 {
-                    var enRuteAvgang = new RuteAvgang
+                    var holdeplasserIRute = new List<Holdeplass>();
+                    var enRute = new Rute
                     {
-                        Dato = ruteavgang.Dato,
-                        Rute = ruteavgang.Rute
+                        Datoer = rute.Datoer,
+                        Holdeplasser = holdeplasserIRute
                     };
-                    alleRuteAvganger.Add(enRuteAvgang);
+                    foreach (var holdeplass in rute.Holdeplasser)
+                    {
+                        holdeplasserIRute.Add(holdeplass);
+                    }
+                    alleRuter.Add(enRute);
                 }
-                return alleRuteAvganger;
-            }
-            catch (Exception e)
-            {
-                _log.LogError("Error i List<Bestillinger> VisAlleRuter: {error}", e);
-                return null;
-            }
-        }
-
-        public async Task<List<Holdeplass>> VisHoldeplasserIRute(int id)
-        {
-            try
-            {
-                Rute enRute = await _db.Ruter.FindAsync(id);
-                List<Holdeplass> holdeplasser = new List<Holdeplass>();
-
-                foreach(var rutestopp in enRute.RuteStopp)
-                {
-                    holdeplasser.Add(rutestopp.Holdeplass);
-                }
-                return holdeplasser;
+                return alleRuter;
             }
             catch
             {
                 return null;
-            }
-            
+            }*/
+            return null;
+
         }
         private bool sammeDato(DateTime dato1, DateTime dato2) 
         {
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
         //Returnere en liste med ruteavganger 
-        public List<RuteAvgang> FinnEnRuteAvgang(Holdeplass fra, Holdeplass til, DateTime dato) //kan ikke være async pga where
+        public List<RuteAvgang> FinnEnRuteAvgang(List<Holdeplass> holdeplasser) //kan ikke være async pga where
         {
             try {
+                var fra = holdeplasser[0];
+                var til = holdeplasser[1];
                 List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
                 List<Rute> potensielleRuter = new List<Rute>();
                 //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID
 
-                //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID som har holdeplassID tilsvarende tilID
+                //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID, som har holdeplassID tilsvarende tilID
                 //rekkefølgenr større enn fraID sitt rekkefølgenr
                 //3.Hvis vi finner en eller flere, legger dette til i listen av rutekandidater
                 foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
@@ -119,14 +104,14 @@ namespace oblig1_1.DAL
                 }
                 //4.Looper listen av rutekandidater og finner ruteavganger som bruker ruta
                 //5. Hvis ruteavgangen har riktig dato, legger den til i listen over ruteavganger
-
+                /*
                 foreach (var rute in potensielleRuter) {
                     foreach(var ruteavgang in _db.RuteAvganger.Where(r => r.Rute.RID == rute.RID && sammeDato(r.Dato, dato)))
                     {
                         ruteavganger.Add(ruteavgang);
                     }
                         
-                }
+                }*/
                 return ruteavganger;
             }
             catch {
@@ -193,41 +178,47 @@ namespace oblig1_1.DAL
                     nyBestilling.Kunde = sjekkKunde;
                 }
 
-                var sjekkTur = _db.Ruter.Find(innBestilling.Tur);
+        public async Task<bool> Lagre(Bestilling innBestilling)
+        {
+            Console.WriteLine(innBestilling.ToString());
+            try
+            {
+                var nyBestilling = new Bestilling();
+                nyBestilling = innBestilling;
+                /*
+                var nyTur = new Rute(){
+                    Datoer = innBestilling.Tur.Datoer,
+                    TotalTid = innBestilling.Tur.TotalTid,
+                    Holdeplasser = innBestilling.Tur.Holdeplasser,
+                };
+                nyBestilling.Tur = nyTur;
 
-                if(sjekkTur == null)
+                var nyRetur = new Rute()
                 {
-                    var nyRuteRad = new Rute();
-                    nyRuteRad = innBestilling.Tur;
-                    nyBestilling.Tur = nyRuteRad;
-                }
-                else
-                {
-                    nyBestilling.Tur = sjekkTur;
-                }
+                    Datoer = innBestilling.Retur.Datoer,
+                    TotalTid = innBestilling.Retur.TotalTid,
+                    Holdeplasser = innBestilling.Retur.Holdeplasser,
+                };
+                nyBestilling.Retur = nyRetur;
 
-                var sjekkRetur = _db.Ruter.Find(innBestilling.Retur);
-
-                if(sjekkRetur == null)
+                var nyKunde = new Kunde()
                 {
-                    var nyRetur = new Rute();
-                    nyRetur = innBestilling.Retur;
-                    nyBestilling.Retur = nyRetur;
-                }
-                else
-                {
-                    nyBestilling.Retur = sjekkRetur;
-                }
+                    Mobilnummer = innBestilling.Kunde.Mobilnummer,
+                    Navn = innBestilling.Kunde.Navn,
+                };
+                nyBestilling.Kunde = nyKunde;
+                
+                Console.WriteLine(nyBestilling.ToString());
 
-                _db.Bestillinger.Add(innBestilling);
+                _db.Bestillinger.Add(nyBestilling);
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                _log.LogError("Error i Lagre: {error}", e);
                 return false;
-            }*/
+            }
+            */
             return false;
         }
 
@@ -251,7 +242,7 @@ namespace oblig1_1.DAL
             try
             {
                 Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
-                if (enBestilling == null) return null; //finner ikke id i DB (tror jeg heh)
+                if (enBestilling == null) return null; //finner ikke id i DB
                 var hentetBestilling = new Bestillinger()
                 {
                     ID = enBestilling.ID,
@@ -264,7 +255,6 @@ namespace oblig1_1.DAL
             }
             catch (Exception e)
             {
-                _log.LogError("Error i HentEn: {error}", e);
                 Debug.WriteLine(e.Message);
                 return null;
             }
@@ -284,14 +274,13 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                _log.LogError("Error i Endre: {error}", e);
                 return false;
             }
         }
 
-        public async Task<List<Holdeplass>> HentHoldeplasser()
+        public async Task<List<Holdeplass>> HentAlleHoldeplasser()
         {
             List<Holdeplass> holdeplasser = await _db.Holdeplasser.ToListAsync();
             return holdeplasser;
@@ -482,7 +471,8 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
-                _log.LogInformation(e.Message);
+                //Fikk opp at _log ikk
+                //_log.LogInformation(e.Message);
                 return false; 
             }
         }

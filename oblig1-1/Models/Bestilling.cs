@@ -15,5 +15,10 @@ namespace oblig1_1.Models
         public virtual Kunde Kunde { get; set; }
         public virtual RuteAvgang Tur { get; set; }
         public virtual RuteAvgang Retur { get; set; }
+
+        public override string ToString()
+        {
+            return "Pris: " + Pris + ", " + Kunde.ToString() + ", " + Tur.ToString() + ", " + Retur.ToString();
+        }
     }
 }

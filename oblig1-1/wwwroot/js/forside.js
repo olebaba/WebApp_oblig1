@@ -193,19 +193,22 @@
         validerKnapp();
     });
 
-    $.get("bestilling/HentHoldeplasser", function (holdeplasser) {
-        formaterHoldeplass(holdeplasser);
+    $.get("Bestilling/HentAlleHoldeplasser", function (holdeplasser) {
+        formaterFraHoldeplass(holdeplasser);
     });
     
 });
 
-function formaterHoldeplass(holdeplass) {
-    let avTags = [];
-    for (let i = 0; i < holdeplass.length; i++) {
-        avTags.push(holdeplass[i].sted);
+var startHoldeplass, sluttHoldeplass;
+
+function formaterFraHoldeplass(holdeplasser) {
+    let steder = [];
+    
+    for (i in holdeplasser) {
+        steder.push(holdeplasser[i].sted);
     }
     $("#fra").autocomplete( {
-        source: avTags,
+        source: steder,
         minLength: 1,
         change: function (event, ui) {
             if (!ui.item) {
@@ -214,10 +217,13 @@ function formaterHoldeplass(holdeplass) {
                 $("#feilHoldeplassFra").html("Vennligst velg en holdeplass fra listen")
                 validerKnapp();
             }
+            for (h in holdeplasser) {
+                if (holdeplasser[h].sted == $("#fra").val()) startHoldeplass = holdeplasser[h];
+            }
         }
     });
     $("#til").autocomplete({
-        source: avTags,
+        source: steder,
         minLength: 1,
         change: function (event, ui) {
             if (!ui.item) {
@@ -225,13 +231,17 @@ function formaterHoldeplass(holdeplass) {
                 $("#feilHoldeplassTil").html("Vennligst velg en holdeplass fra listen")
                 validerKnapp();
             }
+            for (h in holdeplasser) {
+                if (holdeplasser[h].sted == $("#til").val()) sluttHoldeplass = holdeplasser[h];
+            }
         }
     });
 }
 
+
 function validerOgVisAvganger() {
-    const holdeplassFraOk = validerHoldeplassFra($("#fra")).val();
-    const holdeplassTilOk = validerHoldeplassTil($("#til")).val();
+    const holdeplassFraOk = validerHoldeplassFra(hentVerdi("#fra"));
+    const holdeplassTilOk = validerHoldeplassTil(hentVerdi("#til"));
     
     if (holdeplassFraOk && holdeplassTilOk) {
         tilAvganger();
@@ -257,8 +267,8 @@ function hentBilletter() {
 }
 
 function tilAvganger() {
-    var from = hentVerdi("fra");
-    var to = hentVerdi("til");
+    var from = JSON.stringify(startHoldeplass);
+    var to = JSON.stringify(sluttHoldeplass);
     var datt = hentVerdi("turDato");
     let vindu = "avganger.html?from=" + from + "&to=" + to + "&goDate=" + datt + "&tur=";
     if (document.getElementById("retur").checked == true) {
