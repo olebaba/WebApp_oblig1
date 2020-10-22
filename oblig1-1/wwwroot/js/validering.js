@@ -223,3 +223,16 @@ function validerSone(sone) {
     }
 }
 
+function validerSted(sted) {
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
+    const ok = regexp.test(sted);
+    if (!ok) {
+        $("#feilSted").html("Holdeplassen må bestå av 2 til 30 bokstaver");
+        return false;
+    }
+    else {
+        $("#feilHoldeplassFra").html("");
+        return true;
+    }
+}
+

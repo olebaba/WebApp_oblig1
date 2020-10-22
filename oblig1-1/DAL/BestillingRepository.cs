@@ -378,14 +378,14 @@ namespace oblig1_1.DAL
             {
                 RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
 
-                //Holdeplass holdeplass = await _db.Holdeplasser.FindAsync(etRS.Holdeplass.ID);
+                Holdeplass holdeplass = await _db.Holdeplasser.FindAsync(etRS.Holdeplass.ID);
 
                 var hentetRS = new RuteStopp()
                 {
                     ID = etRS.ID,
                     RekkefølgeNr = etRS.RekkefølgeNr,
                     StoppTid = etRS.StoppTid,
-                    Holdeplass = etRS.Holdeplass
+                    Holdeplass = holdeplass
                 };
                 return hentetRS;
             }
@@ -415,10 +415,14 @@ namespace oblig1_1.DAL
             try
             {
                 var etRS = await _db.Rutestopp.FindAsync(endreRS.ID);
-                if(etRS.Holdeplass.ID != endreRS.Holdeplass.ID)
+
+                //var enHoldeplass = _db.Holdeplasser.Where(s => s.Sted.Contains(etRS.Holdeplass.Sted));
+                //var ut = endreRS.Holdeplass;
+                
+                if (!etRS.Holdeplass.Sted.Equals(endreRS.Holdeplass.Sted))
                 {
-                    var sjekkHoldeplass = _db.Holdeplasser.Find(endreRS.Holdeplass.ID);
-                    if(sjekkHoldeplass == null)
+                    var sjekkHoldeplass = _db.Holdeplasser.Where(s => s.Sted.Contains(etRS.Holdeplass.Sted));
+                    if (sjekkHoldeplass == null)
                     {
                         var holdeplassRad = new Holdeplass();
                         holdeplassRad.Sted = endreRS.Holdeplass.Sted;
@@ -451,10 +455,11 @@ namespace oblig1_1.DAL
                 nyRS.StoppTid = innRS.StoppTid;
 
                 // sjekker om holdeplass allerede ligger i databasen, legger til ny dersom den ikke gjør det 
-                
-                var sjekkHoldeplass = await _db.Holdeplasser.FindAsync(innRS.Holdeplass.ID);
-                if(sjekkHoldeplass == null)
+
+                var sjekkHoldeplass = _db.Holdeplasser.Where(navn => navn.Sted.Contains(innRS.Holdeplass.Sted));
+                if (sjekkHoldeplass == null)
                 {
+                    // oppretter en ny holdeplass 
                     var nyHoldeplass = new Holdeplass();
                     nyHoldeplass.Sted = innRS.Holdeplass.Sted;
                     nyHoldeplass.Sone = innRS.Holdeplass.Sone;
@@ -462,9 +467,10 @@ namespace oblig1_1.DAL
                 }
                 else
                 {
-                    nyRS.Holdeplass.Sone = innRS.Holdeplass.Sone; 
-                    nyRS.Holdeplass = sjekkHoldeplass;
+                    nyRS.Holdeplass.Sted = innRS.Holdeplass.Sted;
+                    nyRS.Holdeplass.Sone = innRS.Holdeplass.Sone;
                 }
+
                 _db.Rutestopp.Add(nyRS);
                 await _db.SaveChangesAsync();
                 return true; 
