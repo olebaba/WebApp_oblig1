@@ -97,9 +97,25 @@ namespace oblig1_1.Controllers
             return await _db.HentPriser();
         }
 
-        public async Task<bool> EndrePriser(Priser pris)
+        public async Task<ActionResult> EndrePriser(Priser pris)
         {
-            return await _db.EndrePriser(pris);
+
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized();
+            }
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.EndrePriser(pris);
+                if (!returOK)
+                {
+                    //_log.LogInformation("Endringen av RuteStopp kunne ikke utføres");
+                    return NotFound("Endringen av prisene kunne ikke utføres");
+                }
+                return Ok("Priser endret");
+            }
+            //_log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

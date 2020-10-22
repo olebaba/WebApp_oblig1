@@ -283,57 +283,6 @@ function tilAvganger() {
     location.href = vindu;
 }
 
-function hentPriser() {
-    $.post("Admin/HentPriser", function (priser) {
-        formaterPriser(priser);
-    });
-}
 
-function formaterPriser(priser) {
-    let ut = "<table class='table table-striped'>" +
-        "<tr>" +
-        "<th>Prisklasse</th><th>Pris for 1 sone</th><th>Pris for 2 soner</th><th>Pris for 3 soner</th><th>Pris for 4 soner</th><th></th>" +
-        "</tr>";
-    for (let i = 0; i < priser.length; i++) {
-        ut += "<tr>" +
-            "<td>" + priser[i].prisklasse + "</td>" +
-            "<td>" + priser[i].pris1Sone + "</td>" +
-            "<td>" + priser[i].pris2Sone + "</td>" +
-            "<td>" + priser[i].pris3Sone + "</td>" +
-            "<td>" + priser[i].pris4Sone + "</td>" +
-            "<td> <button class='btn btn-primary' onclick='endrePriser(" + priser[i].prisID + ")'>Endre priser</button></td>" +
-
-            "</tr>";
-        console.log(priser[i].prisklasse);
-    }
-    ut += "</table>";
-    $('#output').html(ut);
-}
-
-function endrePriser(objekt) {
-    console.log("TEST");
-    const priser = {
-        prisID: objekt,
-        pris1Sone: $("#1sone").val(),
-        pris2Sone: $("#2sone").val(),
-        pris3Sone: $("#3sone").val(),
-        pris4Sone: $("#4sone").val(),
-    };
-    const url = "Bestilling/EndrePriser?pris=" + priser;
-    console.log(priser.pris1Sone);
-    /*
-    $.post(url, function (OK) {
-        if (OK) {
-             window.location.href = 'forside.html';
-        }
-        else {
-            console.log("BAD TRY");
-        }
-    })
-    */
-    $.post("Admin/EndrePriser", priser, function () {
-        window.location.href = 'forside.html';
-        //console.log(priser.prisID + " , " + priser.prisklasse + " , " + priser.pris1Sone + " , " + priser.pris2Sone + " , " + priser.pris3Sone + " , " + priser.pris4Sone);
-    });
 
 }
