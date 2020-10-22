@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace oblig1_1.DAL
 {
@@ -74,10 +76,11 @@ namespace oblig1_1.DAL
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
         //Returnere en liste med ruteavganger 
-        public List<RuteAvgang> FinnEnRuteAvgang(Holdeplass fra, Holdeplass til, DateTime dato) //kan ikke være async pga where
+        public List<RuteAvgang> FinnEnRuteAvgang(List<Holdeplass> holdeplasser) //kan ikke være async pga where
         {
             try {
-                Console.WriteLine(fra.Sted);
+                var fra = holdeplasser[0];
+                var til = holdeplasser[1];
                 List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
                 List<Rute> potensielleRuter = new List<Rute>();
                 //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID
@@ -97,14 +100,14 @@ namespace oblig1_1.DAL
                 }
                 //4.Looper listen av rutekandidater og finner ruteavganger som bruker ruta
                 //5. Hvis ruteavgangen har riktig dato, legger den til i listen over ruteavganger
-
+                /*
                 foreach (var rute in potensielleRuter) {
                     foreach(var ruteavgang in _db.RuteAvganger.Where(r => r.Rute.RID == rute.RID && sammeDato(r.Dato, dato)))
                     {
                         ruteavganger.Add(ruteavgang);
                     }
                         
-                }
+                }*/
                 return ruteavganger;
             }
             catch {

@@ -47,15 +47,19 @@ namespace oblig1_1.Controllers
             return await _db.VisAlleRuteAvganger();
 
         }
-       public List<RuteAvgang> FinnEnRuteAvgang(Holdeplass fra, Holdeplass til, DateTime dato) //kan ikke være async
+       public List<RuteAvgang> FinnEnRuteAvgang(List<Holdeplass> holdeplasser) //kan ikke være async
         {
-            if(fra == null || til == null || dato == null)
+            foreach(Holdeplass h in holdeplasser)
             {
-                Console.WriteLine("Fant ikke ruten, trist");
-                return null;
+                if (h == null)
+                {
+                    Console.WriteLine("Fant ikke ruten, trist");
+                    return null;
+                }
             }
+            
 
-            return _db.FinnEnRuteAvgang(fra, til, dato);
+            return _db.FinnEnRuteAvgang(holdeplasser);
         }
 
         public async Task<ActionResult> Slett(int id)

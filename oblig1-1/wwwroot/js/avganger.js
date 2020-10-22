@@ -69,23 +69,10 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
 }
 
 function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
-    var fra = {
-        sted: getUrlParam('from')
-    }
-    var til = {
-        sted: getUrlParam('to')
-    }
-    var onsketReise = {
-        fra: urlParams.get('from'),
-        til: urlParams.get('to'),
-        dato: urlParams.get('goDate')
-    }
-    var reise = {
-        datoer: getUrlParam('goDate'),
-        holdeplasser: [
-            fra, til
-        ]
-    }
+    var onsketReise = [
+        getUrlParam('from'),
+        getUrlParam('to')
+    ]
     var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
 
     $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (rute) {
@@ -136,12 +123,11 @@ function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
 }
 
 function sjekkRetur() { //Sjekker om reisen er tur-retur
-    /*if (getUrlParam("tur") == "tovei") {
+    if (getUrlParam("tur") == "tovei") {
         return true;
     } else {
         return false;
-    }*/
-    return (getUrlParam("tur") == "tovei")
+    }
 }
 
 function settTittel(fra, til) { //Setter hvor reisen starter og slutter
