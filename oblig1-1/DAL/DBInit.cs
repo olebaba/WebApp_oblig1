@@ -124,8 +124,8 @@ namespace oblig1_1.Models
 
                 context.SaveChanges();
             }
-            }
         }
+    }
     /*
         public static void InitOld(IApplicationBuilder app)
         {
