@@ -32,16 +32,20 @@ namespace oblig1_1.Controllers
                 if (!returOK)
                 {
                     HttpContext.Session.SetString(_loggetInn, "");
+                    Log.Information("Admin logginn feilet");
                     return Ok(false);
                 }
                 HttpContext.Session.SetString(_loggetInn, "innlogget");
+                Log.Information("Admin logginn");
                 return Ok(true);
             }
+            Log.Information("Admin logginn: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering");
         }
 
         public void LoggUt()
         {
+            Log.Information("Admin loggut");
             HttpContext.Session.SetString(_loggetInn, "");
         }
 
@@ -57,6 +61,7 @@ namespace oblig1_1.Controllers
                 Log.Information("Kunne ikke slette holdeplass");
                 return NotFound("Kunne ikke slette");
             }
+            Log.Information("Sletting utført av holdeplass id: {id}", id);
             return Ok("Sletting utført");
         }
 
@@ -72,6 +77,7 @@ namespace oblig1_1.Controllers
                 Log.Information("Kunne ikke slette rute");
                 return NotFound("Kunne ikke slette");
             }
+            Log.Information("Sletting utført av rute id: {id}", id);
             return Ok("Sletting utført");
         }
 
