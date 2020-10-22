@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace oblig1_1.DAL
 {
@@ -35,8 +36,9 @@ namespace oblig1_1.DAL
                 }).ToListAsync();
                 return alleBestillinger;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i index: {error}", e);
                 return null;
             }
         }
@@ -64,8 +66,9 @@ namespace oblig1_1.DAL
                 }
                 return alleRuter;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i VisAlleRuter: {error}", e);
                 return null;
             }
 
@@ -103,8 +106,9 @@ namespace oblig1_1.DAL
 
                 return nyReise;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i FinnEnRute: {error}", e);
                 return null;
             }
         }
@@ -145,8 +149,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i Lagre: {error}", e);
                 return false;
             }
         }
@@ -160,8 +165,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i Slett: {error}", e);
                 return false;
             }
         }
@@ -184,6 +190,7 @@ namespace oblig1_1.DAL
             }
             catch (Exception e)
             {
+                Log.Error("Error i HentEn: {error}", e);
                 Debug.WriteLine(e.Message);
                 return null;
             }
@@ -203,8 +210,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i Endre: {error}", e);
                 return false;
             }
         }
@@ -248,9 +256,9 @@ namespace oblig1_1.DAL
                 }
                 return false;
             }
-            catch
+            catch (Exception e)
             {
-                // legg til logging når log er opprettet 
+                Log.Error("Error i LoggInn: {error}", e);
                 return false; 
             }
         }
@@ -264,8 +272,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i SlettHoldeplass: {error}", e);
                 return false;
             }
         }
@@ -279,8 +288,9 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i SlettRute: {error}", e);
                 return false;
             }
         }
@@ -302,8 +312,9 @@ namespace oblig1_1.DAL
                 endreObjekt.Pris3Sone = pris.Pris3Sone;
                 await _db.SaveChangesAsync();
             }
-            catch
+            catch (Exception e)
             {
+                Log.Error("Error i EndrePriser: {error}", e);
                 return false;
             }
             return true;
