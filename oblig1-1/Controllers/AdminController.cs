@@ -50,7 +50,7 @@ namespace oblig1_1.Controllers
         }
 
         public async Task<ActionResult> SlettHoldeplass(int id)
-        {/*
+        {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
                 return Unauthorized("Ikke logget inn");
@@ -62,12 +62,12 @@ namespace oblig1_1.Controllers
                 return NotFound("Kunne ikke slette");
             }
             Log.Information("Sletting utført av holdeplass id: {id}", id);
-            return Ok("Sletting utført");*/
-            return Ok("");
+            return Ok("Sletting utført");
         }
 
+        /*
         public async Task<ActionResult> SlettRute(int id)
-        {/*
+        {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
                 return Unauthorized("Ikke logget inn");
@@ -78,19 +78,44 @@ namespace oblig1_1.Controllers
                 Log.Information("Kunne ikke slette rute");
                 return NotFound("Kunne ikke slette");
             }
-            Log.Information("Sletting utført av rute id: {id}", id);*/
+            Log.Information("Sletting utført av rute id: {id}", id);
             return Ok("Sletting utført");
-        }
+        }*/
 
         public async Task<ActionResult> AdminHentHoldeplasser()
-        {/*
+        {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
                 return Unauthorized("Ikke logget inn");
             }
-            List<Holdeplass> holdeplasser = await _db.HentHoldeplasser();
-            return Ok(holdeplasser);*/
-            return Ok("");
+            List<Holdeplass> holdeplasser = await _db.HentAlleHoldeplasser();
+            return Ok(holdeplasser);
+        }
+
+        public async Task<List<Priser>> HentPriser()
+        {
+            return await _db.HentPriser();
+        }
+
+        public async Task<ActionResult> EndrePriser(Priser pris)
+        {
+
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized();
+            }
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.EndrePriser(pris);
+                if (!returOK)
+                {
+                    //_log.LogInformation("Endringen av RuteStopp kunne ikke utføres");
+                    return NotFound("Endringen av prisene kunne ikke utføres");
+                }
+                return Ok("Priser endret");
+            }
+            //_log.LogInformation("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }

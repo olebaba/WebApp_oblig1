@@ -17,7 +17,7 @@ namespace oblig1_1.Models
         /*
         public override string ToString()
         {
-            return "{Sted: " + Sted + ", Avgangstider: " + Avgangstider + "}";
+            return "{Sted: " + Sted + ", Sone: " + Sone + "}";
         }
         */
     }

@@ -476,6 +476,45 @@ namespace oblig1_1.DAL
                 return false; 
             }
         }
-        
+
+        public async Task<bool> SlettHoldeplass(int id)
+        {
+            try
+            {
+                Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
+                _db.Holdeplasser.Remove(enHoldeplass);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<List<Priser>> HentPriser()
+        {
+            List<Priser> priser = await _db.Priser.ToListAsync();
+            return priser;
+        }
+
+        public async Task<bool> EndrePriser(Priser pris)
+        {
+            try
+            {
+                var endreObjekt = await _db.Priser.FindAsync(pris.PrisID);
+
+                endreObjekt.Pris1Sone = pris.Pris1Sone;
+                endreObjekt.Pris2Sone = pris.Pris2Sone;
+                endreObjekt.Pris3Sone = pris.Pris3Sone;
+                endreObjekt.Pris4Sone = pris.Pris4Sone;
+                await _db.SaveChangesAsync();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

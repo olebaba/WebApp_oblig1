@@ -163,7 +163,13 @@ function gaVidere() { //setter url til betalingssiden med korrekte verdier
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
         "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2)) +
         "&goDate=" + hentetRute.goDate + "&backDate=" + hentetRute.backDate;
-    location.href = url;
+
+    if ($(".avgCheckBox").length == 4 && $(".avgCheckBox input:checkbox:checked").length > 1) {
+        location.href = url;
+    } else if ($(".avgCheckBox").length == 2) {
+        location.href = url;
+    }
+        
 }
 
 function formaterTid(tid) { //Formaterer tid til 00:00-format. Noe av kode tatt fra nett.
