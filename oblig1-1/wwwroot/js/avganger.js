@@ -22,13 +22,13 @@ function getUrlParam(param) { //Henter ut parametere fra url. Kode tatt fra nett
 function hentTittel() { //Henter hvor reisen starter og slutter fra url, og sender videre. Kode tatt fra nett.
     let v1, v2;
     if (getUrlParam("steg") == null) {
-        v1 = getUrlParam('from');
-        v2 = getUrlParam('to');
+        v1 = JSON.parse(getUrlParam('from'));
+        v2 = JSON.parse(getUrlParam('to'));
     } else {
-        v1 = getUrlParam('to');
-        v2 = getUrlParam("from");
+        v1 = JSON.parse(getUrlParam('to'));
+        v2 = JSON.parse(getUrlParam("from"));
     }
-    settTittel(v1, v2);
+    settTittel(v1.sted, v2.sted);
 }
 
 /*
@@ -105,10 +105,10 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
                     totaltid: hentetRute.avreiseTider,
                     pris: hentetRute.pris,
                     holdeplasser: hentetRute.holdeplasser
-            }
-          
-            visAvreiser(avreiser, retur);
+                }
 
+                visAvreiser(avreiser, retur);
+            }
         }
     })
 
