@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Globalization;
 
 namespace oblig1_1.DAL
 {
@@ -90,6 +91,9 @@ namespace oblig1_1.DAL
                 Holdeplass fra = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[0], serializerOptions);
                 Holdeplass til = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[1], serializerOptions);
                 Console.WriteLine(fra.ToString() + ", " + til.ToString());
+                DateTime date = DateTime.ParseExact(holdeplasserOgDato[2], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+                Console.WriteLine(date);
                 List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
                 /*List<Rute> potensielleRuter = new List<Rute>();
                 //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID

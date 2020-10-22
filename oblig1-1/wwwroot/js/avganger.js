@@ -71,7 +71,22 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
 
 
 function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
-    var onsketReise = { holdeplasserOgDato: [getUrlParam('from'), getUrlParam('to')] };
+    var date = new Date(getUrlParam('goDate'));
+    var day = date.getDate();       // yields date
+    var month = date.getMonth() + 1;    // yields month (add one as '.getMonth()' is zero indexed)
+    var year = date.getFullYear();  // yields year
+
+    // After this construct a string with the above results as below
+    var time = day + "/" + month + "/" + year + " 00:00:00";
+    console.log(time);
+
+    var onsketReise = {
+        holdeplasserOgDato: [
+            getUrlParam('from'),
+            getUrlParam('to'),
+            time
+        ]
+    };
 
     console.log(onsketReise);
 
