@@ -66,14 +66,14 @@ function hentHoldeplasser() {
 function formaterHoldeplasser(holdeplasser) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>Sted</th><th>Sone</th><th></th><th></th>" +
+        "<th>Sted</th><th>Sone</th><th></th>" +
         "</tr>";
     for (let holdeplass of holdeplasser) {
         ut += "<tr>" +
             "<td>" + holdeplass.sted + "</td>" +
             "<td>" + holdeplass.sone + "</td>" +
             "<td> <a class='btn btn-primary' href='endreHold.html?id=" + holdeplass.id + "'>Endre</a></td>" +
-            "<td> <button class='btn btn-danger' onclick='slettHold(" + holdeplass.id + ")'>Slett</button></td>" +
+            //"<td> <button class='btn btn-danger' onclick='slettHold(" + holdeplass.id + ")'>Slett</button></td>" +
             "</tr>";
     }
     ut += "</table>";

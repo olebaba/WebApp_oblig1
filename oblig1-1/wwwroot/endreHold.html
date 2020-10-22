@@ -12,16 +12,16 @@
     <div class="container">
         <h1>Endre bestilling</h1>
         <form class="form">
-            <input type="hidden" id="Hid" />
+            <input type="hidden" id="id" />
             <div class="form-group">
                 <label>Sted</label>
-                <input type="text" id="sted" onchange="validerHoldeplassFra(this.value)" />
-                <span id="feilHoldeplassFra" style="color: red"></span>
+                <input type="text" id="sted" onchange="validerSted(this.value)" />
+                <span id="feilSted" style="color: red"></span>
             </div>
             <div class="form-group">
                 <label>Sone</label>
-                <input type="text" id="avgangstider" onchange="validerAvgangstid(this.value)" />
-                <span id="feilAvgangstid" style="color: red"></span>
+                <input type="text" id="sone" onchange="validerSone(this.value)" />
+                <span id="feilSone" style="color: red"></span>
             </div>
             <div class="form-group">
                 <input type="button" id="endre" value="Endre" class="btn btn-primary" onclick="validerOgEndreHold()" />

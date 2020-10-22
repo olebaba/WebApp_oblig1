@@ -346,7 +346,7 @@ namespace oblig1_1.DAL
         }
 
         public async Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass)
-        {/*
+        {
             try
             {
                 var enHoldeplass = await _db.Holdeplasser.FindAsync(endreHoldeplass.ID);
@@ -359,9 +359,7 @@ namespace oblig1_1.DAL
             catch(Exception e)
             {
                 return false; 
-            } */
-
-            return false;
+            }
         }
 
         public async Task<bool> LagreHoldeplass(Holdeplass innHP)
