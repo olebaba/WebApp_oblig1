@@ -54,7 +54,7 @@ namespace oblig1_1.Controllers
             return await _db.VisAlleRuteAvganger();
 
         }
-       public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasser) //kan ikke være async
+       public List<RuteAvgang> FinnEnRuteAvgang(List<string> holdeplasserOgDato) //kan ikke være async
         {/*
             foreach (Holdeplass h in holdeplasser)
             {
@@ -66,7 +66,7 @@ namespace oblig1_1.Controllers
             }
            */ 
 
-            return _db.FinnEnRuteAvgang(holdeplasser);
+            return _db.FinnEnRuteAvgang(holdeplasserOgDato);
         }
 
         public async Task<ActionResult> Slett(int id)

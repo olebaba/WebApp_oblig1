@@ -14,11 +14,11 @@ namespace oblig1_1.Models
         public String Sted { get; set; }
         [RegularExpression(@"^[0-9]{1,3}$")]
         public int Sone { get; set; }
-        /*
+        
         public override string ToString()
         {
             return "{Sted: " + Sted + ", Sone: " + Sone + "}";
         }
-        */
+        
     }
 }

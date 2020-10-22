@@ -73,8 +73,8 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
         holdeplasser: [
             getUrlParam('from'),
             getUrlParam('to'),
-            "{" + getUrlParam('goDate') + "}"
-    ]}
+        ]
+    }
     console.log(onsketReise);
     var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
 

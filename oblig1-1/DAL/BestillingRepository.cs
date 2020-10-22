@@ -80,13 +80,17 @@ namespace oblig1_1.DAL
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
         //Returnere en liste med ruteavganger 
-        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasser) //kan ikke være async pga where
+        public List<RuteAvgang> FinnEnRuteAvgang(List<string> holdeplasserOgDato) //kan ikke være async pga where
         {
-            try {
-                var fra = holdeplasser[0];
-                var til = holdeplasser[1];
+            JsonSerializerOptions serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            try
+            {
+                Console.WriteLine("Her kommer holdeplassene: " + holdeplasserOgDato.Count());
+                Holdeplass fra = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[0], serializerOptions);
+                Holdeplass til = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[1], serializerOptions);
+                Console.WriteLine(fra.ToString() + ", " + til.ToString());
                 List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
-                List<Rute> potensielleRuter = new List<Rute>();
+                /*List<Rute> potensielleRuter = new List<Rute>();
                 //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID
 
                 //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID, som har holdeplassID tilsvarende tilID
