@@ -25,6 +25,6 @@ namespace oblig1_1.DAL
         Task<bool> SlettRS(int id);
         Task<bool> EndreRS(RuteStopp endreRS);
         Task<bool> LagreRS(RuteStopp innRS);
-
+        Task<bool> SlettHoldeplass(int id);
     }
 }

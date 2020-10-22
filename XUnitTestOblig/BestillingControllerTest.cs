@@ -214,7 +214,7 @@ namespace XUnitTestOblig
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke logget inn", resultat.Value);
         }
-
+        /*
         [Fact]
         public async Task SlettRuteLoggetInn()
         {
@@ -265,5 +265,6 @@ namespace XUnitTestOblig
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke logget inn", resultat.Value);
         }
+        */
     }
 }

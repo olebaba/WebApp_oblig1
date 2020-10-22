@@ -476,6 +476,20 @@ namespace oblig1_1.DAL
                 return false; 
             }
         }
-        
+
+        public async Task<bool> SlettHoldeplass(int id)
+        {
+            try
+            {
+                Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
+                _db.Holdeplasser.Remove(enHoldeplass);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
