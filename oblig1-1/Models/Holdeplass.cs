@@ -11,13 +11,13 @@ namespace oblig1_1.Models
         [Key]
         public int ID { get; set; }
         [RegularExpression(@"^[a-zA-ZæøåÆØÅ. \-]{2,30}$")]
-        public String Sted { get; set; }
+        public string Sted { get; set; }
         [RegularExpression(@"^[0-9]{1,3}$")]
         public int Sone { get; set; }
         
         public override string ToString()
         {
-            return "{Sted: " + Sted + ", Sone: " + Sone + "}";
+            return "{ID: " + ID + ", Sted: " + Sted + ", Sone: " + Sone + "}";
         }
         
     }

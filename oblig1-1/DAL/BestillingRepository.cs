@@ -79,13 +79,14 @@ namespace oblig1_1.DAL
         {
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
+        [HttpPost]
         //Returnere en liste med ruteavganger 
-        public List<RuteAvgang> FinnEnRuteAvgang(List<string> holdeplasserOgDato) //kan ikke være async pga where
+        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async pga where
         {
             JsonSerializerOptions serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             try
             {
-                Console.WriteLine("Her kommer holdeplassene: " + holdeplasserOgDato.Count());
+                Console.WriteLine("Her kommer holdeplassene: " + holdeplasserOgDato.Length);
                 Holdeplass fra = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[0], serializerOptions);
                 Holdeplass til = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[1], serializerOptions);
                 Console.WriteLine(fra.ToString() + ", " + til.ToString());
@@ -116,7 +117,7 @@ namespace oblig1_1.DAL
                     }
                         
                 }*/
-                return ruteavganger;
+                return null;
             }
             catch {
                 return null;
@@ -245,6 +246,7 @@ namespace oblig1_1.DAL
         {
             try
             {
+                Console.WriteLine(id);
                 Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
                 if (enBestilling == null) return null; //finner ikke id i DB
                 var hentetBestilling = new Bestillinger()
