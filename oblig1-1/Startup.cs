@@ -13,6 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using oblig1_1.DAL;
 using oblig1_1.Models;
+using Serilog;
+using Serilog.Events;
 
 namespace oblig1_1
 {
@@ -21,6 +23,14 @@ namespace oblig1_1
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
+            Log.Logger = new LoggerConfiguration()
+                     .MinimumLevel.Debug()
+            // Logs Information, Warning, Error and Fatal to "info-logs.txt" file
+            .WriteTo.File(path: @"Logs/info-log.txt", restrictedToMinimumLevel: LogEventLevel.Information, rollingInterval: RollingInterval.Day)
+            // Logs Error and Fatal to "error-logs.txt" file
+            .WriteTo.File(path: @"Logs/error-log.txt", restrictedToMinimumLevel: LogEventLevel.Error, rollingInterval: RollingInterval.Day)
+            .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -37,12 +47,11 @@ namespace oblig1_1
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                loggerFactory.AddFile("Logs/ErrorLog.txt");
                 DBInit.Init(app);
             }
 
