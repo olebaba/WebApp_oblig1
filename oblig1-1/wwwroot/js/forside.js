@@ -284,7 +284,7 @@ function tilAvganger() {
 }
 
 function hentPriser() {
-    $.post("Bestilling/HentPriser", function (priser) {
+    $.post("Admin/HentPriser", function (priser) {
         formaterPriser(priser);
     });
 }
@@ -304,6 +304,7 @@ function formaterPriser(priser) {
             "<td> <button class='btn btn-primary' onclick='endrePriser(" + priser[i].prisID + ")'>Endre priser</button></td>" +
 
             "</tr>";
+        console.log(priser[i].prisklasse);
     }
     ut += "</table>";
     $('#output').html(ut);
@@ -320,6 +321,7 @@ function endrePriser(objekt) {
     };
     const url = "Bestilling/EndrePriser?pris=" + priser;
     console.log(priser.pris1Sone);
+    /*
     $.post(url, function (OK) {
         if (OK) {
              window.location.href = 'forside.html';
@@ -328,6 +330,10 @@ function endrePriser(objekt) {
             console.log("BAD TRY");
         }
     })
-
+    */
+    $.post("Admin/EndrePriser", priser, function () {
+        window.location.href = 'forside.html';
+        //console.log(priser.prisID + " , " + priser.prisklasse + " , " + priser.pris1Sone + " , " + priser.pris2Sone + " , " + priser.pris3Sone + " , " + priser.pris4Sone);
+    });
 
 }

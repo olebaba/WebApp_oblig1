@@ -91,5 +91,15 @@ namespace oblig1_1.Controllers
             List<Holdeplass> holdeplasser = await _db.HentAlleHoldeplasser();
             return Ok(holdeplasser);
         }
+
+        public async Task<List<Priser>> HentPriser()
+        {
+            return await _db.HentPriser();
+        }
+
+        public async Task<bool> EndrePriser(Priser pris)
+        {
+            return await _db.EndrePriser(pris);
+        }
     }
 }
