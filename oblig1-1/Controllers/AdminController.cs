@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace oblig1_1.Controllers
 {
@@ -17,12 +18,9 @@ namespace oblig1_1.Controllers
 
             private const string _loggetInn = "innlogget";
 
-            private ILogger<AdminController> _log;
-
-        public AdminController(IBestillingRepository db, ILogger<AdminController> log)
+        public AdminController(IBestillingRepository db)
             {
                 _db = db;
-                _log = log;
             }
 
 
@@ -56,6 +54,7 @@ namespace oblig1_1.Controllers
             bool returOK = await _db.SlettHoldeplass(id);
             if (!returOK)
             {
+                Log.Information("Kunne ikke slette holdeplass");
                 return NotFound("Kunne ikke slette");
             }
             return Ok("Sletting utført");
@@ -70,6 +69,7 @@ namespace oblig1_1.Controllers
             bool returOK = await _db.SlettRute(id);
             if (!returOK)
             {
+                Log.Information("Kunne ikke slette rute");
                 return NotFound("Kunne ikke slette");
             }
             return Ok("Sletting utført");
