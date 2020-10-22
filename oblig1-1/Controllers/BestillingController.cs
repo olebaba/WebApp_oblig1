@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using oblig1_1.DAL;
@@ -15,13 +16,17 @@ namespace oblig1_1.Controllers
     public class BestillingController : ControllerBase
     {
         private readonly IBestillingRepository _db;
+
+        private const string _loggetInn = "innlogget";
         
-        public BestillingController(IBestillingRepository db)
+        private ILogger<BestillingController> _log;
+        
+        public BestillingController(IBestillingRepository db, ILogger<BestillingController> log)
         {
             _db = db;
         }
 
-        public async Task<ActionResult> Lagre(Bestilling innBestilling)
+        public async Task<ActionResult> Lagre(Bestillinger innBestilling)
         {
             if (ModelState.IsValid)
             {
@@ -37,7 +42,7 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering");
         }
 
-        public async Task<List<Bestilling>> Index()
+        public async Task<List<Bestillinger>> Index()
         {
             return await _db.Index();
         }
@@ -77,7 +82,7 @@ namespace oblig1_1.Controllers
 
         public async Task<ActionResult> HentEn(int id)
         {
-            Bestilling bestilling = await _db.HentEn(id);
+            Bestillinger bestilling = await _db.HentEn(id);
             if (bestilling == null)
             {
                 Log.Information("Bestillingen ikke funnet");
@@ -86,7 +91,7 @@ namespace oblig1_1.Controllers
             return Ok(bestilling);
         }
 
-        public async Task<ActionResult> Endre(Bestilling endreBestilling)
+        public async Task<ActionResult> Endre(Bestillinger endreBestilling)
         {
             if (ModelState.IsValid)
             {
@@ -117,6 +122,19 @@ namespace oblig1_1.Controllers
         {
             return _db.FinnRute(holdeplass);
         }
+        
+        public async Task<List<Priser>> HentPriser()
+        {
+            return await _db.HentPriser();
+        }
+        
+        public async Task<bool> EndrePriser(Priser pris)
+        {
+            return await _db.EndrePriser(pris);
+        }
 
+        
+
+        
     }
 }

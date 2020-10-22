@@ -18,6 +18,11 @@ namespace oblig1_1.DAL
         Task<List<Holdeplass>> HentAlleHoldeplasser();
         Task<List<Holdeplass>> VisHoldeplasserIRute(int id);
         Rute FinnRute(Holdeplass holdeplass);
+        Task<List<Priser>> HentPriser();
+        Task<bool> EndrePriser(Priser pris);
+        Task<bool> LoggInn(Bruker bruker);
+        Task<bool> SlettHoldeplass(int id);
+        Task<bool> SlettRute(int id);
 
     }
 }

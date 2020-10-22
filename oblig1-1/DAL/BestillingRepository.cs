@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using oblig1_1.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace oblig1_1.DAL
@@ -19,11 +21,11 @@ namespace oblig1_1.DAL
         }
 
         [HttpPost]
-        public async Task<List<Bestilling>> Index()
+        public async Task<List<Bestillinger>> Index()
         {
             try
             {
-                List<Bestilling> alleBestillinger = await _db.Bestillinger.Select(best => new Bestilling
+                List<Bestillinger> alleBestillinger = await _db.Bestillinger.Select(best => new Bestillinger
                 {
                     ID = best.ID,
                     Kunde = best.Kunde,
@@ -107,12 +109,12 @@ namespace oblig1_1.DAL
             }
         }
 
-        public async Task<bool> Lagre(Bestilling innBestilling)
+        public async Task<bool> Lagre(Bestillinger innBestilling)
         {
             Console.WriteLine(innBestilling.ToString());
             try
             {
-                var nyBestilling = new Bestilling();
+                var nyBestilling = new Bestillinger();
                 nyBestilling = innBestilling;
                 /*
                 var nyTur = new Rute(){
@@ -153,7 +155,7 @@ namespace oblig1_1.DAL
         {
             try
             {
-                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
+                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
                 _db.Bestillinger.Remove(enBestilling);
                 await _db.SaveChangesAsync();
                 return true;
@@ -164,13 +166,13 @@ namespace oblig1_1.DAL
             }
         }
 
-        public async Task<Bestilling> HentEn(int id)
+        public async Task<Bestillinger> HentEn(int id)
         {
             try
             {
-                Bestilling enBestilling = await _db.Bestillinger.FindAsync(id);
+                Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
                 if (enBestilling == null) return null; //finner ikke id i DB
-                var hentetBestilling = new Bestilling()
+                var hentetBestilling = new Bestillinger()
                 {
                     ID = enBestilling.ID,
                     Kunde = enBestilling.Kunde,
@@ -188,11 +190,11 @@ namespace oblig1_1.DAL
             
         }
 
-        public async Task<bool> Endre(Bestilling endreBestilling)
+        public async Task<bool> Endre(Bestillinger endreBestilling)
         {
             try
             {
-                Bestilling enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
+                Bestillinger enBestillling = await _db.Bestillinger.FindAsync(endreBestilling.ID);
                 enBestillling.Kunde = endreBestilling.Kunde;
                 enBestillling.Pris = endreBestilling.Pris;
                 enBestillling.Tur = endreBestilling.Tur;
@@ -211,6 +213,100 @@ namespace oblig1_1.DAL
         {
             List<Holdeplass> holdeplasser = await _db.Holdeplasser.ToListAsync();
             return holdeplasser;
+        }
+
+        public static byte[] Hashing(string passord, byte[] salt)
+        {
+            return KeyDerivation.Pbkdf2(
+                                password: passord,
+                                salt: salt,
+                                prf: KeyDerivationPrf.HMACSHA512,
+                                iterationCount: 1000,
+                                numBytesRequested: 32);
+        }
+
+        public static byte[] Salt()
+        {
+            var cryptoSP = new RNGCryptoServiceProvider();
+            var salt = new byte[24];
+            cryptoSP.GetBytes(salt);
+            return salt;
+        }
+
+        public async Task<bool> LoggInn(Bruker bruker)
+        {
+            try
+            {
+                Brukere funnetBruker = await _db.Brukere.FirstOrDefaultAsync(b => b.Brukernavn == bruker.Brukernavn);
+
+                // sjekker om passordet til bruker er riktig 
+                byte[] hash = Hashing(bruker.Passord, funnetBruker.Salt);
+                bool ok = hash.SequenceEqual(funnetBruker.Passord);
+                if(!ok)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                // legg til logging når log er opprettet 
+                return false; 
+            }
+        }
+
+        public async Task<bool> SlettHoldeplass(int id)
+        {
+            try
+            {
+                Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
+                _db.Holdeplasser.Remove(enHoldeplass);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> SlettRute(int id)
+        {
+            try
+            {
+                Rute enRute = await _db.Ruter.FindAsync(id);
+                _db.Ruter.Remove(enRute);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        
+        public async Task<List<Priser>> HentPriser()
+        {
+            List<Priser> priser = await _db.Priser.ToListAsync();
+            return priser;
+        }
+
+        public async Task<bool> EndrePriser(Priser pris)
+        {
+            try
+            {
+                var endreObjekt = await _db.Priser.FindAsync(pris.PrisID);
+                
+                endreObjekt.Pris1Sone = pris.Pris1Sone;
+                endreObjekt.Pris2Sone = pris.Pris2Sone;
+                endreObjekt.Pris3Sone = pris.Pris3Sone;
+                await _db.SaveChangesAsync();
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

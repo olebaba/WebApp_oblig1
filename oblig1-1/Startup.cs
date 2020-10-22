@@ -44,6 +44,15 @@ namespace oblig1_1
             services.AddDbContext<BestillingContext>(options => 
                         options.UseSqlite("Data Source=Bestillinger.db"));
             services.AddScoped<IBestillingRepository, BestillingRepository>();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                options.IdleTimeout = TimeSpan.FromSeconds(1800); // logges automatisk ut etter 30 min 
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +67,9 @@ namespace oblig1_1
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseSession();
+
             app.UseStaticFiles(); //Bruke HTML-filen
 
             app.UseAuthorization();

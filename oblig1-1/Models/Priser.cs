@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace oblig1_1.Models
 {
     public class Priser
@@ -11,6 +11,9 @@ namespace oblig1_1.Models
         [Key]
         public int PrisID { get; set; }
         public string Prisklasse { get; set; }
-        public double Pris { get; set; }
+        public double Pris1Sone { get; set; }
+        public double Pris2Sone { get; set; }
+        public double Pris3Sone { get; set; }
+        public double Pris4Sone { get; set; }
     }
 }
