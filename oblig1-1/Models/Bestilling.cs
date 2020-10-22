@@ -13,8 +13,8 @@ namespace oblig1_1.Models
         public int ID { get; set; }
         public double Pris { get; set; }
         public virtual Kunde Kunde { get; set; }
-        public virtual Rute Tur { get; set; }
-        public virtual Rute Retur { get; set; }
+        public virtual RuteAvgang Tur { get; set; }
+        public virtual RuteAvgang Retur { get; set; }
 
         public override string ToString()
         {

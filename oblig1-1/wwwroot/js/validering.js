@@ -29,7 +29,7 @@ function validerHoldeplassFra(fra) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
     const ok = regexp.test(fra);
     if (!ok) {
-        $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        $("#feilHoldeplassFra").html("Holdeplassen må bestå av 2 til 30 bokstaver");
         validerKnapp();
         return false;
     }
@@ -44,7 +44,7 @@ function validerHoldeplassTil(til) {
     const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
     const ok = regexp.test(til);
     if (!ok) {
-        $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 20 bokstaver");
+        $("#feilHoldeplassTil").html("Holdeplassen må bestå av 2 til 30 bokstaver");
         validerKnapp();
         return false;
     }
@@ -173,7 +173,7 @@ function validerBrukernavn(brukernavn) {
 
 function validerPassord(passord) {
     const regexp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    const ok = regexp.test(brukernavn);
+    const ok = regexp.test(passord);
     if (!ok) {
         $("#feilPassord").html("Passordet må bestå av minst 8 tegn, minst en bokstav og ett tall");
         return false;
@@ -183,3 +183,43 @@ function validerPassord(passord) {
         return true;
     }
 }
+
+function validerRekkefolge(rekkefolge) {
+    const regexp = /^[0-9]{1,3}$/;
+    const ok = regexp.test(rekkefolge);
+    if (!ok) {
+        $("#feilRNr").html("RekkefølgeNr må bestå av 1 til 3 sammenhengende tall");
+        return false;
+    }
+    else {
+        $("#feilRNr").html("");
+        return true;
+    }
+}
+
+function validerTid(stoppTid) {
+    const regexp = /^([0-1]?\d|2[0-3]):([0-5]?\d):([0-5]?\d)$/;
+    const ok = regexp.test(stoppTid);
+    if (!ok) {
+        $("#feilTid").html("StoppTid må være på formen HH:MM:SS");
+        return false;
+    }
+    else {
+        $("#feilTid").html("");
+        return true; 
+    }
+}
+
+function validerSone(sone) {
+    const regexp = /^[0-9]{1,3}$/;
+    const ok = regexp.test(sone);
+    if (!ok) {
+        $("#feilSone").html("Sone må bestå av 1 til 3 sammenhengende tall");
+        return false;
+    }
+    else {
+        $("#feilSone").html("");
+        return true;
+    }
+}
+

@@ -11,12 +11,11 @@ namespace oblig1_1.Models
     {
         [Key]
         public int RID { get; set; }
-        public string Datoer { get; set; }
-
+        /*
         public override string ToString()
         {
             return "{Datoer: " + Datoer + ", " + string.Join(", ", Holdeplasser) + "TotalTid: " + TotalTid + "}";
-        }
+        }*/
         public string Navn { get; set; }
         public virtual List<RuteStopp> RuteStopp { get; set; }
     }

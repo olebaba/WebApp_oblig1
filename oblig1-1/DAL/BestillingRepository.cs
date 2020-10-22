@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+﻿using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using oblig1_1.Models;
@@ -8,7 +10,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Serilog;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace oblig1_1.DAL
 {
@@ -36,21 +39,20 @@ namespace oblig1_1.DAL
                 }).ToListAsync();
                 return alleBestillinger;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i index: {error}", e);
                 return null;
             }
         }
 
-        public async Task<List<Rute>> VisAlleRuter()
-        {
+        public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
+        {/*
             try
             {
-                List<Rute> alleDBRuter = await _db.Ruter.ToListAsync();
-                List<Rute> alleRuter = new List<Rute>();
+                List<RuteAvgang> alleDBRuteAvganger = await _db.RuteAvganger.ToListAsync();
+                List<RuteAvgang> alleRuteAvganger = new List<RuteAvgang>();
 
-                foreach (var rute in alleDBRuter)
+                foreach (var rute in alleDBRuteAvganger)
                 {
                     var holdeplasserIRute = new List<Holdeplass>();
                     var enRute = new Rute
@@ -66,17 +68,58 @@ namespace oblig1_1.DAL
                 }
                 return alleRuter;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i VisAlleRuter: {error}", e);
+                return null;
+            }*/
+            return null;
+
+        }
+        private bool sammeDato(DateTime dato1, DateTime dato2) 
+        {
+            return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
+        }
+        //Returnere en liste med ruteavganger 
+        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasser) //kan ikke være async pga where
+        {
+            try {
+                var fra = holdeplasser[0];
+                var til = holdeplasser[1];
+                List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
+                List<Rute> potensielleRuter = new List<Rute>();
+                //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID
+
+                //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID, som har holdeplassID tilsvarende tilID
+                //rekkefølgenr større enn fraID sitt rekkefølgenr
+                //3.Hvis vi finner en eller flere, legger dette til i listen av rutekandidater
+                /*foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
+                {
+                    foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && fraStopp.RekkefølgeNr < r.RekkefølgeNr && fraStopp.Rute == r.Rute))
+                    {
+                        potensielleRuter.Add(fraStopp.Rute);
+                    }
+                            /*if (stopp.Holdeplass.ID == til.ID || stopp.Holdeplass.ID>til.ID) {
+                        potensielleRuter.Add(stopp.Rute);
+                    }*/
+                //}
+                //4.Looper listen av rutekandidater og finner ruteavganger som bruker ruta
+                //5. Hvis ruteavgangen har riktig dato, legger den til i listen over ruteavganger
+                /*
+                foreach (var rute in potensielleRuter) {
+                    foreach(var ruteavgang in _db.RuteAvganger.Where(r => r.Rute.RID == rute.RID && sammeDato(r.Dato, dato)))
+                    {
+                        ruteavganger.Add(ruteavgang);
+                    }
+                        
+                }*/
+                return ruteavganger;
+            }
+            catch {
                 return null;
             }
 
-        }
-
-        public Rute FinnEnRute(Rute reise) //kan ikke være async pga where
-        {
-            Holdeplass fra = reise.Holdeplasser[0];
+            /*
+            Holdeplass fra = reise.;
             Holdeplass til = reise.Holdeplasser[1];
             
             try
@@ -106,19 +149,41 @@ namespace oblig1_1.DAL
 
                 return nyReise;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i FinnEnRute: {error}", e);
+                _log.LogError("Error i FinnEnRute: {error}", e);
                 return null;
-            }
+            }*/
         }
 
         public async Task<bool> Lagre(Bestillinger innBestilling)
+        {/*
+            try
+            {
+                var nyBestilling = new Bestillinger();
+                nyBestilling.Pris = innBestilling.Pris;
+
+                //Sjekker om kunde finnes i databasen fra før
+                var sjekkKunde = _db.Kunder.Find(innBestilling.Kunde);
+
+                if (sjekkKunde == null) 
+                {
+                    var nyKundeRad = new Kunde();
+                    nyKundeRad = innBestilling.Kunde;
+                    nyBestilling.Kunde = nyKundeRad;
+
+                }
+                else
+                {
+                    nyBestilling.Kunde = sjekkKunde;
+                }
+
+        public async Task<bool> Lagre(Bestilling innBestilling)
         {
             Console.WriteLine(innBestilling.ToString());
             try
             {
-                var nyBestilling = new Bestillinger();
+                var nyBestilling = new Bestilling();
                 nyBestilling = innBestilling;
                 /*
                 var nyTur = new Rute(){
@@ -142,18 +207,19 @@ namespace oblig1_1.DAL
                     Navn = innBestilling.Kunde.Navn,
                 };
                 nyBestilling.Kunde = nyKunde;
-                */
+                
                 Console.WriteLine(nyBestilling.ToString());
 
                 _db.Bestillinger.Add(nyBestilling);
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Lagre: {error}", e);
                 return false;
             }
+            */
+            return false;
         }
 
         public async Task<bool> Slett(int id)
@@ -165,9 +231,8 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Slett: {error}", e);
                 return false;
             }
         }
@@ -190,7 +255,6 @@ namespace oblig1_1.DAL
             }
             catch (Exception e)
             {
-                Log.Error("Error i HentEn: {error}", e);
                 Debug.WriteLine(e.Message);
                 return null;
             }
@@ -210,14 +274,13 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Endre: {error}", e);
                 return false;
             }
         }
 
-        public async Task<List<Holdeplass>> HentHoldeplasser()
+        public async Task<List<Holdeplass>> HentAlleHoldeplasser()
         {
             List<Holdeplass> holdeplasser = await _db.Holdeplasser.ToListAsync();
             return holdeplasser;
@@ -246,78 +309,173 @@ namespace oblig1_1.DAL
             try
             {
                 Brukere funnetBruker = await _db.Brukere.FirstOrDefaultAsync(b => b.Brukernavn == bruker.Brukernavn);
-
+                if (funnetBruker == null) return false;
                 // sjekker om passordet til bruker er riktig 
                 byte[] hash = Hashing(bruker.Passord, funnetBruker.Salt);
                 bool ok = hash.SequenceEqual(funnetBruker.Passord);
-                if(!ok)
+                if(ok)
                 {
                     return true;
                 }
                 return false;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Log.Error("Error i LoggInn: {error}", e);
+                // legg til logging når log er opprettet 
                 return false; 
             }
         }
 
-        public async Task<bool> SlettHoldeplass(int id)
-        {
+        public async Task<Holdeplass> HentHoldeplass(int id)
+        {/*
             try
             {
                 Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
-                _db.Holdeplasser.Remove(enHoldeplass);
+                var hentetHold = new Holdeplass()
+                {
+                    ID = enHoldeplass.ID,
+                    Sted = enHoldeplass.Sted,
+                    Sone = enHoldeplass.Sone
+                };
+                return hentetHold;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }*/
+
+            return null;
+        }
+
+        public async Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass)
+        {/*
+            try
+            {
+                var enHoldeplass = await _db.Holdeplasser.FindAsync(endreHoldeplass.ID);
+                enHoldeplass.Sted = endreHoldeplass.Sted;
+                enHoldeplass.Sone = endreHoldeplass.Sone;
+
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Log.Error("Error i SlettHoldeplass: {error}", e);
+                return false; 
+            } */
+
+            return false;
+        }
+
+        public async Task<List<RuteStopp>> HentRuteStopp()
+        {
+            List<RuteStopp> alleRuteStopp = await _db.Rutestopp.ToListAsync();
+            return alleRuteStopp;
+        }
+
+        public async Task<RuteStopp> EtRuteStopp(int id)
+        {
+            try
+            {
+                RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
+
+                //Holdeplass holdeplass = await _db.Holdeplasser.FindAsync(etRS.Holdeplass.ID);
+
+                var hentetRS = new RuteStopp()
+                {
+                    ID = etRS.ID,
+                    RekkefølgeNr = etRS.RekkefølgeNr,
+                    StoppTid = etRS.StoppTid,
+                    Holdeplass = etRS.Holdeplass
+                };
+                return hentetRS;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> SlettRS(int id)
+        {
+            try
+            {
+                RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
+                _db.Rutestopp.Remove(etRS);
+                await _db.SaveChangesAsync();
+                return true; 
+            }
+            catch(Exception e)
+            {
+                return false; 
+            }
+        }
+
+        public async Task<bool> EndreRS(RuteStopp endreRS)
+        {
+            try
+            {
+                var etRS = await _db.Rutestopp.FindAsync(endreRS.ID);
+                if(etRS.Holdeplass.ID != endreRS.Holdeplass.ID)
+                {
+                    var sjekkHoldeplass = _db.Holdeplasser.Find(endreRS.Holdeplass.ID);
+                    if(sjekkHoldeplass == null)
+                    {
+                        var holdeplassRad = new Holdeplass();
+                        holdeplassRad.Sted = endreRS.Holdeplass.Sted;
+                        holdeplassRad.Sone = endreRS.Holdeplass.Sone;
+                        etRS.Holdeplass = holdeplassRad;
+                    }
+                    else
+                    {
+                        etRS.Holdeplass = endreRS.Holdeplass;
+                    }
+                }
+                etRS.RekkefølgeNr = endreRS.RekkefølgeNr;
+                etRS.StoppTid = endreRS.StoppTid;
+
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception e)
+            {
                 return false;
             }
         }
 
-        public async Task<bool> SlettRute(int id)
+        public async Task<bool> LagreRS(RuteStopp innRS)
         {
             try
             {
-                Rute enRute = await _db.Ruter.FindAsync(id);
-                _db.Ruter.Remove(enRute);
+                var nyRS = new RuteStopp();
+                nyRS.RekkefølgeNr = innRS.RekkefølgeNr;
+                nyRS.StoppTid = innRS.StoppTid;
+
+                // sjekker om holdeplass allerede ligger i databasen, legger til ny dersom den ikke gjør det 
+                
+                var sjekkHoldeplass = await _db.Holdeplasser.FindAsync(innRS.Holdeplass.ID);
+                if(sjekkHoldeplass == null)
+                {
+                    var nyHoldeplass = new Holdeplass();
+                    nyHoldeplass.Sted = innRS.Holdeplass.Sted;
+                    nyHoldeplass.Sone = innRS.Holdeplass.Sone;
+                    nyRS.Holdeplass = nyHoldeplass;
+                }
+                else
+                {
+                    nyRS.Holdeplass.Sone = innRS.Holdeplass.Sone; 
+                    nyRS.Holdeplass = sjekkHoldeplass;
+                }
+                _db.Rutestopp.Add(nyRS);
                 await _db.SaveChangesAsync();
-                return true;
+                return true; 
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Log.Error("Error i SlettRute: {error}", e);
-                return false;
+                //Fikk opp at _log ikk
+                //_log.LogInformation(e.Message);
+                return false; 
             }
         }
         
-        public async Task<List<Priser>> HentPriser()
-        {
-            List<Priser> priser = await _db.Priser.ToListAsync();
-            return priser;
-        }
-
-        public async Task<bool> EndrePriser(Priser pris)
-        {
-            try
-            {
-                var endreObjekt = await _db.Priser.FindAsync(pris.PrisID);
-                
-                endreObjekt.Pris1Sone = pris.Pris1Sone;
-                endreObjekt.Pris2Sone = pris.Pris2Sone;
-                endreObjekt.Pris3Sone = pris.Pris3Sone;
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                Log.Error("Error i EndrePriser: {error}", e);
-                return false;
-            }
-            return true;
-        }
     }
 }

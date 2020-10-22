@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Endre Rutestopp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/2.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/endre.js"></script>
+    <script src="js/validering.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Endre Rutestopp</h1>
+        <form class="form">
+            <input type="hidden" id="id" />
+            <div class="form-group">
+                <label>RekkefølgeNr</label>
+                <input type="text" id="rekkefolge" onchange="validerRekkefolge(this.value)" />
+                <span id="feilRNr" style="color: red"></span>
+            </div>
+            <div class="form-group">
+                <label>StoppTid</label>
+                <input type="text" id="tid" onchange="validerTid(this.value)" placeholder="HH:MM:SS" />
+                <span id="feilTid" style="color: red"></span>
+            </div>
+            <div class="form-group">
+                <label>Holdeplass Sted</label>
+                <input type="text" id="sted" onchange="validerHoldeplassFra(this.value)" />
+                <span id="feilHoldeplassFra" style="color: red"></span>
+            </div>
+            <div class="form-group">
+                <label>Holdeplass Sone</label>
+                <input type="text" id="sone" onchange="validerSone(this.value)" />
+                <span id="feilSone" style="color: red"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" id="reg" value="Endre" class="btn btn-primary" onclick="validerOgEndreRS()" />
+            </div>
+            <div id="feil" style="color: red"></div>
+        </form>
+    </div>
+
+</body>
+</html>
