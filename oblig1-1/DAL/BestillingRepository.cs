@@ -102,7 +102,7 @@ namespace oblig1_1.DAL
                 foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
                 {
                     foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && 
-                                                                fraStopp.RekkefølgeNr < r.RekkefølgeNr && 
+                                                                fraStopp.StoppTid < r.StoppTid && 
                                                                 fraStopp.Rute == r.Rute))
                     {
                         potensielleRuter.Add(fraStopp.Rute);
@@ -404,7 +404,6 @@ namespace oblig1_1.DAL
                 var hentetRS = new RuteStopp()
                 {
                     ID = etRS.ID,
-                    RekkefølgeNr = etRS.RekkefølgeNr,
                     StoppTid = etRS.StoppTid,
                     Holdeplass = etRS.Holdeplass
                 };
@@ -451,7 +450,6 @@ namespace oblig1_1.DAL
                         etRS.Holdeplass = endreRS.Holdeplass;
                     }
                 }
-                etRS.RekkefølgeNr = endreRS.RekkefølgeNr;
                 etRS.StoppTid = endreRS.StoppTid;
 
                 await _db.SaveChangesAsync();
@@ -462,13 +460,33 @@ namespace oblig1_1.DAL
                 return false;
             }
         }
+        public RuteStopp NyttRuteStopp(string[] argumenter)
+        {
+            string holdeplassNavn = argumenter[0];
+            string ruteNavn = argumenter[1];
+            int minutterEtterAvgang = int.Parse(argumenter[2]);
+            TimeSpan stoppTid = TimeSpan.FromMinutes(minutterEtterAvgang);
+
+            Holdeplass holdeplass = _db.Holdeplasser.Where(h => h.Sted == holdeplassNavn).FirstOrDefault();
+            Rute rute = _db.Ruter.Where(r => r.Navn == ruteNavn).FirstOrDefault();
+            if (holdeplass != null && rute != null)
+            {
+                RuteStopp nyttRuteStopp = new RuteStopp();
+                nyttRuteStopp.Rute = rute;
+                nyttRuteStopp.Holdeplass = holdeplass;
+                nyttRuteStopp.StoppTid = stoppTid;
+                _db.Rutestopp.Add(nyttRuteStopp);
+                _db.SaveChanges();
+                return nyttRuteStopp;
+            }
+            return null;
+        }
 
         public async Task<bool> LagreRS(RuteStopp innRS)
         {
             try
             {
                 var nyRS = new RuteStopp();
-                nyRS.RekkefølgeNr = innRS.RekkefølgeNr;
                 nyRS.StoppTid = innRS.StoppTid;
 
                 // sjekker om holdeplass allerede ligger i databasen, legger til ny dersom den ikke gjør det 

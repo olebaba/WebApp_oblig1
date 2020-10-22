@@ -22,6 +22,7 @@ namespace oblig1_1.DAL
         Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass);
         Task<List<RuteStopp>> HentRuteStopp();
         Task<RuteStopp> EtRuteStopp(int id);
+        RuteStopp NyttRuteStopp(string[] argumenter);
         Task<bool> SlettRS(int id);
         Task<bool> EndreRS(RuteStopp endreRS);
         Task<bool> LagreRS(RuteStopp innRS);
