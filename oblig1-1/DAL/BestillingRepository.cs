@@ -80,7 +80,7 @@ namespace oblig1_1.DAL
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
         //Returnere en liste med ruteavganger 
-        public List<RuteAvgang> FinnEnRuteAvgang(List<Holdeplass> holdeplasser) //kan ikke være async pga where
+        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasser) //kan ikke være async pga where
         {
             try {
                 var fra = holdeplasser[0];
@@ -92,7 +92,7 @@ namespace oblig1_1.DAL
                 //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID, som har holdeplassID tilsvarende tilID
                 //rekkefølgenr større enn fraID sitt rekkefølgenr
                 //3.Hvis vi finner en eller flere, legger dette til i listen av rutekandidater
-                foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
+                /*foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
                 {
                     foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && fraStopp.RekkefølgeNr < r.RekkefølgeNr && fraStopp.Rute == r.Rute))
                     {
@@ -101,7 +101,7 @@ namespace oblig1_1.DAL
                             /*if (stopp.Holdeplass.ID == til.ID || stopp.Holdeplass.ID>til.ID) {
                         potensielleRuter.Add(stopp.Rute);
                     }*/
-                }
+                //}
                 //4.Looper listen av rutekandidater og finner ruteavganger som bruker ruta
                 //5. Hvis ruteavgangen har riktig dato, legger den til i listen over ruteavganger
                 /*
