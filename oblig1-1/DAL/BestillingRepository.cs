@@ -1,18 +1,14 @@
-﻿using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using oblig1_1.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Serilog;
+using System.Globalization;
 
 namespace oblig1_1.DAL
 {
@@ -40,9 +36,8 @@ namespace oblig1_1.DAL
                 }).ToListAsync();
                 return alleBestillinger;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i index: {error}", e);
                 return null;
             }
         }
@@ -70,9 +65,8 @@ namespace oblig1_1.DAL
                 }
                 return alleRuter;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i VisAlleRuter: {error}", e);
                 return null;
             }*/
             return null;
@@ -83,11 +77,22 @@ namespace oblig1_1.DAL
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
         //Returnere en liste med ruteavganger 
-        public List<RuteAvgang> FinnEnRuteAvgang(List<Holdeplass> holdeplasser) //kan ikke være async pga where
+        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async pga where
         {
+            JsonSerializerOptions serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             try {
-                var fra = holdeplasser[0];
-                var til = holdeplasser[1];
+
+                Console.WriteLine("Her kommer holdeplassene: " + holdeplasserOgDato.Length);
+                Console.WriteLine(holdeplasserOgDato[0] + ", " + holdeplasserOgDato[1] + ", " + holdeplasserOgDato[2]);
+                Holdeplass fra = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[0], serializerOptions);
+                Holdeplass til = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[1], serializerOptions);
+                /*string dateFormat = "dd-MM-yyyy";
+                if(DateTime.TryParseExact(holdeplasserOgDato[2], dateFormat, CultureInfo.InvariantCulture, out DateTime parsedDate)){
+                    Console.WriteLine(fra.Sted + ", " + til.Sted + ", dato: " + parsedDate);
+                }
+                //DateTime.TryParse(holdeplasserOgDato[2], out DateTime parsedDate);
+                //DateTime goDate = JsonSerializer.Deserialize<DateTime>(holdeplasserOgDato[2], serializerOptions);
+                
                 List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
                 List<Rute> potensielleRuter = new List<Rute>();
                 //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID
@@ -95,7 +100,7 @@ namespace oblig1_1.DAL
                 //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID, som har holdeplassID tilsvarende tilID
                 //rekkefølgenr større enn fraID sitt rekkefølgenr
                 //3.Hvis vi finner en eller flere, legger dette til i listen av rutekandidater
-                foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
+                /*foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
                 {
                     foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && fraStopp.RekkefølgeNr < r.RekkefølgeNr && fraStopp.Rute == r.Rute))
                     {
@@ -104,7 +109,7 @@ namespace oblig1_1.DAL
                             /*if (stopp.Holdeplass.ID == til.ID || stopp.Holdeplass.ID>til.ID) {
                         potensielleRuter.Add(stopp.Rute);
                     }*/
-                }
+                //}
                 //4.Looper listen av rutekandidater og finner ruteavganger som bruker ruta
                 //5. Hvis ruteavgangen har riktig dato, legger den til i listen over ruteavganger
                 /*
@@ -117,9 +122,7 @@ namespace oblig1_1.DAL
                 }*/
                 return ruteavganger;
             }
-            catch (Exception e) 
-            {
-                Log.Error("Error i FinnEnRuteAvgang: {error}", e);
+            catch {
                 return null;
             }
 
@@ -154,9 +157,9 @@ namespace oblig1_1.DAL
 
                 return nyReise;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i FinnEnRute: {error}", e);
+                _log.LogError("Error i FinnEnRute: {error}", e);
                 return null;
             }*/
         }
@@ -219,9 +222,8 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Lagre: {error}", e);
                 return false;
             }
             */
@@ -237,9 +239,8 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Slett: {error}", e);
                 return false;
             }
         }
@@ -262,7 +263,6 @@ namespace oblig1_1.DAL
             }
             catch (Exception e)
             {
-                Log.Error("Error i HentEn: {error}", e);
                 Debug.WriteLine(e.Message);
                 return null;
             }
@@ -282,9 +282,8 @@ namespace oblig1_1.DAL
                 await _db.SaveChangesAsync();
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error("Error i Endre: {error}", e);
                 return false;
             }
         }
@@ -294,202 +293,5 @@ namespace oblig1_1.DAL
             List<Holdeplass> holdeplasser = await _db.Holdeplasser.ToListAsync();
             return holdeplasser;
         }
-
-        public static byte[] Hashing(string passord, byte[] salt)
-        {
-            return KeyDerivation.Pbkdf2(
-                                password: passord,
-                                salt: salt,
-                                prf: KeyDerivationPrf.HMACSHA512,
-                                iterationCount: 1000,
-                                numBytesRequested: 32);
-        }
-
-        public static byte[] Salt()
-        {
-            var cryptoSP = new RNGCryptoServiceProvider();
-            var salt = new byte[24];
-            cryptoSP.GetBytes(salt);
-            return salt;
-        }
-
-        public async Task<bool> LoggInn(Bruker bruker)
-        {
-            try
-            {
-                Brukere funnetBruker = await _db.Brukere.FirstOrDefaultAsync(b => b.Brukernavn == bruker.Brukernavn);
-                if (funnetBruker == null) return false;
-                // sjekker om passordet til bruker er riktig 
-                byte[] hash = Hashing(bruker.Passord, funnetBruker.Salt);
-                bool ok = hash.SequenceEqual(funnetBruker.Passord);
-                if(ok)
-                {
-                    return true;
-                }
-                return false;
-            }
-            catch(Exception e)
-            {
-                Log.Error("Error i LoggInn: {error}", e);
-                return false; 
-            }
-        }
-
-        public async Task<Holdeplass> HentHoldeplass(int id)
-        {/*
-            try
-            {
-                Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
-                var hentetHold = new Holdeplass()
-                {
-                    ID = enHoldeplass.ID,
-                    Sted = enHoldeplass.Sted,
-                    Sone = enHoldeplass.Sone
-                };
-                return hentetHold;
-            }
-            catch(Exception e)
-            {
-                Log.Error("Error i HentHoldeplass: {error}", e);
-                return null;
-            }*/
-
-            return null;
-        }
-
-        public async Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass)
-        {/*
-            try
-            {
-                var enHoldeplass = await _db.Holdeplasser.FindAsync(endreHoldeplass.ID);
-                enHoldeplass.Sted = endreHoldeplass.Sted;
-                enHoldeplass.Sone = endreHoldeplass.Sone;
-
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch(Exception e)
-            {
-                Log.Error("Error i EndreHoldeplass: {error}", e);
-                return false; 
-            } */
-
-            return false;
-        }
-
-        public async Task<List<RuteStopp>> HentRuteStopp()
-        {
-            List<RuteStopp> alleRuteStopp = await _db.Rutestopp.ToListAsync();
-            return alleRuteStopp;
-        }
-
-        public async Task<RuteStopp> EtRuteStopp(int id)
-        {
-            try
-            {
-                RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
-
-                //Holdeplass holdeplass = await _db.Holdeplasser.FindAsync(etRS.Holdeplass.ID);
-
-                var hentetRS = new RuteStopp()
-                {
-                    ID = etRS.ID,
-                    RekkefølgeNr = etRS.RekkefølgeNr,
-                    StoppTid = etRS.StoppTid,
-                    Holdeplass = etRS.Holdeplass
-                };
-                return hentetRS;
-            }
-            catch(Exception e)
-            {
-                Log.Error("Error i EtRuteStopp: {error}", e);
-                return null;
-            }
-        }
-
-        public async Task<bool> SlettRS(int id)
-        {
-            try
-            {
-                RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
-                _db.Rutestopp.Remove(etRS);
-                await _db.SaveChangesAsync();
-                return true; 
-            }
-            catch(Exception e)
-            {
-                Log.Error("Error i SlettRS: {error}", e);
-                return false; 
-            }
-        }
-
-        public async Task<bool> EndreRS(RuteStopp endreRS)
-        {
-            try
-            {
-                var etRS = await _db.Rutestopp.FindAsync(endreRS.ID);
-                if(etRS.Holdeplass.ID != endreRS.Holdeplass.ID)
-                {
-                    var sjekkHoldeplass = _db.Holdeplasser.Find(endreRS.Holdeplass.ID);
-                    if(sjekkHoldeplass == null)
-                    {
-                        var holdeplassRad = new Holdeplass();
-                        holdeplassRad.Sted = endreRS.Holdeplass.Sted;
-                        holdeplassRad.Sone = endreRS.Holdeplass.Sone;
-                        etRS.Holdeplass = holdeplassRad;
-                    }
-                    else
-                    {
-                        etRS.Holdeplass = endreRS.Holdeplass;
-                    }
-                }
-                etRS.RekkefølgeNr = endreRS.RekkefølgeNr;
-                etRS.StoppTid = endreRS.StoppTid;
-
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch(Exception e)
-            {
-                Log.Error("Error i EndreRS: {error}", e);
-                return false;
-            }
-        }
-
-        public async Task<bool> LagreRS(RuteStopp innRS)
-        {
-            try
-            {
-                var nyRS = new RuteStopp();
-                nyRS.RekkefølgeNr = innRS.RekkefølgeNr;
-                nyRS.StoppTid = innRS.StoppTid;
-
-                // sjekker om holdeplass allerede ligger i databasen, legger til ny dersom den ikke gjør det 
-                
-                var sjekkHoldeplass = await _db.Holdeplasser.FindAsync(innRS.Holdeplass.ID);
-                if(sjekkHoldeplass == null)
-                {
-                    var nyHoldeplass = new Holdeplass();
-                    nyHoldeplass.Sted = innRS.Holdeplass.Sted;
-                    nyHoldeplass.Sone = innRS.Holdeplass.Sone;
-                    nyRS.Holdeplass = nyHoldeplass;
-                }
-                else
-                {
-                    nyRS.Holdeplass.Sone = innRS.Holdeplass.Sone; 
-                    nyRS.Holdeplass = sjekkHoldeplass;
-                }
-                _db.Rutestopp.Add(nyRS);
-                await _db.SaveChangesAsync();
-                return true; 
-            }
-            catch(Exception e)
-            {
-                //Fikk opp at _log ikk
-                Log.Error("Error i LagreRS: {error}", e);
-                return false; 
-            }
-        }
-        
     }
 }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
+using System.Text.Json;
 
 namespace oblig1_1.Controllers
 {
@@ -51,9 +52,9 @@ namespace oblig1_1.Controllers
             return await _db.VisAlleRuteAvganger();
 
         }
-       public List<RuteAvgang> FinnEnRuteAvgang(List<Holdeplass> holdeplasser) //kan ikke være async
-        {
-            foreach(Holdeplass h in holdeplasser)
+       public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasser) //kan ikke være async
+        {/*
+            foreach (Holdeplass h in holdeplasser)
             {
                 if (h == null)
                 {
@@ -61,7 +62,7 @@ namespace oblig1_1.Controllers
                     return null;
                 }
             }
-            
+           */ 
 
             return _db.FinnEnRuteAvgang(holdeplasser);
         }
