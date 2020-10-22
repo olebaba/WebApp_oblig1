@@ -14,3 +14,5 @@ formaterTid() og settAnskomst() er tatt fra https://stackoverflow.com/questions/
 
 Rutestopp.cs og validering.js - TimeSpan regex: https://stackoverflow.com/questions/8318236/regex-pattern-for-hhmmss-time-string
 
+Logger: https://stackoverflow.com/questions/53261633/asp-net-core-logging-in-2-different-files
+
