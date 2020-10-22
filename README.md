@@ -11,3 +11,6 @@ getUrlParam() er tatt fra https://stackoverflow.com/questions/19491336/how-to-ge
 hentDato() er tatt fra https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString
 
 formaterTid() og settAnskomst() er tatt fra https://stackoverflow.com/questions/20474257/split-string-into-two-parts
+
+Rutestopp.cs og validering.js - TimeSpan regex: https://stackoverflow.com/questions/8318236/regex-pattern-for-hhmmss-time-string
+
