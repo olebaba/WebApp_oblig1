@@ -78,8 +78,6 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
 
     // After this construct a string with the above results as below
     var time = day + "/" + month + "/" + year + " 00:00:00";
-    console.log(time);
-
     var onsketReise = {
         holdeplasserOgDato: [
             getUrlParam('from'),
@@ -87,22 +85,16 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
             time
         ]
     };
-
-    console.log(onsketReise);
-
     var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
 
-    var fra = JSON.parse(getUrlParam('from'));
-    console.log(fra);
-
-    $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (rute) {
-        if (rute == null) {
-            visFeilmelding("Ingen ruter for denne reisen kunne bli funnet.");
+    $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (ruteavganger) {
+        if (ruteavganger == null) {
+            visFeilmelding("Ingen ruteravganger for denne reisen kunne bli funnet.");
         } else {
-            console.log(rute);
-            formaterRute(rute); //setter verdier i hentetRute
-            var fra = rute.holdeplasser[0];
-            var til = rute.holdeplasser[rute.holdeplasser.length - 1];
+            console.log(ruteavganger);
+            /*formaterRute(ruteavganger); //setter verdier i hentetRute
+            var fra = ruteavganger.holdeplasser[0];
+            var til = ruteavganger.holdeplasser[rute.holdeplasser.length - 1];
             settTittel(fra.sted, til.sted);
             avreiser = [];
           
@@ -116,7 +108,7 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
                 }
 
                 visAvreiser(avreiser, retur);
-            }
+            }*/
         }
     })
 
@@ -130,17 +122,18 @@ function visFeilmelding(melding) {
     $("#avreiser").after('<p style="color:red">' + melding + '</p>');
 }
 
-function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
-    var tider = rute.holdeplasser[0].avgangstider.split(",");
+function formaterRuteavganger(ruteavganger) { //formaterer rute til en JSON, hentetRute
+    
+    /*var tider = ruteavgang.holdeplasser[0].avgangstider.split(",");
     hentetRute = {
         avreiseTider: tider,
-        totalTid: rute.totalTid,
+        totalTid: ruteavgang.totalTid,
         pris: totalpris.toFixed(2), 
-        holdeplasser: rute.holdeplasser,
+        holdeplasser: ruteavgang.holdeplasser,
         goDate: getUrlParam('goDate'),
         backDate: getUrlParam('backDate')
     };
-    console.log(hentetRute);
+    console.log(hentetRute);*/
 }
 
 function sjekkRetur() { //Sjekker om reisen er tur-retur

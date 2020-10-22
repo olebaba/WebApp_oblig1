@@ -16,5 +16,11 @@ namespace oblig1_1.Models
         public TimeSpan StoppTid { get; set; }
         public virtual Holdeplass Holdeplass { get; set; }
         public virtual Rute Rute { get; set; }
+
+        public override string ToString()
+        {
+            return "{Rekkefølgenr: " + RekkefølgeNr + ", Stopptid: " + StoppTid + 
+                ", Holdeplass: " + Holdeplass.ToString() + ", Rute: " + Rute.ToString();
+        }
     }
 }

@@ -76,8 +76,9 @@ namespace oblig1_1.DAL
             return null;
 
         }
-        private bool sammeDato(DateTime dato1, DateTime dato2) 
+        private bool SammeDato(DateTime dato1, DateTime dato2) 
         {
+            Console.WriteLine(dato1 + ", " + dato2);
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
         //Returnere en liste med ruteavganger 
@@ -125,7 +126,7 @@ namespace oblig1_1.DAL
                 //5. Hvis ruteavgangen har riktig dato, legger den til i listen over ruteavganger
                 
                 foreach (var rute in potensielleRuter) {
-                    foreach(var ruteavgang in _db.RuteAvganger.Where(r => r.Rute.RID == rute.RID && sammeDato(r.Dato, date)))
+                    foreach(var ruteavgang in _db.RuteAvganger.Where(ra => ra.Rute.RID == rute.RID))
                     {
                         ruteavganger.Add(ruteavgang);
                     }
