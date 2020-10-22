@@ -81,7 +81,7 @@ namespace oblig1_1.Controllers
             {
                 return Unauthorized("Ikke logget inn");
             }
-            List<Holdeplass> holdeplasser = await _db.HentHoldeplasser();
+            List<Holdeplass> holdeplasser = await _db.HentAlleHoldeplasser();
             return Ok(holdeplasser);
         }
     }
