@@ -8,13 +8,13 @@
 }
 
 function lagreRS() {
-    const rutestopp = {
-        sted: $("#sted").val(),
-        sone: $("#rute").val(),
-        stopptid: $("#tid").val()
-    };
+    var sted = $("#sted").val();
+    var rute = $("#rute").val();
+    var tid = $("#tid").val();
+    var innparameter = { argumenter: [sted, rute, tid] };
+    console.log();
     const url = "Bestilling/NyttRuteStopp";
-    $.post(url, rutestopp, function () {
+    $.post(url, innparameter, function () {
         window.location.href = 'admin.html';
     })
     .fail(function (feil) {
