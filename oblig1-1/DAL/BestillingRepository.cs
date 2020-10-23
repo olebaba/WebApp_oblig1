@@ -484,6 +484,9 @@ namespace oblig1_1.DAL
             string ruteNavn = argumenter[1];
             int minutterEtterAvgang = int.Parse(argumenter[2]);
             TimeSpan stoppTid = TimeSpan.FromMinutes(minutterEtterAvgang);
+            Console.WriteLine(argumenter[0]);
+            Console.WriteLine(argumenter[1]);
+            Console.WriteLine(argumenter[2]);
 
             Holdeplass holdeplass = _db.Holdeplasser.Where(h => h.Sted == holdeplassNavn).FirstOrDefault();
             Rute rute = _db.Ruter.Where(r => r.Navn == ruteNavn).FirstOrDefault();

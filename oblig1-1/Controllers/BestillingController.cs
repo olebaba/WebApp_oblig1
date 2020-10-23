@@ -54,7 +54,15 @@ namespace oblig1_1.Controllers
             return await _db.VisAlleRuteAvganger();
 
         }
-       public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async
+        public RuteAvgang NyRuteAvgang(string[] argumenter)
+        {
+            return _db.NyRuteAvgang(argumenter);
+        }
+        public RuteStopp NyttRuteStopp(string[] argumenter)
+        {
+            return _db.NyttRuteStopp(argumenter);
+        }
+        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async
         {/*
             foreach (Holdeplass h in holdeplasser)
             {
