@@ -284,6 +284,28 @@ function hentBilletter() {
     }*/
     return url_billetter;
 }
+/*
+function nyTing() {
+    var date = new Date("2020-10-27");
+    var day = date.getDate();       // yields date
+    var month = date.getMonth() + 1;    // yields month (add one as '.getMonth()' is zero indexed)
+    var year = date.getFullYear();  // yields year
+
+    // After this construct a string with the above results as below
+    var time = day + "/" + month + "/" + year + " 00:00:00";
+    var innparameter = { argumenter: ["Oslo-Stavanger", time ] };
+    $.post("Bestilling/NyRuteAvgang", innparameter, function () {
+        console.log("hei fra nyting");
+    });
+}
+function nyttRuteStoppiDB() {
+    //holdeplass, rutenavn, minutter etter avgang
+    var innparameter = { argumenter: ["Notodden", "Oslo-Stavanger", 25] };
+    $.post("Bestilling/NyttRuteStopp", innparameter, function () {
+        console.log("hei fra nyttRuteStoppiDB");
+    });
+}
+*/
 
 function tilAvganger() {
     var from = JSON.stringify(startHoldeplass);
