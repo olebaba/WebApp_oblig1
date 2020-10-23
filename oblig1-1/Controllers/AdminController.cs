@@ -30,8 +30,8 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.LoggInn(bruker);
                 if (!returOK)
                 {
-                    HttpContext.Session.SetString(_loggetInn, "");
-                    Log.Information("Admin logginn feiletfor bruker" + bruker.Brukernavn);
+                    Log.Information("Admin logginn feiletfor bruker");
+                    HttpContext.Session.SetString(_loggetInn, "");  
                     return Ok(false);
                 }
                 HttpContext.Session.SetString(_loggetInn, "innlogget");
@@ -79,7 +79,7 @@ namespace oblig1_1.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
-                return Unauthorized();
+                return Unauthorized("Ikke logget inn");
             }
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace oblig1_1.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
-                return Unauthorized();
+                return Unauthorized("Ikke logget inn");
             }
             if (ModelState.IsValid)
             {
@@ -110,9 +110,14 @@ namespace oblig1_1.Controllers
             }
             return BadRequest("Feil i inputvalidering på server");
         }
-        public async Task<List<Priser>> HentPriser()
+        public async Task<ActionResult> HentPriser()
         {
-            return await _db.HentPriser();
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            List<Priser> priser = await _db.HentPriser();
+            return Ok(priser);
         }
 
         public async Task<ActionResult> EndrePriser(Priser pris)
@@ -155,7 +160,7 @@ namespace oblig1_1.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
-                return Unauthorized();
+                return Unauthorized("Ikke logget inn");
             }
             if (ModelState.IsValid)
             {
@@ -175,7 +180,7 @@ namespace oblig1_1.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
-                return Unauthorized();
+                return Unauthorized("Ikke logget inn");
             }
             if (ModelState.IsValid)
             {
@@ -185,7 +190,7 @@ namespace oblig1_1.Controllers
                     Log.Information("Lagring av RuteStopp kunne ikke utføres");
                     return NotFound("Lagring av RuteStopp kunne ikke utføres");
                 }
-                return Ok("Rutestopp endret");
+                return Ok("Rutestopp lagret");
             }
             Log.Information("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
@@ -211,7 +216,7 @@ namespace oblig1_1.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
-                return Unauthorized();
+                return Unauthorized("Ikke logget inn");
             }
             if (ModelState.IsValid)
             {
