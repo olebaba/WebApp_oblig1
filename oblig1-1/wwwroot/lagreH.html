@@ -2,17 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Endre Holdeplass</title>
+    <title>Lagre holdeplass</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/2.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="js/endreHold.js"></script>
+    <script src="js/lagreH.js"></script>
     <script src="js/validering.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Endre bestilling</h1>
+        <h1>Lagre ny Holdeplass</h1>
         <form class="form">
-            <input type="hidden" id="id" />
             <div class="form-group">
                 <label>Sted</label>
                 <input type="text" id="sted" onchange="validerSted(this.value)" />
@@ -24,11 +23,9 @@
                 <span id="feilSone" style="color: red"></span>
             </div>
             <div class="form-group">
-                <input type="button" id="endre" value="Endre" class="btn btn-primary" onclick="validerOgEndreHold()" />
+                <input type="button" id="reg" value="Lagre" onClick="validerOgLagreHold()" class="btn btn-primary" />
             </div>
             <div id="feil" style="color: red"></div>
         </form>
     </div>
-
-</body>
 </html>

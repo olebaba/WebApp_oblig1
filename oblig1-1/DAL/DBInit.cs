@@ -54,21 +54,24 @@ namespace oblig1_1.Models
                 var OsloStavanger = new Rute { Navn = "Oslo-Stavanger" };
                 context.Ruter.Add(OsloStavanger);
 
-                var RuteOsloStavangerStoppOslo = new RuteStopp { Holdeplass = oslo, Rute = OsloStavanger, RekkefølgeNr = 1, StoppTid = TimeSpan.FromMinutes(0) };
-                var RuteOsloStavangerStoppDrammen = new RuteStopp { Holdeplass = drammen, Rute = OsloStavanger, RekkefølgeNr = 2, StoppTid = TimeSpan.FromMinutes(40) };
-                var RuteOsloStavangerStoppFokserod = new RuteStopp { Holdeplass = fokserød, Rute = OsloStavanger, RekkefølgeNr = 3, StoppTid = TimeSpan.FromMinutes(90) };
-                var RuteOsloStavangerStoppSkjelsvik = new RuteStopp { Holdeplass = skjelsvik, Rute = OsloStavanger, RekkefølgeNr = 4, StoppTid = TimeSpan.FromMinutes(120) };
-                var RuteOsloStavangerStoppTangen = new RuteStopp { Holdeplass = tangen, Rute = OsloStavanger, RekkefølgeNr = 5, StoppTid = TimeSpan.FromMinutes(150) };
-                var RuteOsloStavangerStoppVinterkjær = new RuteStopp { Holdeplass = vinterkjær, Rute = OsloStavanger, RekkefølgeNr = 6, StoppTid = TimeSpan.FromMinutes(200) };
-                var RuteOsloStavangerStoppHarebakken = new RuteStopp { Holdeplass = harebakken, Rute = OsloStavanger, RekkefølgeNr = 7, StoppTid = TimeSpan.FromMinutes(250) };
-                var RuteOsloStavangerStoppGrimstad = new RuteStopp { Holdeplass = grimstad, Rute = OsloStavanger, RekkefølgeNr = 8, StoppTid = TimeSpan.FromMinutes(300) };
-                var RuteOsloStavangerStoppLillesand = new RuteStopp { Holdeplass = lillesand, Rute = OsloStavanger, RekkefølgeNr = 9, StoppTid = TimeSpan.FromMinutes(350) };
-                var RuteOsloStavangerStoppKristiansand = new RuteStopp { Holdeplass = kristiansand, Rute = OsloStavanger, RekkefølgeNr = 10, StoppTid = TimeSpan.FromMinutes(400) };
-                var RuteOsloStavangerStoppMandal = new RuteStopp { Holdeplass = mandal, Rute = OsloStavanger, RekkefølgeNr = 11, StoppTid = TimeSpan.FromMinutes(450) };
-                var RuteOsloStavangerStoppFlekkefjord = new RuteStopp { Holdeplass = lyngdal, Rute = OsloStavanger, RekkefølgeNr = 12, StoppTid = TimeSpan.FromMinutes(500) };
-                var RuteOsloStavangerStoppSandnes = new RuteStopp { Holdeplass = flekkefjord, Rute = OsloStavanger, RekkefølgeNr = 13, StoppTid = TimeSpan.FromMinutes(600) };
-                var RuteOsloStavangerStoppSola = new RuteStopp { Holdeplass = sola, Rute = OsloStavanger, RekkefølgeNr = 14, StoppTid = TimeSpan.FromMinutes(650) };
-                var RuteOsloStavangerStoppStavanger = new RuteStopp { Holdeplass = stavanger, Rute = OsloStavanger, RekkefølgeNr = 15, StoppTid = TimeSpan.FromMinutes(700) };
+                var notodden = new Holdeplass { Sted = "Notodden" };
+                context.Holdeplasser.Add(notodden);
+
+                var RuteOsloStavangerStoppOslo = new RuteStopp { Holdeplass = oslo, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(0) };
+                var RuteOsloStavangerStoppDrammen = new RuteStopp { Holdeplass = drammen, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(40) };
+                var RuteOsloStavangerStoppFokserod = new RuteStopp { Holdeplass = fokserød, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(90) };
+                var RuteOsloStavangerStoppSkjelsvik = new RuteStopp { Holdeplass = skjelsvik, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(120) };
+                var RuteOsloStavangerStoppTangen = new RuteStopp { Holdeplass = tangen, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(150) };
+                var RuteOsloStavangerStoppVinterkjær = new RuteStopp { Holdeplass = vinterkjær, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(200) };
+                var RuteOsloStavangerStoppHarebakken = new RuteStopp { Holdeplass = harebakken, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(250) };
+                var RuteOsloStavangerStoppGrimstad = new RuteStopp { Holdeplass = grimstad, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(300) };
+                var RuteOsloStavangerStoppLillesand = new RuteStopp { Holdeplass = lillesand, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(350) };
+                var RuteOsloStavangerStoppKristiansand = new RuteStopp { Holdeplass = kristiansand, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(400) };
+                var RuteOsloStavangerStoppMandal = new RuteStopp { Holdeplass = mandal, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(450) };
+                var RuteOsloStavangerStoppFlekkefjord = new RuteStopp { Holdeplass = lyngdal, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(500) };
+                var RuteOsloStavangerStoppSandnes = new RuteStopp { Holdeplass = flekkefjord, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(600) };
+                var RuteOsloStavangerStoppSola = new RuteStopp { Holdeplass = sola, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(650) };
+                var RuteOsloStavangerStoppStavanger = new RuteStopp { Holdeplass = stavanger, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(700) };
                 context.Rutestopp.Add(RuteOsloStavangerStoppOslo);
                 context.Rutestopp.Add(RuteOsloStavangerStoppDrammen);
                 context.Rutestopp.Add(RuteOsloStavangerStoppFokserod);
@@ -124,8 +127,8 @@ namespace oblig1_1.Models
 
                 context.SaveChanges();
             }
-            }
         }
+    }
     /*
         public static void InitOld(IApplicationBuilder app)
         {

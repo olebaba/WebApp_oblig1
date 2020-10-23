@@ -47,7 +47,10 @@ namespace oblig1_1.DAL
         }
 
         public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
-        {/*
+        {
+            List<RuteAvgang> ruteavganger = await _db.RuteAvganger.ToListAsync();
+            return ruteavganger;
+            /*
             try
             {
                 List<RuteAvgang> alleDBRuteAvganger = await _db.RuteAvganger.ToListAsync();
@@ -103,6 +106,7 @@ namespace oblig1_1.DAL
                 foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
                 {
                     foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && 
+                                                                fraStopp.StoppTid < r.StoppTid && 
                                                                 fraStopp.Rute == r.Rute))
                     {
                         potensielleRuter.Add(fraStopp.Rute);
@@ -348,7 +352,7 @@ namespace oblig1_1.DAL
         }
 
         public async Task<Holdeplass> HentHoldeplass(int id)
-        {/*
+        {
             try
             {
                 Holdeplass enHoldeplass = await _db.Holdeplasser.FindAsync(id);
@@ -363,13 +367,11 @@ namespace oblig1_1.DAL
             catch(Exception e)
             {
                 return null;
-            }*/
-
-            return null;
+            }
         }
 
         public async Task<bool> EndreHoldeplass(Holdeplass endreHoldeplass)
-        {/*
+        {
             try
             {
                 var enHoldeplass = await _db.Holdeplasser.FindAsync(endreHoldeplass.ID);
@@ -382,9 +384,25 @@ namespace oblig1_1.DAL
             catch(Exception e)
             {
                 return false; 
-            } */
+            }
+        }
 
-            return false;
+        public async Task<bool> LagreHoldeplass(Holdeplass innHP)
+        {
+            try
+            {
+                var nyHS = new Holdeplass();
+                nyHS.Sted = innHP.Sted;
+                nyHS.Sone = innHP.Sone;
+
+                _db.Holdeplasser.Add(nyHS);
+                await _db.SaveChangesAsync();
+                return true; 
+            }
+            catch(Exception e)
+            {
+                return false; 
+            }
         }
 
         public async Task<List<RuteStopp>> HentRuteStopp()
@@ -399,14 +417,13 @@ namespace oblig1_1.DAL
             {
                 RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
 
-                //Holdeplass holdeplass = await _db.Holdeplasser.FindAsync(etRS.Holdeplass.ID);
+                Holdeplass holdeplass = await _db.Holdeplasser.FindAsync(etRS.Holdeplass.ID);
 
                 var hentetRS = new RuteStopp()
                 {
                     ID = etRS.ID,
-                    RekkefølgeNr = etRS.RekkefølgeNr,
                     StoppTid = etRS.StoppTid,
-                    Holdeplass = etRS.Holdeplass
+                    Holdeplass = holdeplass
                 };
                 return hentetRS;
             }
@@ -436,10 +453,14 @@ namespace oblig1_1.DAL
             try
             {
                 var etRS = await _db.Rutestopp.FindAsync(endreRS.ID);
-                if(etRS.Holdeplass.ID != endreRS.Holdeplass.ID)
+
+                //var enHoldeplass = _db.Holdeplasser.Where(s => s.Sted.Contains(etRS.Holdeplass.Sted));
+                //var ut = endreRS.Holdeplass;
+                
+                if (!etRS.Holdeplass.Sted.Equals(endreRS.Holdeplass.Sted))
                 {
-                    var sjekkHoldeplass = _db.Holdeplasser.Find(endreRS.Holdeplass.ID);
-                    if(sjekkHoldeplass == null)
+                    var sjekkHoldeplass = _db.Holdeplasser.Where(s => s.Sted.Contains(etRS.Holdeplass.Sted));
+                    if (sjekkHoldeplass == null)
                     {
                         var holdeplassRad = new Holdeplass();
                         holdeplassRad.Sted = endreRS.Holdeplass.Sted;
@@ -451,7 +472,6 @@ namespace oblig1_1.DAL
                         etRS.Holdeplass = endreRS.Holdeplass;
                     }
                 }
-                etRS.RekkefølgeNr = endreRS.RekkefølgeNr;
                 etRS.StoppTid = endreRS.StoppTid;
 
                 await _db.SaveChangesAsync();
@@ -462,20 +482,63 @@ namespace oblig1_1.DAL
                 return false;
             }
         }
+        public RuteStopp NyttRuteStopp(string[] argumenter)
+        {
+            Console.WriteLine(argumenter[0]);
+            Console.WriteLine(argumenter[1]);
+            Console.WriteLine(argumenter[2]);
+            string holdeplassNavn = argumenter[0];
+            string ruteNavn = argumenter[1];
+            int minutterEtterAvgang = int.Parse(argumenter[2]);
+            TimeSpan stoppTid = TimeSpan.FromMinutes(minutterEtterAvgang);
+            
+
+            Holdeplass holdeplass = _db.Holdeplasser.Where(h => h.Sted == holdeplassNavn).FirstOrDefault();
+            Rute rute = _db.Ruter.Where(r => r.Navn == ruteNavn).FirstOrDefault();
+            if (holdeplass != null && rute != null)
+            {
+                RuteStopp nyttRuteStopp = new RuteStopp();
+                nyttRuteStopp.Rute = rute;
+                nyttRuteStopp.Holdeplass = holdeplass;
+                nyttRuteStopp.StoppTid = stoppTid;
+                _db.Rutestopp.Add(nyttRuteStopp);
+                _db.SaveChanges();
+                return nyttRuteStopp;
+            }
+            return null;
+        }
+        public RuteAvgang NyRuteAvgang(string[] argumenter)
+        {
+            string ruteNavn = argumenter[0];
+            string avgangsTidString = argumenter[1];
+            DateTime avgangsTid = DateTime.ParseExact(avgangsTidString, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            Rute rute = _db.Ruter.Where(r => r.Navn == ruteNavn).FirstOrDefault();
+            if (rute != null)
+            {
+                RuteAvgang nyRuteAvgang = new RuteAvgang();
+                nyRuteAvgang.Rute = rute;
+                nyRuteAvgang.Dato = avgangsTid;
+                _db.RuteAvganger.Add(nyRuteAvgang);
+                _db.SaveChanges();
+                return nyRuteAvgang;
+            }
+            return null;
+        }
 
         public async Task<bool> LagreRS(RuteStopp innRS)
         {
             try
             {
                 var nyRS = new RuteStopp();
-                nyRS.RekkefølgeNr = innRS.RekkefølgeNr;
                 nyRS.StoppTid = innRS.StoppTid;
 
                 // sjekker om holdeplass allerede ligger i databasen, legger til ny dersom den ikke gjør det 
-                
-                var sjekkHoldeplass = await _db.Holdeplasser.FindAsync(innRS.Holdeplass.ID);
-                if(sjekkHoldeplass == null)
+
+                var sjekkHoldeplass = _db.Holdeplasser.Where(navn => navn.Sted.Contains(innRS.Holdeplass.Sted));
+                if (sjekkHoldeplass == null)
                 {
+                    // oppretter en ny holdeplass 
                     var nyHoldeplass = new Holdeplass();
                     nyHoldeplass.Sted = innRS.Holdeplass.Sted;
                     nyHoldeplass.Sone = innRS.Holdeplass.Sone;
@@ -483,9 +546,10 @@ namespace oblig1_1.DAL
                 }
                 else
                 {
-                    nyRS.Holdeplass.Sone = innRS.Holdeplass.Sone; 
-                    nyRS.Holdeplass = sjekkHoldeplass;
+                    nyRS.Holdeplass.Sted = innRS.Holdeplass.Sted;
+                    nyRS.Holdeplass.Sone = innRS.Holdeplass.Sone;
                 }
+
                 _db.Rutestopp.Add(nyRS);
                 await _db.SaveChangesAsync();
                 return true; 
@@ -514,11 +578,92 @@ namespace oblig1_1.DAL
             return true;
         }
 
+        public async Task<List<Rute>> AlleRuter()
+        {
+            try
+            {
+                List<Rute> alleRuter = await _db.Ruter.Select(r => new Rute
+                {
+                    RID = r.RID,
+                    Navn = r.Navn,
+                    RuteStopp = r.RuteStopp
+                }).ToListAsync();
+                return alleRuter;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<Rute> EnRute(int id)
+        {
+            try
+            {
+                Rute enRute = await _db.Ruter.FindAsync(id);
+                var hentetRute = new Rute()
+                {
+                    RID = enRute.RID,
+                    Navn = enRute.Navn,
+                    RuteStopp = enRute.RuteStopp
+                };
+                return hentetRute;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        // lagrer en tom rute
+        public async Task<bool> LagreRute(string navn)
+        {
+            try
+            {
+                var nyRute = new Rute();
+                nyRute.Navn = navn;
+                List<RuteStopp> tom = new List<RuteStopp>();
+                nyRute.RuteStopp = tom;
+
+                _db.Ruter.Add(nyRute);
+                await _db.SaveChangesAsync();
+                return true; 
+            }
+            catch(Exception e)
+            {
+                return false; 
+            }
+        }
+
         public async Task<List<Priser>> HentPriser()
         {
             List<Priser> priser = await _db.Priser.ToListAsync();
             return priser;
         }
+
+        public async Task<Priser> EnPris(int id)
+        {
+            try
+            {
+                Priser enPris = await _db.Priser.FindAsync(id);
+                var returPris = new Priser()
+                {
+                    PrisID = enPris.PrisID,
+                    Prisklasse = enPris.Prisklasse,
+                    Pris1Sone = enPris.Pris1Sone,
+                    Pris2Sone = enPris.Pris2Sone,
+                    Pris3Sone = enPris.Pris3Sone,
+                    Pris4Sone = enPris.Pris4Sone
+                };
+                return returPris;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            
+        }
+        
 
         public async Task<bool> EndrePriser(Priser pris)
         {

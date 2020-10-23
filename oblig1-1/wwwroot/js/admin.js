@@ -1,13 +1,45 @@
 ﻿$(function () {
-    //hentHoldeplasser();
-    //hentRuter();
+    hentHoldeplasser();
+    hentRuteAvgang();
+    hentRuter();
     hentRS();
     hentPriser();
-    hentHoldeplasser();
 });
+
+function hentRuteAvgang() {
+    $.get("Bestilling/VisAlleRuteAvganger", function (ruteavgang) {
+        formaterRA(ruteavgang);
+    })
+        .fail(function (feil) {
+            if (feil.status == 401) {
+                window.location.href = 'innlogging.html';
+            }
+            else {
+                $("#feil").html("Feil på server - prøv igjen senere");
+            }
+        });
+}
+
+function formaterRA(ruteavgang) {
+    let ut = "<table class='table table-striped'>" +
+        "<tr>" +
+        "<th>Dato</th><th>Rute</th><th></th><th></th>" +
+        "</tr>";
+    for (let ra of ruteavgang) {
+        ut += "<tr>" +
+            "<td>" + ra.dato + "</td>" +
+            "<td>" + ra.rute.navn + "</td>" +
+            "<td> <a class='btn btn-primary' href='endreRuteA.html?id=" + ra.id + "'>Endre</a></td>" +
+            "<td> <button class='btn btn-danger' onclick='slettRA(" + ra.id + ")'>Slett</button></td>" +
+            "</tr>";
+    }
+    ut += "</table>";
+    $("#ruteavgang").html(ut);
+}
 
 function hentRS() {
     $.get("Bestilling/HentRuteStopp", function (rutestopp) {
+        console.log(rutestopp.stopptid);
         formaterRS(rutestopp);
     })
     .fail(function (feil) {
@@ -15,7 +47,7 @@ function hentRS() {
             window.location.href = 'innlogging.html';
         }
         else {
-            $("#feil").html("Feil på server - prøv igjen senere");
+            $("#feilRuteStopp").html("Feil på server - prøv igjen senere");
         }
     });
 }
@@ -23,14 +55,15 @@ function hentRS() {
 function formaterRS(rutestopp) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>RekkefølgeNr</th><th>StoppTid</th><th>Sted</th><th>Sone</th><th></th><th></th>" +
+        //"<th>StoppTid</th>
+        "<th>Rute</th><th>Sted</th><th>Tid etter ruteavgang</th><th></th><th></th>" +
         "</tr>";
     for (let rs of rutestopp) {
         ut += "<tr>" +
-            "<td>" + rs.rekkefølgeNr + "</td>" +
-            "<td>" + rs.stopptid + "</td>" +
+            //"<td>" + rs.stopptid + "</td>" +
+            "<td>" + rs.rute.navn + "</td>" +
             "<td>" + rs.holdeplass.sted + "</td>" +
-            "<td>" + rs.holdeplass.sone + "</td>" +
+            "<td>" + rs.stoppTid + "</td>" +
             "<td> <a class='btn btn-primary' href='endre.html?id=" + rs.id + "'>Endre</a></td>" +
             "<td> <button class='btn btn-danger' onclick='slettRS(" + rs.id + ")'>Slett</button></td>" +
             "</tr>";
@@ -55,8 +88,8 @@ function slettRS(id) {
     });
 }
 
-/*function hentHoldeplasser() {
-    $.get("Bestilling/HentHoldeplasser", function (holdeplasser) {
+function hentHoldeplasser() {
+    $.get("Bestilling/HentAlleHoldeplasser", function (holdeplasser) {
         formaterHoldeplasser(holdeplasser);
     })
     .fail(function (feil) {
@@ -74,7 +107,7 @@ function formaterHoldeplasser(holdeplasser) {
             "<td>" + holdeplass.sted + "</td>" +
             "<td>" + holdeplass.sone + "</td>" +
             "<td> <a class='btn btn-primary' href='endreHold.html?id=" + holdeplass.id + "'>Endre</a></td>" +
-            "<td> <button class='btn btn-danger' onclick='slettHold(" + holdeplass.id + ")'>Slett</button></td>" +
+            "<td> <button class='btn btn-danger' onclick='slettHoldeplass(" + holdeplass.id + ")'>Slett</button></td>" +
             "</tr>";
     }
     ut += "</table>";
@@ -82,7 +115,7 @@ function formaterHoldeplasser(holdeplasser) {
 }
 
 function hentRuter() {
-    $.get("Bestilling/VisAlleRuter", function (ruter) {
+    $.get("Bestilling/AlleRuter", function (rute) {
         formaterRuter(rute);
     })
     .fail(function (feil) {
@@ -93,25 +126,26 @@ function hentRuter() {
 function formaterRuter(ruter) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>Datoer</th><th>Holdeplasser</th><th>Totaltid</th><th></th><th></th>" +
+        "<th>Navn</th><th></th><th></th>" +
         "</tr>";
     for (let rute of ruter) {
         ut += "<tr>" +
-            "<td>" + rute.dato + "</td>" +
-            "<td>" + rute.holdeplasser + "</td>" +
-            "<td>" + rute.totaltid + "</td>" +
+            "<td>" + rute.navn + "</td>" +
             "<td> <a class='btn btn-primary' href='endreRute.html?id=" + rute.id + "'>Endre</a></td>" +
             "<td> <button class='btn btn-danger' onclick='slettRute(" + rute.id + ")'>Slett</button></td>" +
             "</tr>";
     }
     ut += "</table>";
-    $("#holdeplasser").html(ut);
-}*/
+    $("#ruter").html(ut);
+}
 
 
 function hentPriser() {
-    $.post("Admin/HentPriser", function (priser) {
+    $.post("Bestilling/HentPriser", function (priser) {
         formaterPriser(priser);
+    })
+    .fail(function (feil) {
+        $("#feilPris").html("Feil på server - prøv igjen senere");
     });
 }
 
@@ -160,30 +194,6 @@ function endrePriser(objekt) {
         });
 }
 
-
-function hentHoldeplasser() {
-    $.post("Admin/AdminHentHoldeplasser", function (holdeplasser) {
-        formaterHoldeplasser(holdeplasser);
-    });
-}
-
-function formaterHoldeplasser(holdeplasser) {
-    let ut = "<table class='table table-striped'>" +
-        "<tr>" +
-        "<th>Sted</th><th>Sone</th><th></th>" +
-        "</tr>";
-    for (let i = 0; i < holdeplasser.length; i++) {
-        ut += "<tr>" +
-            "<td>" + holdeplasser[i].sted + "</td>" +
-            "<td>" + holdeplasser[i].sone + "</td>" +
-            "<td> <button class='btn btn-danger' onclick='slettHoldeplass(" + holdeplasser[i].id + ")'>Slett</button></td>" +
-
-            "</tr>";
-    }
-    ut += "</table>";
-    $('#holdeplassoutput').html(ut);
-}
-
 function slettHoldeplass(id) {
     console.log("ID " + id)
     const url = "Admin/SlettHoldeplass?id=" + id;
@@ -195,6 +205,13 @@ function slettHoldeplass(id) {
                     console.log("DELETED");
                     $.post(url, function () {
                         window.location.href = 'admin.html';
+                    })
+                    .fail(function (feil) {
+                        if (feil.status === 401) {
+                            window.location.href = 'innlogging.html';
+                        } else {
+                            $("#feil").html("Feil på server - prøv igjen senere");
+                        }
                     });
                 });
                 break;
@@ -202,20 +219,9 @@ function slettHoldeplass(id) {
                 console.log("Fant ikke");
             }
         }
-
-        
         console.log("HGÅR UHJIT");
         $.post(url, function () {
             window.location.href = 'admin.html';
         });
-    });
-        /*
-        .fail(function (feil) {
-            if (feil.status === 401) {
-                window.location.href = 'innlogging.html';
-            } else {
-                $("#feil").html("Feil på server - prøv igjen senere");
-            }
-
-        });*/
+    });      
 }
