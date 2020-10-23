@@ -1,5 +1,9 @@
 # WebApp_oblig1
 
+Informasjon for å logge inn: 
+Brukernavn: AdminUser
+Passord: Admin1234
+
 Har brukt kode fra videoene til fagansvarlig 
 
 Autocomplete i forside.js er hentet fra https://api.jqueryui.com/autocomplete/ og https://api.jqueryui.com/theming/css-framework/
