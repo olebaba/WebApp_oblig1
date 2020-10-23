@@ -29,8 +29,6 @@ function formaterRA(ruteavgang) {
         ut += "<tr>" +
             "<td>" + ra.dato + "</td>" +
             "<td>" + ra.rute.navn + "</td>" +
-            "<td> <a class='btn btn-primary' href='endreRuteA.html?id=" + ra.id + "'>Endre</a></td>" +
-            "<td> <button class='btn btn-danger' onclick='slettRA(" + ra.id + ")'>Slett</button></td>" +
             "</tr>";
     }
     ut += "</table>";
@@ -55,12 +53,10 @@ function hentRS() {
 function formaterRS(rutestopp) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        //"<th>StoppTid</th>
         "<th>Rute</th><th>Sted</th><th>Tid etter ruteavgang</th><th></th><th></th>" +
         "</tr>";
     for (let rs of rutestopp) {
         ut += "<tr>" +
-            //"<td>" + rs.stopptid + "</td>" +
             "<td>" + rs.rute.navn + "</td>" +
             "<td>" + rs.holdeplass.sted + "</td>" +
             "<td>" + rs.stoppTid + "</td>" +
@@ -131,8 +127,6 @@ function formaterRuter(ruter) {
     for (let rute of ruter) {
         ut += "<tr>" +
             "<td>" + rute.navn + "</td>" +
-            "<td> <a class='btn btn-primary' href='endreRute.html?id=" + rute.id + "'>Endre</a></td>" +
-            "<td> <button class='btn btn-danger' onclick='slettRute(" + rute.id + ")'>Slett</button></td>" +
             "</tr>";
     }
     ut += "</table>";
@@ -188,7 +182,7 @@ function endrePriser(objekt) {
 
         $.post("Admin/EndrePriser", priser, function () {
             window.location.href = 'admin.html';
-            //console.log(priser.prisID + " , " + priser.prisklasse + " , " + priser.pris1Sone + " , " + priser.pris2Sone + " , " + priser.pris3Sone + " , " + priser.pris4Sone);
+            
         })
             .fail(function (feil) {
                 if (feil.status === 401) {
