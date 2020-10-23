@@ -127,12 +127,12 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.EndrePriser(pris);
                 if (!returOK)
                 {
-                    //_log.LogInformation("Endringen av RuteStopp kunne ikke utføres");
+                    Log.Information("Endringen av prisene kunne ikke utføres");
                     return NotFound("Endringen av prisene kunne ikke utføres");
                 }
                 return Ok("Priser endret");
             }
-            //_log.LogInformation("Feil i inputvalidering");
+            Log.Information("Endringen av prisene kunne ikke utføres: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
 

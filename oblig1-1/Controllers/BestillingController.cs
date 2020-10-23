@@ -19,11 +19,9 @@ namespace oblig1_1.Controllers
     {
         private readonly IBestillingRepository _db;
         
-        private ILogger<BestillingController> _log;
-
         private const string _loggetInn = "innlogget";
 
-        public BestillingController(IBestillingRepository db, ILogger<BestillingController> log)
+        public BestillingController(IBestillingRepository db)
         {
             _db = db;
         }
@@ -158,12 +156,12 @@ namespace oblig1_1.Controllers
                 RuteStopp etRS = await _db.EtRuteStopp(id);
                 if(etRS == null)
                 {
-                    _log.LogInformation("Fant ikke rutestopp");
+                    Log.Information("Fant ikke rutestopp");
                     return NotFound("Fant ikke rutestopp");
                 }
                 return Ok(etRS);
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
 
