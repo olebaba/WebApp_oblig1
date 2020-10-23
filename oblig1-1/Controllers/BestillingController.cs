@@ -26,22 +26,6 @@ namespace oblig1_1.Controllers
             _db = db;
         }
 
-        public async Task<ActionResult> Lagre(Bestillinger innBestilling)
-        {
-            if (ModelState.IsValid)
-            {
-                bool returOk = await _db.Lagre(innBestilling);
-                if(!returOk)
-                {
-                    Log.Information("Bestillingen kunne ikke lagres");
-                    return BadRequest("Bestillingen kunne ikke lagres");
-                }
-                return Ok("Bestillingen er lagret");
-            }
-            Log.Information("Bestillingen kunne ikke lagres: Feil i inputvalidering");
-            return BadRequest("Feil i inputvalidering");
-        }
-
         public async Task<List<Bestillinger>> Index()
         {
             return await _db.Index();
