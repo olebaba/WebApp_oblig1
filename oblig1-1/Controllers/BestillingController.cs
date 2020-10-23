@@ -109,6 +109,7 @@ namespace oblig1_1.Controllers
                 Holdeplass enHoldeplass = await _db.HentHoldeplass(id);
                 if(enHoldeplass == null)
                 {
+                    Log.Information("Fant ikke holdeplassen");
                     return NotFound("Fant ikke holdeplassen");
                 }
                 return Ok(enHoldeplass);
@@ -162,10 +163,12 @@ namespace oblig1_1.Controllers
                 Rute enRute = await _db.EnRute(id);
                 if(enRute == null)
                 {
+                    Log.Information("Fant ikke ruten");
                     return NotFound("Fant ikke ruten");
                 }
                 return Ok(enRute);
             }
+            Log.Information("Feil i inputvalidering på server");
             return BadRequest("Feil i inputvalidering på server");
         }
 
@@ -176,10 +179,12 @@ namespace oblig1_1.Controllers
                 Priser pris = await _db.EnPris(id);
                 if(pris == null)
                 {
+                    Log.Information("Pris ikke funnet");
                     return NotFound("Pris ikke funnet");
                 }
                 return Ok(id);
             }
+            Log.Information("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering");
         }
 
