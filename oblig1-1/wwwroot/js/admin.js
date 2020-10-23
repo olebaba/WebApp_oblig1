@@ -37,7 +37,6 @@ function formaterRA(ruteavgang) {
 
 function hentRS() {
     $.get("Bestilling/HentRuteStopp", function (rutestopp) {
-        console.log(rutestopp.stopptid);
         formaterRS(rutestopp);
     })
     .fail(function (feil) {
@@ -158,7 +157,6 @@ function formaterPriser(priser) {
             "<td> <button class='btn btn-primary' onclick='endrePriser(" + priser[i].prisID + ")'>Oppdater priser</button></td>" +
 
             "</tr>";
-        console.log(priser[i].prisklasse);
     }
     ut += "</table>";
     $('#output').html(ut);
@@ -166,7 +164,6 @@ function formaterPriser(priser) {
 
 
 function endrePriser(objekt) {
-    console.log("TEST");
     const sjekkPris1 = validerPris1($("#1sone").val());
     const sjekkPris2 = validerPris2($("#2sone").val());
     const sjekkPris3 = validerPris3($("#3sone").val());
@@ -199,14 +196,12 @@ function endrePriser(objekt) {
 }
 
 function slettHoldeplass(id) {
-    console.log("ID " + id)
     const url = "Admin/SlettHoldeplass?id=" + id;
     $.get("Bestilling/HentRuteStopp", function (rutestopp) {
         for (let i = 0; i < rutestopp.length; i++) {
             if (rutestopp[i].holdeplass.id === id) {
                 const url2 = "Admin/SlettRS?id=" + rutestopp[i].id;
                 $.post(url2, function () {
-                    console.log("DELETED");
                     $.post(url, function () {
                         window.location.href = 'admin.html';
                     })
@@ -220,10 +215,8 @@ function slettHoldeplass(id) {
                 });
                 break;
             } else {
-                console.log("Fant ikke");
             }
         }
-        console.log("HGÅR UHJIT");
         $.post(url, function () {
             window.location.href = 'admin.html';
         });

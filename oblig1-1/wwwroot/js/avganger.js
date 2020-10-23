@@ -62,7 +62,6 @@ function beregnPris(array) {
     } else {
         gang++;
         for (let i = 0; i < array.length; i++) {
-            console.log("Y " + array.length);
         }
         let billetter = hentBilletter();
 
@@ -78,24 +77,20 @@ function beregnPris(array) {
                 num++;
             }
         }
-        console.log("Num" + num);
 
         $.post("bestilling/HentPriser", function (priser) {
             var bill = billetter.split(',');
-            console.log("Bill" + bill[1]);
             let totPris = 0;
             let sonePris = 0;
             let antall = 0;
             for (let i = 0; i < bill.length; i++) {
                 var name = bill[i];
-                console.log("BILETE " + name)
                 if (i > 0) {
                     var sName = name.substr(3, 20);
                 } else {
                     var sName = name.substr(2, 20);
                 }
                 if (sName === "Voksen") {
-                    console.log("Rite");
                     if (num === 1) {
                         sonePris = priser[1].pris1Sone;
                     } else if (num === 2) {
@@ -171,8 +166,6 @@ function beregnPris(array) {
                 } else {
                     antall = name.substr(0, 2);
                 }
-                console.log("Antall: " + antall);
-                console.log("SP: " + sonePris);
                 totPris += sonePris * antall;
 
             }
@@ -201,7 +194,6 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
         if (ruteavganger == null || ruteavganger.length <= 0) {
             visFeilmelding("Ingen ruteravganger for denne reisen kunne bli funnet.");
         } else {
-            console.log(ruteavganger);
             avreiser = ruteavganger;
             visAvreiser(ruteavganger, sjekkRetur()); 
         }
@@ -252,7 +244,6 @@ function gaTilbake() {
 }
 
 function gaVidere() { //setter url til betalingssiden med korrekte verdier
-    console.log("gå videre");
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
         "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : Number(turJson.pris).toFixed(2));
     //"&goDate=" + avreiser.goDate + "&backDate=" + avreiser.backDate;
@@ -266,7 +257,6 @@ function gaVidere() { //setter url til betalingssiden med korrekte verdier
 }
 
 function formaterTid(tid) { //Formaterer tid til 00:00-format. Noe av kode tatt fra nett.
-    console.log(tid);
     let time, min;
     if (tid.indexOf(" ") == 0) {
         tid = tid.substr(1, 4);
@@ -332,7 +322,6 @@ function visAvreiser(ruteavganger, retur) {    //Funksjon som skriver ut avgange
     $("#avreiser").html(uttur);
     
     if (retur) {
-        console.log("Reisen er retur!");
         var utretur = setAvreise(ruteavganger, true);
         $("#tilbake").after("<br/><br/><h2>Retur:</h2>" + utretur);
     }    
@@ -397,7 +386,6 @@ function setAvreise(ruteavganger, retur) { //Skriver ut avganger med data sendt 
             }
             reiserute.reverse();
         }
-        //console.log(reiserute);
         reiserute.forEach(rs => { holdeplasser.push(rs.holdeplass) });
         holdeplasserIReise = [];
         holdeplasser.forEach(h => { holdeplasserIReise.push(h) });
@@ -442,9 +430,8 @@ function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil
         table = element.closest('table').attr('id');
         
     } else {
-        //console.log("not checked", element);
+
     }
-    console.log(valgtRad.index());
 
     var i = 1;
     for (i; i < $(`#${table} tr`).length; i++) {

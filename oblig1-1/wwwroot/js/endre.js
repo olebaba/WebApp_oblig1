@@ -2,7 +2,6 @@
     const id = window.location.search.substring(1);
     const url = "Bestilling/EtRuteStopp?" + id;
     $.get(url, function (rutestopp) {
-        console.log("verdier er: " + rutestopp.holdeplass.sone);
         $("#id").val(rutestopp.id);
         $("#tid").val(rutestopp.stopptid);
         $("#sted").val(rutestopp.holdeplass.sted);

@@ -12,7 +12,6 @@ function lagreRS() {
     var rute = $("#rute").val();
     var tid = $("#tid").val();
     var innparameter = { argumenter: [sted, rute, tid] };
-    console.log();
     const url = "Bestilling/NyttRuteStopp";
     $.post(url, innparameter, function () {
         window.location.href = 'admin.html';

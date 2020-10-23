@@ -123,8 +123,6 @@ function lagreBestilling() {
         retur: bestilltRetur
     }
 
-    console.log(bestilling);
-
     $.post("Bestilling/Lagre", bestilling, function () {
         location.href = 'godkjent.html' + window.location.search;
     })
@@ -135,9 +133,7 @@ function lagreBestilling() {
 
 function visEnBestilling() {
     $.get("Bestilling/HentEn?id=1", function (bestilling) {
-        console.log(bestilling);
     })
         .fail((message) => {
-            console.log(message.responseText)
         });
 }

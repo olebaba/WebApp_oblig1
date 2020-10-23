@@ -85,7 +85,6 @@ function validerDatoForside() {
             $("#feilDato").html("");
             return true;
         } else {
-            console.log("DAto feiul2)");
             $("#feilDato").html("Feil i valg av dato");
             return false;
         }
