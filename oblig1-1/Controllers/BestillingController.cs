@@ -129,7 +129,7 @@ namespace oblig1_1.Controllers
                 }
                 return Ok(enHoldeplass);
             }
-            _log.LogInformation("Feil i inputvalidering");
+            Log.Information("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
 
