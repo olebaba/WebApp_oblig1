@@ -1,22 +1,20 @@
 ﻿function validerOgLagreRS() {
-    const rNrOK = validerRekkefolge($("#rekkefolge").val());
     const tidOK = validerTid($("#tid").val());
+    const ruteOK = validerRute($("#rute").val())
     const stedOK = validerHoldeplassFra($("#sted").val());
-    const soneOK = validerSone($("#sone").val());
-    if (rNrOK && tidOK && stedOK && soneOK) {
+    if (tidOK && stedOK && ruteOK) {
         lagreRS();
     }
 }
 
 function lagreRS() {
-    const rutestopp = {
-        rekkefolgeNr: $("#rekkefolge").val(),
-        stopptid: $("#tid").val(),
-        sted: $("#sted").val(),
-        sone: $("#sone").val()
-    };
-    const url = "Admin/LagreRS";
-    $.post(url, rutestopp, function () {
+    var sted = $("#sted").val();
+    var rute = $("#rute").val();
+    var tid = $("#tid").val();
+    var innparameter = { argumenter: [sted, rute, tid] };
+    console.log();
+    const url = "Bestilling/NyttRuteStopp";
+    $.post(url, innparameter, function () {
         window.location.href = 'admin.html';
     })
     .fail(function (feil) {

@@ -125,7 +125,7 @@ namespace oblig1_1.Controllers
 
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
-                return Unauthorized();
+                return Unauthorized("Ikke logget inn");
             }
             if (ModelState.IsValid)
             {
