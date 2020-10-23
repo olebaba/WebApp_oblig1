@@ -596,14 +596,12 @@ namespace oblig1_1.DAL
         }
 
         // lagrer en tom rute
-        public async Task<bool> LagreRute(string navn)
+        public async Task<bool> LagreRute(Rute rute)
         {
             try
             {
                 var nyRute = new Rute();
-                nyRute.Navn = navn;
-                List<RuteStopp> tom = new List<RuteStopp>();
-                nyRute.RuteStopp = tom;
+                nyRute.Navn = rute.Navn;
 
                 _db.Ruter.Add(nyRute);
                 await _db.SaveChangesAsync();
@@ -643,7 +641,6 @@ namespace oblig1_1.DAL
             }
             
         }
-        
 
         public async Task<bool> EndrePriser(Priser pris)
         {

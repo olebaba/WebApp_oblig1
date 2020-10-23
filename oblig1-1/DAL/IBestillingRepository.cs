@@ -28,6 +28,7 @@ namespace oblig1_1.DAL
         Task<bool> SlettRS(int id);
         Task<bool> EndreRS(RuteStopp endreRS);
         Task<bool> LagreRS(RuteStopp innRS);
+        Task<bool> LagreRute(RuteStopp nyRute);
         Task<bool> SlettHoldeplass(int id);
         Task<List<Rute>> AlleRuter();
         Task<Rute> EnRute(int id);

@@ -4,6 +4,7 @@
     hentRuter();
     hentRS();
     hentPriser();
+    lagreRute();
 });
 
 function hentRuteAvgang() {
