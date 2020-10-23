@@ -70,7 +70,7 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
     };
 
     $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (ruteavganger) {
-        if (ruteavganger == null) {
+        if (ruteavganger == null || ruteavganger.length <= 0) {
             visFeilmelding("Ingen ruteravganger for denne reisen kunne bli funnet.");
         } else {
             console.log(ruteavganger);
