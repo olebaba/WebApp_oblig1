@@ -23,7 +23,7 @@ function hentRuteAvgang() {
 function formaterRA(ruteavgang) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>Dato</th><th>Rute</th><th></th><th></th>" +
+        "<th>Dato</th><th>Rute</th>" +
         "</tr>";
     for (let ra of ruteavgang) {
         ut += "<tr>" +
@@ -121,7 +121,7 @@ function hentRuter() {
 function formaterRuter(ruter) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>Navn</th><th></th><th></th>" +
+        "<th>Navn</th>" +
         "</tr>";
     for (let rute of ruter) {
         ut += "<tr>" +

@@ -93,24 +93,32 @@ function validerOgBetal() {
 }
 
 function lagreBestilling() {
+    /*
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    const tur = JSON.parse(urlParams.get('tur'));
-    const retur = JSON.parse(urlParams.get('retur'));
+    const tur = JSON.parse(getUrlParam('tur'));
+    const retur = JSON.parse(getUrlParam('retur'));
     const goDate = new Date(tur.dato);
-    const backDate = new Date(retur.dato);
-
+    
     const bestilltTur = {
         //totalTid: tur.totalTid, //fiks her
         holdeplasser: tur.holdeplasser,
         datoer: goDate.toISOString().substr(0,10)
     }
-
-    const bestilltRetur = {
-        //totalTid: retur.totalTid,
-        holdeplasser: retur.holdeplasser,
-        datoer: backDate.toISOString().substr(0, 10)
+    
+    const bestilltRetur = null;
+    
+    if(retur != null){
+        const backDate = new Date(retur.dato);
+        
+        bestilltRetur = {
+            //totalTid: retur.totalTid,
+            holdeplasser: retur.holdeplasser,
+            datoer: backDate.toISOString().substr(0, 10)
+        }
+    }else{
+        bestilltRetur = bestilltTur;   
     }
 
     const kunde = {
@@ -132,12 +140,6 @@ function lagreBestilling() {
     })
     .fail(function (error) {
         $("#feil").html("Feil på server - prøv igjen senere. (" + error.responseText + ")");
-    }); 
-}
-
-function visEnBestilling() {
-    $.get("Bestilling/HentEn?id=1", function (bestilling) {
-    })
-        .fail((message) => {
-        });
+    }); */
+    location.href = 'godkjent.html' + window.location.search;
 }

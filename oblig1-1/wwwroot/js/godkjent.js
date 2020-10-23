@@ -1,3 +1,7 @@
+$(function () { //Startfunksjon kaller på visBilletter()
+    visReiser();
+});
+
 function hentDato(tur) { //Henter reisedato fra url. Kode tatt fra nett.
     let url_dato = new Date(tur.dato); //getUrlParam(dato));
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
