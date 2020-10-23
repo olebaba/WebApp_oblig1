@@ -22,7 +22,7 @@ function endreHoldeplass() {
         sted: $("#sted").val(),
         sone: $("#sone").val()
     };
-    $.post("Bestilling/EndreHoldeplass", holdeplass, function () {
+    $.post("Admin/EndreHoldeplass", holdeplass, function () {
         window.location.href = 'admin.html';
     })
     .fail(function (feil) {

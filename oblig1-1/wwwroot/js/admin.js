@@ -72,7 +72,7 @@ function formaterRS(rutestopp) {
 }
 
 function slettRS(id) {
-    const url = "Bestilling/SlettRS?id=" + id;
+    const url = "Admin/SlettRS?id=" + id;
 
     $.get(url, function () {
         window.location.href = 'admin.html';

@@ -11,7 +11,7 @@ function lagreHold() {
         sted: $("#sted").val(),
         sone: $("#sone").val()
     };
-    const url = "Bestilling/LagreHoldeplass";
+    const url = "Admin/LagreHoldeplass";
     $.post(url, holdeplass, function () {
         window.location.href = 'admin.html';
     })

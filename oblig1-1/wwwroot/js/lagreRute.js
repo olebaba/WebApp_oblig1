@@ -7,7 +7,7 @@
 
 function lagreRute() {
     const navn = $("#navn").val();
-    const url = "Bestilling/LagreRute";
+    const url = "Admin/LagreRute";
     $.post(url, navn, function () {
         window.location.href = 'admin.html';
     })

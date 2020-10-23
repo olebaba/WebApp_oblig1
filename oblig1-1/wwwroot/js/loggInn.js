@@ -9,7 +9,7 @@ function loggInn() {
             brukernavn: $("#brukernavn").val(),
             passord: $("#passord").val()
         }
-        $.post("Bestilling/LoggInn",bruker,function (OK) {
+        $.post("Admin/LoggInn",bruker,function (OK) {
             if (OK) {
                 window.location.href = 'admin.html';
             }
