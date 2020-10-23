@@ -5,6 +5,7 @@ $(function () { //Startfunksjon kaller på visAvganger()
 var avreiser = {};
 var totalpris;
 var turJson, returJson, pris;
+var gang = 0;
 
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
     hentTittel();
@@ -53,86 +54,135 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
     return billetter;
 }
 
+
 function beregnPris(array) {
-    console.log("AVREISE :" + avreiser);
-    let billetter = hentBilletter();
-
-    let num = 1;
-    let j = 0;
-    for (let i = 1; i < array.length; i++) {
-        for (j = 0; j < i; j++) {
-            if (array[i] === array[j]) {
-                break;
-            }
-        }
-        if (i === j) {
-            num++;
-        }
-    }
-    console.log("Num" + num);
-
-    $.post("bestilling/HentPriser", function (priser) {
-        var bill = billetter.split(',');
-        let totPris = 0;
-        let sonePris = 0;
-        let antall = 0;
+    if (gang > 0) {
+        return;
+    } else {
+        gang++;
         for (let i = 0; i < array.length; i++) {
-            var name = bill[i];
-            console.log("BILETE " + name)
-            if (i > 0) {
-                var sName = name.substr(3, 20);
-                console.log("SNAME " + sName);
-            } else {
-                var sName = name.substr(2, 20);
-                console.log("SNAME2 " + sName);
-            }
-            if (sName === "Voksen") {
-                if (num === 1) {
-                    sonePris = priser[0].pris1Sone;
-                } else if (num === 2) {
-                    sonePris = priser[0].pris2Sone;
-                } else if (num === 3) {
-                    sonePris = priser[0].pris3Sone;
-                } else if (num === 4) {
-                    sonePris = priser[0].pris4Sone;
-                }
-            } else if (sName === "Barn") {
-                if (num === 1) {
-                    sonePris = priser[1].pris1Sone;
-                } else if (num === 2) {
-                    sonePris = priser[1].pris2Sone;
-                } else if (num === 3) {
-                    sonePris = priser[1].pris3Sone;
-                } else if (num === 4) {
-                    sonePris = priser[1].pris4Sone;
-                }
-            } else if (sName === "Honnør") {
-                if (num === 1) {
-                    sonePris = priser[2].pris1Sone;
-                } else if (num === 2) {
-                    sonePris = priser[2].pris2Sone;
-                } else if (num === 3) {
-                    sonePris = priser[2].pris3Sone;
-                } else if (num === 4) {
-                    sonePris = priser[2].pris4Sone;
-                }
-            }
-            if (i > 0) {
-                antall = name.substr(1, 2);
-            } else {
-                antall = name.substr(0, 2);
-            }
-            console.log("Runde: " + i);
-            totPris += sonePris * antall;
-
+            console.log("Y " + array.length);
         }
-        console.log("PIRSERN12: " + totPris);
-        for (let i = 0; i < priser.length; i++) {
-            console.log("P: " + priser[i].prisklasse);
+        let billetter = hentBilletter();
 
+        let num = 1;
+        let j = 0;
+        for (let i = 1; i < array.length; i++) {
+            for (j = 0; j < i; j++) {
+                if (array[i].sone === array[j].sone) {
+                    break;
+                }
+            }
+            if (i === j) {
+                num++;
+            }
         }
+        console.log("Num" + num);
 
-    });
+        $.post("bestilling/HentPriser", function (priser) {
+            var bill = billetter.split(',');
+            console.log("Bill" + bill[1]);
+            let totPris = 0;
+            let sonePris = 0;
+            let antall = 0;
+            for (let i = 0; i < bill.length; i++) {
+                var name = bill[i];
+                console.log("BILETE " + name)
+                if (i > 0) {
+                    var sName = name.substr(3, 20);
+                } else {
+                    var sName = name.substr(2, 20);
+                }
+                if (sName === "Voksen") {
+                    console.log("Rite");
+                    if (num === 1) {
+                        sonePris = priser[1].pris1Sone;
+                    } else if (num === 2) {
+                        sonePris = priser[1].pris2Sone;
+                    } else if (num === 3) {
+                        sonePris = priser[1].pris3Sone;
+                    } else if (num === 4) {
+                        sonePris = priser[1].pris4Sone;
+                    }
+                } else if (sName === "Barn") {
+                    if (num === 1) {
+                        sonePris = priser[2].pris1Sone;
+                    } else if (num === 2) {
+                        sonePris = priser[2].pris2Sone;
+                    } else if (num === 3) {
+                        sonePris = priser[2].pris3Sone;
+                    } else if (num === 4) {
+                        sonePris = priser[2].pris4Sone;
+                    }
+                } else if (sName === "Honnør") {
+                    if (num === 1) {
+                        sonePris = priser[3].pris1Sone;
+                    } else if (num === 2) {
+                        sonePris = priser[3].pris2Sone;
+                    } else if (num === 3) {
+                        sonePris = priser[3].pris3Sone;
+                    } else if (num === 4) {
+                        sonePris = priser[3].pris4Sone;
+                    }
+                } else if (sName === "Vernepliktig") {
+                    if (num === 1) {
+                        sonePris = priser[0].pris1Sone;
+                    } else if (num === 2) {
+                        sonePris = priser[0].pris2Sone;
+                    } else if (num === 3) {
+                        sonePris = priser[0].pris3Sone;
+                    } else if (num === 4) {
+                        sonePris = priser[0].pris4Sone;
+                    }
+                } else if (sName === "Småbarn") {
+                    if (num === 1) {
+                        sonePris = priser[4].pris1Sone;
+                    } else if (num === 2) {
+                        sonePris = priser[4].pris2Sone;
+                    } else if (num === 3) {
+                        sonePris = priser[4].pris3Sone;
+                    } else if (num === 4) {
+                        sonePris = priser[4].pris4Sone;
+                    }
+                } else if (sName === "Student") {
+                    if (num === 1) {
+                        sonePris = priser[5].pris1Sone;
+                    } else if (num === 2) {
+                        sonePris = priser[5].pris2Sone;
+                    } else if (num === 3) {
+                        sonePris = priser[5].pris3Sone;
+                    } else if (num === 4) {
+                        sonePris = priser[5].pris4Sone;
+                    }
+                } else if (sName === "Ledsager") {
+                    if (num === 1) {
+                        sonePris = priser[6].pris1Sone;
+                    } else if (num === 2) {
+                        sonePris = priser[6].pris2Sone;
+                    } else if (num === 3) {
+                        sonePris = priser[6].pris3Sone;
+                    } else if (num === 4) {
+                        sonePris = priser[6].pris4Sone;
+                    }
+                }
+                if (i > 0) {
+                    antall = name.substr(1, 2);
+                } else {
+                    antall = name.substr(0, 2);
+                }
+                console.log("Antall: " + antall);
+                console.log("SP: " + sonePris);
+                totPris += sonePris * antall;
+
+            }
+            console.log("PIRSERN12: " + totPris);
+            for (let i = 0; i < priser.length; i++) {
+               // console.log("P: " + priser[i].prisklasse);
+
+            }
+
+        });
+    }
 }
 
 function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
@@ -352,6 +402,7 @@ function setAvreise(ruteavganger, retur) { //Skriver ut avganger med data sendt 
         }
         //console.log(reiserute);
         reiserute.forEach(rs => { holdeplasser.push(rs.holdeplass) });
+        holdeplasserIReise = [];
         holdeplasser.forEach(h => { holdeplasserIReise.push(h) });
         if (holdeplasser.length > 0) {
             holdeplasserReverse = holdeplasser.slice().reverse();
@@ -381,7 +432,9 @@ function setAvreise(ruteavganger, retur) { //Skriver ut avganger med data sendt 
         }
         
     }
+    
     ut += "</tr></table>";
+    beregnPris(holdeplasserIReise);
     return ut;
 }
 
