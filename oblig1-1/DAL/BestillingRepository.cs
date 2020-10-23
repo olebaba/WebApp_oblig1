@@ -106,7 +106,6 @@ namespace oblig1_1.DAL
                 foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
                 {
                     foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && 
-                                                                fraStopp.StoppTid < r.StoppTid && 
                                                                 fraStopp.Rute == r.Rute))
                     {
                         potensielleRuter.Add(fraStopp.Rute);
