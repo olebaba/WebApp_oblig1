@@ -4,6 +4,7 @@
     //hentRuter();
     hentRS();
     hentPriser();
+    hentHoldeplasser();
 });
 
 function hentRuteAvgang() {
@@ -188,4 +189,64 @@ function endrePriser(objekt) {
             }
 
         });
+}
+
+
+function hentHoldeplasser() {
+    $.post("Admin/AdminHentHoldeplasser", function (holdeplasser) {
+        formaterHoldeplasser(holdeplasser);
+    });
+}
+
+function formaterHoldeplasser(holdeplasser) {
+    let ut = "<table class='table table-striped'>" +
+        "<tr>" +
+        "<th>Sted</th><th>Sone</th><th></th>" +
+        "</tr>";
+    for (let i = 0; i < holdeplasser.length; i++) {
+        ut += "<tr>" +
+            "<td>" + holdeplasser[i].sted + "</td>" +
+            "<td>" + holdeplasser[i].sone + "</td>" +
+            "<td> <button class='btn btn-danger' onclick='slettHoldeplass(" + holdeplasser[i].id + ")'>Slett</button></td>" +
+
+            "</tr>";
+    }
+    ut += "</table>";
+    $('#holdeplassoutput').html(ut);
+}
+
+function slettHoldeplass(id) {
+    console.log("ID " + id)
+    const url = "Admin/SlettHoldeplass?id=" + id;
+    $.get("Bestilling/HentRuteStopp", function (rutestopp) {
+        for (let i = 0; i < rutestopp.length; i++) {
+            if (rutestopp[i].holdeplass.id === id) {
+                const url2 = "Admin/SlettRS?id=" + rutestopp[i].id;
+                $.post(url2, function () {
+                    console.log("DELETED");
+                    $.post(url, function () {
+                        window.location.href = 'admin.html';
+                    });
+                });
+                break;
+            } else {
+                console.log("Fant ikke");
+            }
+        }
+
+        
+        console.log("HGÅR UHJIT");
+        $.post(url, function () {
+            window.location.href = 'admin.html';
+        });
+    });
+        /*
+        .fail(function (feil) {
+            if (feil.status === 401) {
+                window.location.href = 'innlogging.html';
+            } else {
+                $("#feil").html("Feil på server - prøv igjen senere");
+            }
+
+        });*/
 }

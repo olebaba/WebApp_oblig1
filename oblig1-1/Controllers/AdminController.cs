@@ -49,21 +49,7 @@ namespace oblig1_1.Controllers
             HttpContext.Session.SetString(_loggetInn, "");
         }
 
-        public async Task<ActionResult> SlettHoldeplass(int id)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
-            {
-                return Unauthorized("Ikke logget inn");
-            }
-            bool returOK = await _db.SlettHoldeplass(id);
-            if (!returOK)
-            {
-                Log.Information("Kunne ikke slette holdeplass");
-                return NotFound("Kunne ikke slette");
-            }
-            Log.Information("Sletting utført av holdeplass id: {id}", id);
-            return Ok("Sletting utført");
-        }
+        
 
         /*
         public async Task<ActionResult> SlettRute(int id)
@@ -116,6 +102,38 @@ namespace oblig1_1.Controllers
             }
             //_log.LogInformation("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
+        }
+
+        public async Task<ActionResult> SlettHoldeplass(int id)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            bool returOK = await _db.SlettHoldeplass(id);
+            if (!returOK)
+            {
+                Log.Information("Kunne ikke slette holdeplass");
+                return NotFound("Kunne ikke slette");
+            }
+            Log.Information("Sletting utført av holdeplass id: {id}", id);
+            return Ok("Sletting utført");
+        }
+
+        public async Task<ActionResult> SlettRS(int id)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            bool returOK = await _db.SlettRS(id);
+            if (!returOK)
+            {
+                Log.Information("Kunne ikke slette RS");
+                return NotFound("Kunne ikke slette");
+            }
+            Log.Information("Sletting utført av RS id: {id}", id);
+            return Ok("Sletting utført");
         }
     }
 }

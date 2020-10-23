@@ -196,8 +196,6 @@
     $.get("Bestilling/HentAlleHoldeplasser", function (holdeplasser) {
         formaterFraHoldeplass(holdeplasser);
     });
-
-    //hentPriser();
     
 });
 
