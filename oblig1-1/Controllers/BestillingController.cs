@@ -297,7 +297,27 @@ namespace oblig1_1.Controllers
             }
             _log.LogInformation("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
-        } 
+        }
+
+        public async Task<ActionResult> EnPris(int id)
+        {
+            if(ModelState.IsValid)
+            {
+                Priser pris = await _db.EnPris(id);
+                if(pris == null)
+                {
+                    return NotFound("Pris ikke funnet");
+                }
+                return Ok(id);
+            }
+            return BadRequest("Feil i inputvalidering");
+        }
+
+        public async Task<ActionResult> HentPriser()
+        {
+            List<Priser> priser = await _db.HentPriser();
+            return Ok(priser);
+        }
     }
 
     

@@ -33,6 +33,7 @@ namespace oblig1_1.DAL
         Task<Rute> EnRute(int id);
         Task<bool> LagreRute(string navn);
         Task<List<Priser>> HentPriser();
+        Task<Priser> EnPris(int id);
         Task<bool> EndrePriser(Priser pris);
     }
 }
