@@ -96,8 +96,8 @@ function lagreBestilling() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
-    const tur = JSON.parse(urlParams.get('tur'));
-    const retur = JSON.parse(urlParams.get('retur'));
+    const tur = JSON.parse(getUrlParam('tur'));
+    const retur = JSON.parse(getUrlParam('retur'));
     const goDate = new Date(tur.dato);
     const backDate = new Date(retur.dato);
 
