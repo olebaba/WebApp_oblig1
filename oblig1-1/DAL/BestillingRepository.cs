@@ -47,7 +47,10 @@ namespace oblig1_1.DAL
         }
 
         public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
-        {/*
+        {
+            List<RuteAvgang> ruteavganger = await _db.RuteAvganger.ToListAsync();
+            return ruteavganger;
+            /*
             try
             {
                 List<RuteAvgang> alleDBRuteAvganger = await _db.RuteAvganger.ToListAsync();

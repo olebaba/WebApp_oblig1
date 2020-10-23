@@ -1,13 +1,13 @@
 ﻿$(function () {
     hentHoldeplasser();
     hentRuteAvgang();
-    //hentRuter();
+    hentRuter();
     hentRS();
     hentPriser();
 });
 
 function hentRuteAvgang() {
-    $.get("Bestilling/AlleRA", function (ruteavgang) {
+    $.get("Bestilling/VisAlleRuteAvganger", function (ruteavgang) {
         formaterRA(ruteavgang);
     })
         .fail(function (feil) {
@@ -27,9 +27,8 @@ function formaterRA(ruteavgang) {
         "</tr>";
     for (let ra of ruteavgang) {
         ut += "<tr>" +
-            "<td>" + ra.Dato + "</td>" +
+            "<td>" + ra.dato + "</td>" +
             "<td>" + ra.rute.navn + "</td>" +
-            "<td>" + ra.rute.rutestopp + "</td>" +
             "<td> <a class='btn btn-primary' href='endreRuteA.html?id=" + ra.id + "'>Endre</a></td>" +
             "<td> <button class='btn btn-danger' onclick='slettRA(" + ra.id + ")'>Slett</button></td>" +
             "</tr>";
@@ -40,6 +39,7 @@ function formaterRA(ruteavgang) {
 
 function hentRS() {
     $.get("Bestilling/HentRuteStopp", function (rutestopp) {
+        console.log(rutestopp.stopptid);
         formaterRS(rutestopp);
     })
     .fail(function (feil) {
@@ -47,7 +47,7 @@ function hentRS() {
             window.location.href = 'innlogging.html';
         }
         else {
-            $("#feil").html("Feil på server - prøv igjen senere");
+            $("#feilRuteStopp").html("Feil på server - prøv igjen senere");
         }
     });
 }
@@ -56,13 +56,14 @@ function formaterRS(rutestopp) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
         //"<th>StoppTid</th>
-        "<th>Sted</th> <th>Sone</th><th></th><th></th>" +
+        "<th>Rute</th><th>Sted</th><th>Tid etter ruteavgang</th><th></th><th></th>" +
         "</tr>";
     for (let rs of rutestopp) {
         ut += "<tr>" +
             //"<td>" + rs.stopptid + "</td>" +
+            "<td>" + rs.rute.navn + "</td>" +
             "<td>" + rs.holdeplass.sted + "</td>" +
-            "<td>" + rs.holdeplass.sone + "</td>" +
+            "<td>" + rs.stoppTid + "</td>" +
             "<td> <a class='btn btn-primary' href='endre.html?id=" + rs.id + "'>Endre</a></td>" +
             "<td> <button class='btn btn-danger' onclick='slettRS(" + rs.id + ")'>Slett</button></td>" +
             "</tr>";
@@ -114,7 +115,7 @@ function formaterHoldeplasser(holdeplasser) {
 }
 
 function hentRuter() {
-    $.get("Bestilling/AlleRuter", function (ruter) {
+    $.get("Bestilling/AlleRuter", function (rute) {
         formaterRuter(rute);
     })
     .fail(function (feil) {
