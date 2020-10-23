@@ -69,15 +69,14 @@ function validerKnapp() {
         $('#ledsagerinput').val() * 1;
     if ($("#fra").val() && $("#til").val() && fraDato != "" && radio == "tur" && antall > 0) {
         $("#avgangerknapp").prop("disabled", false);
-    } else if ($("#fra").val() && $("#til").val() && validerDato() && tilDato != "" && antall > 0) {
+    } else if ($("#fra").val() && $("#til").val() && validerDatoForside() && tilDato != "" && antall > 0) {
         $("#avgangerknapp").prop("disabled", false);
     } else {
         $("#avgangerknapp").prop("disabled", true);
     }
-
 }
 
-function validerDato() {
+function validerDatoForside() {
     let fraDato = new Date($("input[name='turDato']").val());
     let tilDato = new Date($("input[name='retDato']").val());
     let radio = $("input[name='tur/retur']:checked").val();

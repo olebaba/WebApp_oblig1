@@ -28,34 +28,6 @@ namespace XUnitTestOblig
         private readonly Mock<HttpContext> mockHttpContext = new Mock<HttpContext>();
         private readonly MockHttpSession mockSession = new MockHttpSession();
 
-        /*
-        [Fact]
-        public async Task Lagre()
-        {
-            var nyKunde = new Kunde
-            {
-                KID = 1,
-                Navn = "Simon",
-                Prisklasse = "voksen",
-                Mobilnummer = "90907070"
-            };
-
-            var innBestilling = new Bestillinger
-            {
-                ID = 1,
-                Pris = 150,
-                Kunde = nyKunde
-            };
-
-            mockRep.Setup(k => k.Lagre(It.IsAny<Bestillinger>())).ReturnsAsync(true);
-            var bestillingController = new BestillingController(mockRep.Object, mockLog.Object);
-
-            var resultat = await bestillingController.Lagre(It.IsAny<Bestillinger>()) as OkObjectResult;
-
-            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
-            Assert.Equal("Bestillingen er lagret", resultat.Value);
-        }
-        */
         [Fact]
         public async Task HentHoldeplasserLoggetInn()
         {
@@ -376,24 +348,7 @@ namespace XUnitTestOblig
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke logget inn", resultat.Value);
         }
-        /*
-        [Fact]
-        public async Task SlettRuteLoggetInn()
-        {
-            mockRep.Setup(k => k.SlettRute(It.IsAny<int>())).ReturnsAsync(true);
-
-            var bestillingController = new AdminController(mockRep.Object);
-
-            mockSession[_loggetInn] = _loggetInn;
-            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
-            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
-
-            var resultat = await bestillingController.SlettRute(It.IsAny<int>()) as OkObjectResult;
-
-            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
-            Assert.Equal("Holdeplass lagret", resultat.Value);
-        }
-        */
+       
         [Fact]
         public async Task LagreHoldeplassLoggetInnFeil()
         {
