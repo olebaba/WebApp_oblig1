@@ -54,7 +54,15 @@ namespace oblig1_1.Controllers
             return await _db.VisAlleRuteAvganger();
 
         }
-       public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async
+        public RuteAvgang NyRuteAvgang(string[] argumenter)
+        {
+            return _db.NyRuteAvgang(argumenter);
+        }
+        public RuteStopp NyttRuteStopp(string[] argumenter)
+        {
+            return _db.NyttRuteStopp(argumenter);
+        }
+        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async
         {/*
             foreach (Holdeplass h in holdeplasser)
             {
@@ -297,7 +305,27 @@ namespace oblig1_1.Controllers
             }
             _log.LogInformation("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
-        } 
+        }
+
+        public async Task<ActionResult> EnPris(int id)
+        {
+            if(ModelState.IsValid)
+            {
+                Priser pris = await _db.EnPris(id);
+                if(pris == null)
+                {
+                    return NotFound("Pris ikke funnet");
+                }
+                return Ok(id);
+            }
+            return BadRequest("Feil i inputvalidering");
+        }
+
+        public async Task<ActionResult> HentPriser()
+        {
+            List<Priser> priser = await _db.HentPriser();
+            return Ok(priser);
+        }
     }
 
     

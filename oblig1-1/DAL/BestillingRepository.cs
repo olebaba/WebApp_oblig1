@@ -484,6 +484,9 @@ namespace oblig1_1.DAL
             string ruteNavn = argumenter[1];
             int minutterEtterAvgang = int.Parse(argumenter[2]);
             TimeSpan stoppTid = TimeSpan.FromMinutes(minutterEtterAvgang);
+            Console.WriteLine(argumenter[0]);
+            Console.WriteLine(argumenter[1]);
+            Console.WriteLine(argumenter[2]);
 
             Holdeplass holdeplass = _db.Holdeplasser.Where(h => h.Sted == holdeplassNavn).FirstOrDefault();
             Rute rute = _db.Ruter.Where(r => r.Navn == ruteNavn).FirstOrDefault();
@@ -632,6 +635,30 @@ namespace oblig1_1.DAL
             List<Priser> priser = await _db.Priser.ToListAsync();
             return priser;
         }
+
+        public async Task<Priser> EnPris(int id)
+        {
+            try
+            {
+                Priser enPris = await _db.Priser.FindAsync(id);
+                var returPris = new Priser()
+                {
+                    PrisID = enPris.PrisID,
+                    Prisklasse = enPris.Prisklasse,
+                    Pris1Sone = enPris.Pris1Sone,
+                    Pris2Sone = enPris.Pris2Sone,
+                    Pris3Sone = enPris.Pris3Sone,
+                    Pris4Sone = enPris.Pris4Sone
+                };
+                return returPris;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            
+        }
+        
 
         public async Task<bool> EndrePriser(Priser pris)
         {

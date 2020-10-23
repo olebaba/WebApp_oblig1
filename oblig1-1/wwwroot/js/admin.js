@@ -4,7 +4,6 @@
     //hentRuter();
     hentRS();
     hentPriser();
-    hentHoldeplasser();
 });
 
 function hentRuteAvgang() {
@@ -100,14 +99,14 @@ function hentHoldeplasser() {
 function formaterHoldeplasser(holdeplasser) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>Sted</th><th>Sone</th><th></th>" +
+        "<th>Sted</th><th>Sone</th><th></th><th></th>" +
         "</tr>";
     for (let holdeplass of holdeplasser) {
         ut += "<tr>" +
             "<td>" + holdeplass.sted + "</td>" +
             "<td>" + holdeplass.sone + "</td>" +
             "<td> <a class='btn btn-primary' href='endreHold.html?id=" + holdeplass.id + "'>Endre</a></td>" +
-            //"<td> <button class='btn btn-danger' onclick='slettHold(" + holdeplass.id + ")'>Slett</button></td>" +
+            "<td> <button class='btn btn-danger' onclick='slettHoldeplass(" + holdeplass.id + ")'>Slett</button></td>" +
             "</tr>";
     }
     ut += "</table>";
@@ -141,8 +140,11 @@ function formaterRuter(ruter) {
 
 
 function hentPriser() {
-    $.post("Admin/HentPriser", function (priser) {
+    $.post("Bestilling/HentPriser", function (priser) {
         formaterPriser(priser);
+    })
+    .fail(function (feil) {
+        $("#feilPris").html("Feil på server - prøv igjen senere");
     });
 }
 
@@ -191,30 +193,6 @@ function endrePriser(objekt) {
         });
 }
 
-
-function hentHoldeplasser() {
-    $.post("Admin/AdminHentHoldeplasser", function (holdeplasser) {
-        formaterHoldeplasser(holdeplasser);
-    });
-}
-
-function formaterHoldeplasser(holdeplasser) {
-    let ut = "<table class='table table-striped'>" +
-        "<tr>" +
-        "<th>Sted</th><th>Sone</th><th></th>" +
-        "</tr>";
-    for (let i = 0; i < holdeplasser.length; i++) {
-        ut += "<tr>" +
-            "<td>" + holdeplasser[i].sted + "</td>" +
-            "<td>" + holdeplasser[i].sone + "</td>" +
-            "<td> <button class='btn btn-danger' onclick='slettHoldeplass(" + holdeplasser[i].id + ")'>Slett</button></td>" +
-
-            "</tr>";
-    }
-    ut += "</table>";
-    $('#holdeplassoutput').html(ut);
-}
-
 function slettHoldeplass(id) {
     console.log("ID " + id)
     const url = "Admin/SlettHoldeplass?id=" + id;
@@ -226,6 +204,13 @@ function slettHoldeplass(id) {
                     console.log("DELETED");
                     $.post(url, function () {
                         window.location.href = 'admin.html';
+                    })
+                    .fail(function (feil) {
+                        if (feil.status === 401) {
+                            window.location.href = 'innlogging.html';
+                        } else {
+                            $("#feil").html("Feil på server - prøv igjen senere");
+                        }
                     });
                 });
                 break;
@@ -233,20 +218,9 @@ function slettHoldeplass(id) {
                 console.log("Fant ikke");
             }
         }
-
-        
         console.log("HGÅR UHJIT");
         $.post(url, function () {
             window.location.href = 'admin.html';
         });
-    });
-        /*
-        .fail(function (feil) {
-            if (feil.status === 401) {
-                window.location.href = 'innlogging.html';
-            } else {
-                $("#feil").html("Feil på server - prøv igjen senere");
-            }
-
-        });*/
+    });      
 }
