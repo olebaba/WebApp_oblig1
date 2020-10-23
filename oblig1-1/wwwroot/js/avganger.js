@@ -31,21 +31,6 @@ function hentTittel() { //Henter hvor reisen starter og slutter fra url, og send
     settTittel(v1.sted, v2.sted);
 }
 
-/*
-function hentDato() { //Henter dato fra url og sender videre. Kode tatt fra nett.
-    let url_dato;
-    if (getUrlParam("steg") == null) {
-        url_dato = new Date(getUrlParam('goDate'));
-    } else {
-        url_dato = new Date(getUrlParam('backDate'));
-    }
-    
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    var formatert_dato = url_dato.toLocaleDateString("no-NO", options);
-    var reise_dato = formatert_dato.charAt(0).toUpperCase() + formatert_dato.slice(1);
-    settDato(reise_dato);
-}*/
-
 function hentBilletter() { //Henter billetter fra url og sender videre.
     var billettNavn = [" Voksen", " Barn", " Småbarn", " Student", " Honnør", " Vernepliktig", " Ledsager"];
     var billettPriser = [60, 28, 0, 32, 28, 14, 25]; //må nok justeres
@@ -68,8 +53,6 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
     return billetter;
 }
 
-
-
 function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
     var date = new Date(getUrlParam('goDate'));
     var day = date.getDate();       // yields date
@@ -85,7 +68,6 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
             time
         ]
     };
-    var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
 
     $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (ruteavganger) {
         if (ruteavganger == null) {
@@ -166,24 +148,28 @@ function formaterTid(tid) { //Formaterer tid til 00:00-format. Noe av kode tatt 
     return nyFormat;
 }
 
-function finnAnkomst(start, stopp) { //Setter ankomsttid. Noe av kode tatt fra nett.
-    /*let reise_1 = avreise.substr(0, 2);
-    let reise_2 = avreise.substr(3, 2);
-    let time = parseInt(timer);
-    let min = parseInt(minutter);
-    let reiseDato = new Date(2020, 01, 01, reise_1, reise_2, 0);
-    reiseDato.setHours(reiseDato.getHours() + time);
-    reiseDato.setMinutes(reiseDato.getMinutes() + min);
-    reiseDato = reiseDato.toString();
-    return reiseDato.substr(16, 2) + ":" + reiseDato.substr(19, 2);*/
+function finnAnkomst(avreise, reisetid) { //Setter ankomsttid
+    var avreiseArr = avreise.split("");
+    var reisetidArr = reisetid.split("");
+    var ankomst = [];
 
-    return start + stopp;
+    for (i = 0; i < avreiseArr.length; i++) {
+        ankomst[i] = Number(avreiseArr[i]) + Number(reisetidArr[i]);
+    }
+    var time = ankomst[0];
+    var minutter = "" + ankomst[2] + ankomst[3];
+    var sekunder = ankomst[5] + ankomst[6];
+    if (minutter > 60) {
+        time++;
+        minutter = minutter - 60;
+    }
+
+    return time + ":" + minutter + ":" + sekunder;
 }
 
-function regnTid(start, stopp, motsattreise) {
+function regnReisetid(start, stopp, motsattreise) {//finner reisetid
     var stopptid = stopp.split("");
     var starttid = start.split("");
-    console.log(starttid, stopptid);
     var totaltid = [];
     if (motsattreise) {
         for (i = 0; i < stopptid.length; i++) {
@@ -194,8 +180,21 @@ function regnTid(start, stopp, motsattreise) {
             totaltid[i] = Number(stopptid[i]) - Number(starttid[i]);
         }
     }
-    return totaltid[0] + totaltid[1] + ":" + totaltid[3] + totaltid[4] + ":" + 
-        totaltid[6] + totaltid[7]
+    return totaltid[0] + totaltid[1] + ":" + totaltid[3] + totaltid[4] + ":" +
+        totaltid[6] + totaltid[7];
+}
+
+function finnAvgangTid(rutestart, forstestopptid) {//finner avgangstid
+    var rutestartArr = rutestart.split("");
+    var forstestopptidArr = forstestopptid.split("");
+    var avgangtid = [];
+
+    for (i = 0; i < rutestartArr.length; i++) {
+        avgangtid[i] = Number(forstestopptidArr[i]) + Number(rutestartArr[i]);
+    }
+
+    return avgangtid[0] + avgangtid[1] + ":" + avgangtid[3] + avgangtid[4] +
+        ":" + avgangtid[6] + avgangtid[7];
 }
 
 function visAvreiser(ruteavganger, retur) {    //Funksjon som skriver ut avganger
@@ -265,16 +264,17 @@ function setAvreise(ruteavganger, retur) { //Skriver ut avganger med data sendt 
             }
             reiserute.reverse();
         }
-        console.log(reiserute);
+        //console.log(reiserute);
         reiserute.forEach(rs => { holdeplasser.push(rs.holdeplass) });
         if (holdeplasser.length > 0) {
             holdeplasserReverse = holdeplasser.slice().reverse();
             pris = "en rimelig pris ";
-            let avreiseTid = avgang.dato.substr(11, 8);
-            let ankomst = sisteStoppTid;
-            let reisetid = regnTid(forsteStoppTid, sisteStoppTid, motsattreise);
+            let avreise = avgang.dato.substr(0, 10) + ", ";
+            let avreiseTid = finnAvgangTid(avgang.dato.substr(11, 8), forsteStoppTid);
+            let reisetid = regnReisetid(forsteStoppTid, sisteStoppTid, motsattreise);
+            let ankomst = finnAnkomst(avreiseTid, reisetid);
             ut += "<tr>" +
-                "<td>" + avreiseTid + "</td>" +
+                "<td>" + avreise + avreiseTid + "</td>" +
                 "<td>" + ankomst + "</td>" +
                 "<td>" + reisetid + "</td>" +
                 "<td>" + pris + "kr</td>" +
