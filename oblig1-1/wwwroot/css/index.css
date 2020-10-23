@@ -178,3 +178,19 @@ td{
     width: 15em;
     font-size: x-large;
 }
+
+/*betaling.....................................*/
+
+.notbold {
+    font-weight: normal;
+}
+
+.venstre {
+    text-align: left;
+}
+
+.tr2 {
+    border: hidden;
+    border-width: 0px 0;
+    font-size: medium;
+}
