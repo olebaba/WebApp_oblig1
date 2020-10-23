@@ -78,9 +78,14 @@ namespace oblig1_1.Controllers
             return Ok(holdeplasser);
         }
 
-        public async Task<List<Priser>> HentPriser()
+        public async Task<ActionResult> HentPriser()
         {
-            return await _db.HentPriser();
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            List<Priser> priser = await _db.HentPriser();
+            return Ok(priser);
         }
 
         public async Task<ActionResult> EndrePriser(Priser pris)
@@ -88,7 +93,7 @@ namespace oblig1_1.Controllers
 
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
             {
-                return Unauthorized();
+                return Unauthorized("Ikke logget inn");
             }
             if (ModelState.IsValid)
             {
