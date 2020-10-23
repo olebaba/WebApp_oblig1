@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Globalization;
 
 namespace oblig1_1.DAL
 {
@@ -75,16 +76,22 @@ namespace oblig1_1.DAL
             return null;
 
         }
-        private bool sammeDato(DateTime dato1, DateTime dato2) 
+        private bool SammeDato(DateTime dato1, DateTime dato2) 
         {
+            Console.WriteLine(dato1 + ", " + dato2);
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
         //Returnere en liste med ruteavganger 
-        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasser) //kan ikke være async pga where
+        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async pga where
         {
-            try {
-                var fra = holdeplasser[0];
-                var til = holdeplasser[1];
+            JsonSerializerOptions serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            try
+            {
+                Holdeplass fra = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[0], serializerOptions);
+                Holdeplass til = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[1], serializerOptions);
+                Console.WriteLine(fra.ToString() + ", " + til.ToString());
+                DateTime date = DateTime.ParseExact(holdeplasserOgDato[2], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                Console.WriteLine(date);
                 List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
                 List<Rute> potensielleRuter = new List<Rute>();
                 //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID
@@ -92,26 +99,39 @@ namespace oblig1_1.DAL
                 //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID, som har holdeplassID tilsvarende tilID
                 //rekkefølgenr større enn fraID sitt rekkefølgenr
                 //3.Hvis vi finner en eller flere, legger dette til i listen av rutekandidater
-                /*foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
+                foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
                 {
-                    foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && fraStopp.RekkefølgeNr < r.RekkefølgeNr && fraStopp.Rute == r.Rute))
+                    foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && 
+                                                                fraStopp.StoppTid < r.StoppTid && 
+                                                                fraStopp.Rute == r.Rute))
                     {
                         potensielleRuter.Add(fraStopp.Rute);
                     }
                             /*if (stopp.Holdeplass.ID == til.ID || stopp.Holdeplass.ID>til.ID) {
                         potensielleRuter.Add(stopp.Rute);
                     }*/
-                //}
+                }
+                if(potensielleRuter.Count > 0)
+                {
+                    potensielleRuter.ForEach(pr =>
+                    {
+                        Console.WriteLine("En mulig rute er: " + pr.Navn);
+                    });
+                }
+                else
+                {
+                    Console.WriteLine("Ingen potensielle ruter :(");
+                }
                 //4.Looper listen av rutekandidater og finner ruteavganger som bruker ruta
                 //5. Hvis ruteavgangen har riktig dato, legger den til i listen over ruteavganger
-                /*
+                
                 foreach (var rute in potensielleRuter) {
-                    foreach(var ruteavgang in _db.RuteAvganger.Where(r => r.Rute.RID == rute.RID && sammeDato(r.Dato, dato)))
+                    foreach(var ruteavgang in _db.RuteAvganger.Where(ra => ra.Rute.RID == rute.RID))
                     {
                         ruteavganger.Add(ruteavgang);
                     }
                         
-                }*/
+                }
                 return ruteavganger;
             }
             catch {
@@ -241,6 +261,7 @@ namespace oblig1_1.DAL
         {
             try
             {
+                Console.WriteLine(id);
                 Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
                 if (enBestilling == null) return null; //finner ikke id i DB
                 var hentetBestilling = new Bestillinger()
@@ -397,7 +418,6 @@ namespace oblig1_1.DAL
                 var hentetRS = new RuteStopp()
                 {
                     ID = etRS.ID,
-                    RekkefølgeNr = etRS.RekkefølgeNr,
                     StoppTid = etRS.StoppTid,
                     Holdeplass = holdeplass
                 };
@@ -448,7 +468,6 @@ namespace oblig1_1.DAL
                         etRS.Holdeplass = endreRS.Holdeplass;
                     }
                 }
-                etRS.RekkefølgeNr = endreRS.RekkefølgeNr;
                 etRS.StoppTid = endreRS.StoppTid;
 
                 await _db.SaveChangesAsync();
@@ -459,13 +478,51 @@ namespace oblig1_1.DAL
                 return false;
             }
         }
+        public RuteStopp NyttRuteStopp(string[] argumenter)
+        {
+            string holdeplassNavn = argumenter[0];
+            string ruteNavn = argumenter[1];
+            int minutterEtterAvgang = int.Parse(argumenter[2]);
+            TimeSpan stoppTid = TimeSpan.FromMinutes(minutterEtterAvgang);
+
+            Holdeplass holdeplass = _db.Holdeplasser.Where(h => h.Sted == holdeplassNavn).FirstOrDefault();
+            Rute rute = _db.Ruter.Where(r => r.Navn == ruteNavn).FirstOrDefault();
+            if (holdeplass != null && rute != null)
+            {
+                RuteStopp nyttRuteStopp = new RuteStopp();
+                nyttRuteStopp.Rute = rute;
+                nyttRuteStopp.Holdeplass = holdeplass;
+                nyttRuteStopp.StoppTid = stoppTid;
+                _db.Rutestopp.Add(nyttRuteStopp);
+                _db.SaveChanges();
+                return nyttRuteStopp;
+            }
+            return null;
+        }
+        public RuteAvgang NyRuteAvgang(string[] argumenter)
+        {
+            string ruteNavn = argumenter[0];
+            string avgangsTidString = argumenter[1];
+            DateTime avgangsTid = DateTime.ParseExact(avgangsTidString, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+            Rute rute = _db.Ruter.Where(r => r.Navn == ruteNavn).FirstOrDefault();
+            if (rute != null)
+            {
+                RuteAvgang nyRuteAvgang = new RuteAvgang();
+                nyRuteAvgang.Rute = rute;
+                nyRuteAvgang.Dato = avgangsTid;
+                _db.RuteAvganger.Add(nyRuteAvgang);
+                _db.SaveChanges();
+                return nyRuteAvgang;
+            }
+            return null;
+        }
 
         public async Task<bool> LagreRS(RuteStopp innRS)
         {
             try
             {
                 var nyRS = new RuteStopp();
-                nyRS.RekkefølgeNr = innRS.RekkefølgeNr;
                 nyRS.StoppTid = innRS.StoppTid;
 
                 // sjekker om holdeplass allerede ligger i databasen, legger til ny dersom den ikke gjør det 
