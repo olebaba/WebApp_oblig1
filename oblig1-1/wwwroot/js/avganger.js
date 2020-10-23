@@ -126,7 +126,7 @@ function gaTilbake() {
 function gaVidere() { //setter url til betalingssiden med korrekte verdier
     console.log("gå videre");
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
-        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2));
+        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : Number(turJson.pris).toFixed(2));
     //"&goDate=" + avreiser.goDate + "&backDate=" + avreiser.backDate;
     location.href = url;
     /*if ($(".avgCheckBox").length == 4 && $(".avgCheckBox input:checkbox:checked").length > 1) {
