@@ -169,28 +169,38 @@ function formaterPriser(priser) {
     $('#output').html(ut);
 }
 
+
 function endrePriser(objekt) {
     console.log("TEST");
-    const priser = {
-        prisID: objekt,
-        pris1Sone: $("#1sone").val(),
-        pris2Sone: $("#2sone").val(),
-        pris3Sone: $("#3sone").val(),
-        pris4Sone: $("#4sone").val(),
-    };
+    const sjekkPris1 = validerPris1($("#1sone").val());
+    const sjekkPris2 = validerPris2($("#2sone").val());
+    const sjekkPris3 = validerPris3($("#3sone").val());
+    const sjekkPris4 = validerPris4($("#4sone").val());
+    if (sjekkPris1 && sjekkPris2 && sjekkPris3 && sjekkPris4) {
+        const priser = {
+            prisID: objekt,
+            pris1Sone: $("#1sone").val(),
+            pris2Sone: $("#2sone").val(),
+            pris3Sone: $("#3sone").val(),
+            pris4Sone: $("#4sone").val(),
+        };
 
-    $.post("Admin/EndrePriser", priser, function () {
-        window.location.href = 'admin.html';
-        //console.log(priser.prisID + " , " + priser.prisklasse + " , " + priser.pris1Sone + " , " + priser.pris2Sone + " , " + priser.pris3Sone + " , " + priser.pris4Sone);
-    })
-        .fail(function (feil) {
-            if (feil.status === 401) {
-                window.location.href = 'innlogging.html';
-            } else {
-                $("#feil").html("Feil på server - prøv igjen senere");
-            }
+        $.post("Admin/EndrePriser", priser, function () {
+            window.location.href = 'admin.html';
+            //console.log(priser.prisID + " , " + priser.prisklasse + " , " + priser.pris1Sone + " , " + priser.pris2Sone + " , " + priser.pris3Sone + " , " + priser.pris4Sone);
+        })
+            .fail(function (feil) {
+                if (feil.status === 401) {
+                    window.location.href = 'innlogging.html';
+                } else {
+                    $("#feilPris").html("Feil på server - prøv igjen senere");
+                }
 
-        });
+            });
+    }
+    else {
+        ("#feilPris").html("Feil i inputvalidering");
+    }
 }
 
 function slettHoldeplass(id) {

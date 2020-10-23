@@ -236,3 +236,51 @@ function validerSted(sted) {
     }
 }
 
+function validerPris1(sone1) {
+    const regexp = /^[0-9]{1,4}$/;
+    const ok = regexp.test(sone1);
+    if (!ok) {
+        $("#feilSone1").html("Pris for sone 1 må bestå av et tall med 1 til 4 siffer");
+        return false;
+    }
+    else {
+        $("#feilSone1").html("");
+        return true; 
+    }
+}
+function validerPris2(sone2) {
+    const regexp = /^[0-9]{1,4}$/;
+    const ok = regexp.test(sone2);
+    if (!ok) {
+        $("#feilSone2").html("Pris for sone 2 må bestå av et tall med 1 til 4 siffer");
+        return false;
+    }
+    else {
+        $("#feilSone2").html("");
+        return true;
+    }
+}
+function validerPris3(sone3) {
+    const regexp = /^[0-9]{1,4}$/;
+    const ok = regexp.test(sone3);
+    if (!ok) {
+        $("#feilSone3").html("Pris for sone 3 må bestå av et tall med 1 til 4 siffer");
+        return false;
+    }
+    else {
+        $("#feilSone3").html("");
+        return true;
+    }
+}
+function validerPris4(sone4) {
+    const regexp = /^[0-9]{1,4}$/;
+    const ok = regexp.test(sone4);
+    if (!ok) {
+        $("#feilSone4").html("Pris for sone 4 må bestå av et tall med 1 til 4 siffer");
+        return false;
+    }
+    else {
+        $("#feilSone4").html("");
+        return true;
+    }
+}

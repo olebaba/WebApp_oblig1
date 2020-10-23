@@ -51,21 +51,26 @@
         <table class='table table-striped'>
             <tr>
                 <td>Pris for 1 sone</td>
-                <td><input type="text" id="1sone" /></td>
+                <td><input type="text" id="1sone" onchange="validerPris1(this.value)" /></td>
+                <td><span id="feilSone1" style="color: red"></span></td>
             </tr>
             <tr>
                 <td>Pris for 2 soner</td>
-                <td><input type="text" id="2sone" /></td>
+                <td><input type="text" id="2sone" onchange="validerPris2(this.value)" /></td>
+                <td><span id="feilSone2" style="color: red"></span></td>
             </tr>
             <tr>
                 <td>Pris for 3 soner</td>
-                <td><input type="text" id="3sone" /></td>
+                <td><input type="text" id="3sone" onchange="validerPris3(this.value)" /></td>
+                <td><span id="feilSone3" style="color: red"></span></td>
             </tr>
             <tr>
                 <td>Pris for 4 soner</td>
-                <td><input type="text" id="4sone" /></td>
+                <td><input type="text" id="4sone" onchange="validerPris4(this.value)" /></td>
+                <td><span id="feilSone3" style="color: red"></span></td>
             </tr>
         </table>
+        <div id="feilPris" style="color: red"></div>
     </div>   
 
 
