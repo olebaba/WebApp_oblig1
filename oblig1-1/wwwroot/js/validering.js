@@ -195,6 +195,19 @@ function validerRute(rute) {
         return true;
     }
 }
+function validerDato(dato) {
+    //Regex hentet fra nettet for formatet dd/mm/yyy hh:mm:ss
+    const regexp = /^([1-9]|([012][0-9])|(3[01]))-([0]{0,1}[1-9]|1[012])-\d\d\d\d (20|21|22|23|[0-1]?\d):[0-5]?\d:[0-5]?\d$/;
+    const ok = regexp.test(dato);
+    if (!ok) {
+        $("#feilDato").html("Dato må skrives på formatet dd/mm/yyyy hh:mm:ss");
+        return false;
+    }
+    else {
+        $("#feilDato").html("");
+        return true;
+    }
+}
 
 
 function validerTid(stoppTid) {

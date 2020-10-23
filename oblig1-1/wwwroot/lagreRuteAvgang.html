@@ -13,8 +13,14 @@
         <h1>Lagre ny RuteAvgang</h1>
         <form class="form">
             <div class="form-group">
-                <label>Dato</label>
-                <input type="text" id="dato" />
+                <label>Rute</label>
+                <input type="text" id="rute" onchange="validerRute(this.value)" />
+                <span id="feilRute" style="color: red"></span>
+            </div>
+            <div class="form-group">
+                <label>Avgangstid</label>
+                <input type="text" id="dato" onchange="validerDato(this.value)" />
+                <span id="feilDato" style="color: red"></span>
             </div>
             <div class="form-group">
                 <input type="button" id="reg" value="Lagre" onClick="validerOgLagreRuteAvgang()" class="btn btn-primary" />

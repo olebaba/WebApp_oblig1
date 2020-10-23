@@ -49,7 +49,10 @@ namespace oblig1_1.DAL
         }
 
         public async Task<List<RuteAvgang>> VisAlleRuteAvganger()
-        {/*
+        {
+            List<RuteAvgang> ruteavganger = await _db.RuteAvganger.ToListAsync();
+            return ruteavganger;
+            /*
             try
             {
                 List<RuteAvgang> alleDBRuteAvganger = await _db.RuteAvganger.ToListAsync();
@@ -84,6 +87,7 @@ namespace oblig1_1.DAL
             Console.WriteLine(dato1 + ", " + dato2);
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
+
         //Returnere en liste med ruteavganger 
         public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async pga where
         {
