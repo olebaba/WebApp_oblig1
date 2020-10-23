@@ -215,5 +215,16 @@ namespace oblig1_1.Controllers
             Log.Information("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
+
+        public async Task<ActionResult> HentRuteStopp()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+
+            List<RuteStopp> alleRS = await _db.HentRuteStopp();
+            return Ok(alleRS);
+        }
     }
 }

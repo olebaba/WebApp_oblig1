@@ -36,7 +36,7 @@ function formaterRA(ruteavgang) {
 }
 
 function hentRS() {
-    $.get("Bestilling/HentRuteStopp", function (rutestopp) {
+    $.get("Admin/HentRuteStopp", function (rutestopp) {
         formaterRS(rutestopp);
     })
     .fail(function (feil) {
@@ -197,7 +197,7 @@ function endrePriser(objekt) {
 
 function slettHoldeplass(id) {
     const url = "Admin/SlettHoldeplass?id=" + id;
-    $.get("Bestilling/HentRuteStopp", function (rutestopp) {
+    $.get("Admin/HentRuteStopp", function (rutestopp) {
         for (let i = 0; i < rutestopp.length; i++) {
             if (rutestopp[i].holdeplass.id === id) {
                 const url2 = "Admin/SlettRS?id=" + rutestopp[i].id;

@@ -685,5 +685,47 @@ namespace XUnitTestOblig
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke logget inn", resultat.Value);
         }
+
+        [Fact]
+        public async Task HentRuteStoppLoggetInn()
+        {
+            var oslo = new Holdeplass { Sted = "Oslo", Sone = 1 };
+            var OsloStavanger = new Rute { Navn = "Oslo-Stavanger" };
+            var RuteOsloStavangerStoppOslo = new RuteStopp { Holdeplass = oslo, Rute = OsloStavanger, StoppTid = TimeSpan.FromMinutes(0) };
+
+            var liste = new List<RuteStopp>();
+            liste.Add(RuteOsloStavangerStoppOslo);
+
+            mockRep.Setup(k => k.HentRuteStopp()).ReturnsAsync(liste);
+            var bestillingController = new AdminController(mockRep.Object);
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await bestillingController.HentRuteStopp() as OkObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal<List<RuteStopp>>((List<RuteStopp>)resultat.Value, liste);
+        }
+
+        [Fact]
+        public async Task HentRuteStoppIkkeLoggetInn()
+        {
+            mockRep.Setup(k => k.HentRuteStopp()).ReturnsAsync(It.IsAny<List<RuteStopp>>());
+
+            var bestillingController = new AdminController(mockRep.Object);
+
+            mockSession[_loggetInn] = _ikkeLoggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            // Act
+            var resultat = await bestillingController.HentRuteStopp() as UnauthorizedObjectResult;
+
+            // Assert 
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke logget inn", resultat.Value);
+        }
     }
 }

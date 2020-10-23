@@ -109,17 +109,6 @@ namespace oblig1_1.Controllers
             return BadRequest("Feil i inputvalidering på server");
         }
 
-        public async Task<ActionResult> HentRuteStopp()
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
-            {
-                return Unauthorized();
-            }
-
-            List<RuteStopp> alleRS = await _db.HentRuteStopp();
-            return Ok(alleRS);
-        }
-
         public async Task<ActionResult> EtRuteStopp(int id)
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
