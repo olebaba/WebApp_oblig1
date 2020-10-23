@@ -393,7 +393,7 @@ namespace XUnitTestOblig
             Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
             Assert.Equal("Holdeplass lagret", resultat.Value);
         }
-
+        */
         [Fact]
         public async Task LagreHoldeplassLoggetInnFeil()
         {
