@@ -106,11 +106,12 @@ function lagreBestilling() {
         datoer: goDate.toISOString().substr(0,10)
     }
     
+    const bestilltRetur = null;
     
     if(retur != null){
         const backDate = new Date(retur.dato);
         
-        const bestilltRetur = {
+        bestilltRetur = {
             //totalTid: retur.totalTid,
             holdeplasser: retur.holdeplasser,
             datoer: backDate.toISOString().substr(0, 10)
