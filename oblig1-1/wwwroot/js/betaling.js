@@ -126,7 +126,7 @@ function lagreBestilling() {
     console.log(bestilling);
 
     $.post("Bestilling/Lagre", bestilling, function () {
-        location.href = 'godkjent.html';
+        location.href = 'godkjent.html' + window.location.search;
     })
     .fail(function (error) {
         $("#feil").html("Feil på server - prøv igjen senere. (" + error.responseText + ")");
