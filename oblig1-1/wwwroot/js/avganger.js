@@ -202,12 +202,12 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
     };
 
     $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (ruteavganger) {
-        if (ruteavganger == null) {
+        if (ruteavganger == null || ruteavganger.length <= 0) {
             visFeilmelding("Ingen ruteravganger for denne reisen kunne bli funnet.");
         } else {
             console.log(ruteavganger);
             avreiser = ruteavganger;
-            visAvreiser(ruteavganger, sjekkRetur); 
+            visAvreiser(ruteavganger, sjekkRetur()); 
         }
     })
 
@@ -258,7 +258,7 @@ function gaTilbake() {
 function gaVidere() { //setter url til betalingssiden med korrekte verdier
     console.log("gå videre");
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
-        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2));
+        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : Number(turJson.pris).toFixed(2));
     //"&goDate=" + avreiser.goDate + "&backDate=" + avreiser.backDate;
     location.href = url;
     /*if ($(".avgCheckBox").length == 4 && $(".avgCheckBox input:checkbox:checked").length > 1) {
@@ -336,6 +336,7 @@ function visAvreiser(ruteavganger, retur) {    //Funksjon som skriver ut avgange
     $("#avreiser").html(uttur);
     
     if (retur) {
+        console.log("Reisen er retur!");
         var utretur = setAvreise(ruteavganger, true);
         $("#tilbake").after("<br/><br/><h2>Retur:</h2>" + utretur);
     }    

@@ -26,22 +26,6 @@ namespace oblig1_1.Controllers
             _db = db;
         }
 
-        public async Task<ActionResult> Lagre(Bestillinger innBestilling)
-        {
-            if (ModelState.IsValid)
-            {
-                bool returOk = await _db.Lagre(innBestilling);
-                if(!returOk)
-                {
-                    Log.Information("Bestillingen kunne ikke lagres");
-                    return BadRequest("Bestillingen kunne ikke lagres");
-                }
-                return Ok("Bestillingen er lagret");
-            }
-            Log.Information("Bestillingen kunne ikke lagres: Feil i inputvalidering");
-            return BadRequest("Feil i inputvalidering");
-        }
-
         public async Task<List<Bestillinger>> Index()
         {
             return await _db.Index();
@@ -61,16 +45,7 @@ namespace oblig1_1.Controllers
             return _db.NyttRuteStopp(argumenter);
         }
         public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async
-        {/*
-            foreach (Holdeplass h in holdeplasser)
-            {
-                if (h == null)
-                {
-                    Console.WriteLine("Fant ikke ruten, trist");
-                    return null;
-                }
-            }
-           */ 
+        {
 
             return _db.FinnEnRuteAvgang(holdeplasserOgDato);
         }
@@ -125,6 +100,7 @@ namespace oblig1_1.Controllers
                 Holdeplass enHoldeplass = await _db.HentHoldeplass(id);
                 if(enHoldeplass == null)
                 {
+                    Log.Information("Fant ikke holdeplassen");
                     return NotFound("Fant ikke holdeplassen");
                 }
                 return Ok(enHoldeplass);
@@ -178,10 +154,12 @@ namespace oblig1_1.Controllers
                 Rute enRute = await _db.EnRute(id);
                 if(enRute == null)
                 {
+                    Log.Information("Fant ikke ruten");
                     return NotFound("Fant ikke ruten");
                 }
                 return Ok(enRute);
             }
+            Log.Information("Feil i inputvalidering på server");
             return BadRequest("Feil i inputvalidering på server");
         }
 
@@ -192,10 +170,12 @@ namespace oblig1_1.Controllers
                 Priser pris = await _db.EnPris(id);
                 if(pris == null)
                 {
+                    Log.Information("Pris ikke funnet");
                     return NotFound("Pris ikke funnet");
                 }
                 return Ok(id);
             }
+            Log.Information("Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering");
         }
 

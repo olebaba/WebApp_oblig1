@@ -32,7 +32,7 @@ namespace oblig1_1.Models
                 var lyngdal = new Holdeplass { Sted = "Lyngdal", Sone = 4 };
                 var flekkefjord = new Holdeplass { Sted = "Flekkefjord", Sone = 4 };
                 var sandnes = new Holdeplass { Sted = "Sandnes", Sone = 4 };
-                var sola = new Holdeplass { Sted = "Stavanger flyplass, Sola", Sone = 4 };
+                var sola = new Holdeplass { Sted = "Stavanger flyplass Sola", Sone = 4 };
                 var stavanger = new Holdeplass { Sted = "Stavanger bussterminal", Sone = 4 };
                 context.Holdeplasser.Add(oslo);
                 context.Holdeplasser.Add(drammen);

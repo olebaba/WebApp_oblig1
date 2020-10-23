@@ -10,12 +10,10 @@ namespace oblig1_1.DAL
     {
         Task<List<RuteAvgang>> VisAlleRuteAvganger();
         Task<List<Bestillinger>> Index();
-        Task<bool> Lagre(Bestillinger innBestilling);
         Task<bool> Slett(int id);
         Task<Bestillinger> HentEn(int id);
         Task<bool> Endre(Bestillinger endreBestilling);
         List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato);
-        //Task<List<Holdeplass>> VisHoldeplasserIRute(int id);
         Task<List<Holdeplass>> HentAlleHoldeplasser();
         Task<bool> LoggInn(Bruker bruker);
         Task<Holdeplass> HentHoldeplass(int id);

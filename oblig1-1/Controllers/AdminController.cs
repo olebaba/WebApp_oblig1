@@ -30,7 +30,7 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.LoggInn(bruker);
                 if (!returOK)
                 {
-                    Log.Information("Admin logginn feiletfor bruker");
+                    Log.Information("Admin logginn feilet for bruker");
                     HttpContext.Session.SetString(_loggetInn, "");  
                     return Ok(false);
                 }
@@ -47,24 +47,6 @@ namespace oblig1_1.Controllers
             Log.Information("Admin loggut");
             HttpContext.Session.SetString(_loggetInn, "");
         }
-
-        /*
-        public async Task<ActionResult> SlettRute(int id)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
-            {
-                return Unauthorized("Ikke logget inn");
-            }
-            bool returOK = await _db.SlettRute(id);
-            if (!returOK)
-            {
-                Log.Information("Kunne ikke slette rute");
-                return NotFound("Kunne ikke slette");
-            }
-            Log.Information("Sletting utført av rute id: {id}", id);
-            return Ok("Sletting utført");
-        }*/
-
         public async Task<ActionResult> AdminHentHoldeplasser()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
@@ -86,6 +68,7 @@ namespace oblig1_1.Controllers
                 bool returOk = await _db.EndreHoldeplass(endreHoldeplass);
                 if (!returOk)
                 {
+                    Log.Information("Endringen av holdeplassen kunne ikke utføres");
                     return NotFound("Endringen av holdeplassen kunne ikke utføres");
                 }
                 return Ok("Holdeplass endret");
@@ -104,6 +87,7 @@ namespace oblig1_1.Controllers
                 bool lagreOK = await _db.LagreHoldeplass(innHoldeplass);
                 if (!lagreOK)
                 {
+                    Log.Information("Holdeplass kunne ikke lagres");
                     return BadRequest("Holdeplass kunne ikke lagres");
                 }
                 return Ok("Holdeplass lagret");

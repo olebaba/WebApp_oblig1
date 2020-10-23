@@ -4,7 +4,6 @@
     $.get(url, function (rutestopp) {
         console.log("verdier er: " + rutestopp.holdeplass.sone);
         $("#id").val(rutestopp.id);
-        $("#rekkefolge").val(rutestopp.rekkefølgeNr);
         $("#tid").val(rutestopp.stopptid);
         $("#sted").val(rutestopp.holdeplass.sted);
         $("#sone").val(rutestopp.holdeplass.sone);
@@ -12,7 +11,6 @@
 });
 
 function validerOgEndreRS() {
-    const rekkefOK = validerRekkefolge($("#rekkefolge").val());
     const tidOK = validerTid($("#tid").val());
     const stedOK = validerSted($("#sted").val());
     const soneOK = validerSone($("#sone").val());
@@ -24,7 +22,6 @@ function validerOgEndreRS() {
 function endreRS() {
     const rutestopp = {
         id: $("#id").val(),
-        rekkefolgeNr: $("#rekkefolge").val(),
         stopptid: $("#tid").val(),
         sted: $("#sted").val(),
         sone: $("#sone").val()
