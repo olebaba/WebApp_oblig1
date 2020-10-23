@@ -29,7 +29,7 @@ function endreRS() {
         sted: $("#sted").val(),
         sone: $("#sone").val()
     };
-    $.post("Bestilling/EndreRS", rutestopp, function () {
+    $.post("Admin/EndreRS", rutestopp, function () {
         window.location.href = 'admin.html';
     })
     .fail(function (feil) {

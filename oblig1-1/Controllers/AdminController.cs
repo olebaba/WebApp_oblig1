@@ -23,7 +23,6 @@ namespace oblig1_1.Controllers
                 _db = db;
             }
 
-
         public async Task<ActionResult> LoggInn(Bruker bruker)
         {
             if (ModelState.IsValid)
@@ -31,8 +30,8 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.LoggInn(bruker);
                 if (!returOK)
                 {
-                    HttpContext.Session.SetString(_loggetInn, "");
-                    Log.Information("Admin logginn feilet");
+                    Log.Information("Admin logginn feiletfor bruker");
+                    HttpContext.Session.SetString(_loggetInn, "");  
                     return Ok(false);
                 }
                 HttpContext.Session.SetString(_loggetInn, "innlogget");
@@ -48,8 +47,6 @@ namespace oblig1_1.Controllers
             Log.Information("Admin loggut");
             HttpContext.Session.SetString(_loggetInn, "");
         }
-
-        
 
         /*
         public async Task<ActionResult> SlettRute(int id)
@@ -78,6 +75,41 @@ namespace oblig1_1.Controllers
             return Ok(holdeplasser);
         }
 
+        public async Task<ActionResult> EndreHoldeplass(Holdeplass endreHoldeplass)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            if (ModelState.IsValid)
+            {
+                bool returOk = await _db.EndreHoldeplass(endreHoldeplass);
+                if (!returOk)
+                {
+                    return NotFound("Endringen av holdeplassen kunne ikke utføres");
+                }
+                return Ok("Holdeplass endret");
+            }
+            Log.Information("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
+        }
+        public async Task<ActionResult> LagreHoldeplass(Holdeplass innHoldeplass)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            if (ModelState.IsValid)
+            {
+                bool lagreOK = await _db.LagreHoldeplass(innHoldeplass);
+                if (!lagreOK)
+                {
+                    return BadRequest("Holdeplass kunne ikke lagres");
+                }
+                return Ok("Holdeplass lagret");
+            }
+            return BadRequest("Feil i inputvalidering på server");
+        }
         public async Task<ActionResult> HentPriser()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
@@ -100,12 +132,12 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.EndrePriser(pris);
                 if (!returOK)
                 {
-                    //_log.LogInformation("Endringen av RuteStopp kunne ikke utføres");
+                    Log.Information("Endringen av prisene kunne ikke utføres");
                     return NotFound("Endringen av prisene kunne ikke utføres");
                 }
                 return Ok("Priser endret");
             }
-            //_log.LogInformation("Feil i inputvalidering");
+            Log.Information("Endringen av prisene kunne ikke utføres: Feil i inputvalidering");
             return BadRequest("Feil i inputvalidering på server");
         }
 
@@ -124,6 +156,45 @@ namespace oblig1_1.Controllers
             Log.Information("Sletting utført av holdeplass id: {id}", id);
             return Ok("Sletting utført");
         }
+        public async Task<ActionResult> EndreRS(RuteStopp rutestopp)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.EndreRS(rutestopp);
+                if (!returOK)
+                {
+                    Log.Information("Endringen av RuteStopp kunne ikke utføres");
+                    return NotFound("Endringen av RuteStopp kunne ikke utføres");
+                }
+                return Ok("Rutestopp endret");
+            }
+            Log.Information("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
+        }
+
+        public async Task<ActionResult> LagreRS(RuteStopp innRS)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.LagreRS(innRS);
+                if (!returOK)
+                {
+                    Log.Information("Lagring av RuteStopp kunne ikke utføres");
+                    return NotFound("Lagring av RuteStopp kunne ikke utføres");
+                }
+                return Ok("Rutestopp lagret");
+            }
+            Log.Information("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
+        }
 
         public async Task<ActionResult> SlettRS(int id)
         {
@@ -139,6 +210,26 @@ namespace oblig1_1.Controllers
             }
             Log.Information("Sletting utført av RS id: {id}", id);
             return Ok("Sletting utført");
+        }
+
+        public async Task<ActionResult> LagreRute(String navn)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
+            {
+                return Unauthorized("Ikke logget inn");
+            }
+            if (ModelState.IsValid)
+            {
+                bool returOK = await _db.LagreRute(navn);
+                if (!returOK)
+                {
+                    Log.Information("Lagring av Rute kunne ikke utføres");
+                    return NotFound("Lagring av Rute kunne ikke utføres");
+                }
+                return Ok("Rute lagret");
+            }
+            Log.Information("Feil i inputvalidering");
+            return BadRequest("Feil i inputvalidering på server");
         }
     }
 }
