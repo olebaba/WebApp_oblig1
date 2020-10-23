@@ -2,6 +2,13 @@ $(function () { //Startfunksjon kaller på visBilletter()
     visReiser();
 });
 
+function getUrlParam(param) { //Henter ut parametere fra url. Kode tatt fra nett.
+    var queryString = window.location.search;
+    var urlParams = new URLSearchParams(queryString);
+    return urlParams.get(param);
+}
+
+
 function hentDato(tur) { //Henter reisedato fra url. Kode tatt fra nett.
     let url_dato = new Date(tur.dato); //getUrlParam(dato));
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
