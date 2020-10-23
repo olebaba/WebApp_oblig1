@@ -2,7 +2,7 @@ $(function () { //Startfunksjon kaller på visAvganger()
     visAvganger();
 });
 
-var hentetRute = {};
+var avreiser = {};
 var totalpris;
 var turJson, returJson, pris;
 
@@ -31,21 +31,6 @@ function hentTittel() { //Henter hvor reisen starter og slutter fra url, og send
     settTittel(v1.sted, v2.sted);
 }
 
-/*
-function hentDato() { //Henter dato fra url og sender videre. Kode tatt fra nett.
-    let url_dato;
-    if (getUrlParam("steg") == null) {
-        url_dato = new Date(getUrlParam('goDate'));
-    } else {
-        url_dato = new Date(getUrlParam('backDate'));
-    }
-    
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    var formatert_dato = url_dato.toLocaleDateString("no-NO", options);
-    var reise_dato = formatert_dato.charAt(0).toUpperCase() + formatert_dato.slice(1);
-    settDato(reise_dato);
-}*/
-
 function hentBilletter() { //Henter billetter fra url og sender videre.
     var billettNavn = [" Voksen", " Barn", " Småbarn", " Student", " Honnør", " Vernepliktig", " Ledsager"];
     var billettPriser = [60, 28, 0, 32, 28, 14, 25]; //må nok justeres
@@ -69,36 +54,28 @@ function hentBilletter() { //Henter billetter fra url og sender videre.
 }
 
 function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tider i en tabell
+    var date = new Date(getUrlParam('goDate'));
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    // After this construct a string with the above results as below
+    var time = day + "/" + month + "/" + year + " 00:00:00";
     var onsketReise = {
-        holdeplasser: [
+        holdeplasserOgDato: [
             getUrlParam('from'),
             getUrlParam('to'),
-            "{" + getUrlParam('goDate') + "}"
-    ]}
-    console.log(onsketReise);
-    var retur = (getUrlParam('tur') == 'tovei') ? true : false; 
+            time
+        ]
+    };
 
-    $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (rute) {
-        if (rute == null) {
-            visFeilmelding("Ingen ruter for denne reisen kunne bli funnet.");
+    $.post("Bestilling/FinnEnRuteAvgang", onsketReise, function (ruteavganger) {
+        if (ruteavganger == null) {
+            visFeilmelding("Ingen ruteravganger for denne reisen kunne bli funnet.");
         } else {
-            formaterRute(rute); //setter verdier i hentetRute
-            var fra = rute.holdeplasser[0];
-            var til = rute.holdeplasser[rute.holdeplasser.length - 1];
-            settTittel(fra.sted, til.sted);
-            avreiser = [];
-          
-            for (i = 0; i < hentetRute.avreiseTider.length; i++) {
-                console.log(i);
-                avreiser[i] = {
-                    start: hentetRute.avreiseTider[i],
-                    totaltid: hentetRute.avreiseTider,
-                    pris: hentetRute.pris,
-                    holdeplasser: hentetRute.holdeplasser
-                }
-
-                visAvreiser(avreiser, retur);
-            }
+            console.log(ruteavganger);
+            avreiser = ruteavganger;
+            visAvreiser(ruteavganger, sjekkRetur); 
         }
     })
 
@@ -110,19 +87,6 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
            
 function visFeilmelding(melding) {
     $("#avreiser").after('<p style="color:red">' + melding + '</p>');
-}
-
-function formaterRute(rute) { //formaterer rute til en JSON, hentetRute
-    var tider = rute.holdeplasser[0].avgangstider.split(",");
-    hentetRute = {
-        avreiseTider: tider,
-        totalTid: rute.totalTid,
-        pris: totalpris.toFixed(2), 
-        holdeplasser: rute.holdeplasser,
-        goDate: getUrlParam('goDate'),
-        backDate: getUrlParam('backDate')
-    };
-    console.log(hentetRute);
 }
 
 function sjekkRetur() { //Sjekker om reisen er tur-retur
@@ -160,15 +124,16 @@ function gaTilbake() {
 }
 
 function gaVidere() { //setter url til betalingssiden med korrekte verdier
+    console.log("gå videre");
     var url = "betaling.html?tur=" + JSON.stringify(turJson) + "&retur=" + ((returJson != undefined) ? JSON.stringify(returJson) : null) +
-        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2)) +
-        "&goDate=" + hentetRute.goDate + "&backDate=" + hentetRute.backDate;
-
-    if ($(".avgCheckBox").length == 4 && $(".avgCheckBox input:checkbox:checked").length > 1) {
+        "&pris=" + ((returJson != undefined) ? (Number(turJson.pris) + Number(returJson.pris)).toFixed(2) : JSON.stringify(turJson.pris).toFixed(2));
+    //"&goDate=" + avreiser.goDate + "&backDate=" + avreiser.backDate;
+    location.href = url;
+    /*if ($(".avgCheckBox").length == 4 && $(".avgCheckBox input:checkbox:checked").length > 1) {
         location.href = url;
     } else if ($(".avgCheckBox").length == 2) {
         location.href = url;
-    }
+    }*/
         
 }
 
@@ -185,67 +150,159 @@ function formaterTid(tid) { //Formaterer tid til 00:00-format. Noe av kode tatt 
     return nyFormat;
 }
 
-function settAnkomst(avreise, timer, minutter) { //Setter ankomsttid. Noe av kode tatt fra nett.
-    let reise_1 = avreise.substr(0, 2);
-    let reise_2 = avreise.substr(3, 2);
-    let time = parseInt(timer);
-    let min = parseInt(minutter);
-    let reiseDato = new Date(2020, 01, 01, reise_1, reise_2, 0);
-    reiseDato.setHours(reiseDato.getHours() + time);
-    reiseDato.setMinutes(reiseDato.getMinutes() + min);
-    reiseDato = reiseDato.toString();
-    return reiseDato.substr(16, 2) + ":" + reiseDato.substr(19, 2);
+function finnAnkomst(avreise, reisetid) { //Setter ankomsttid
+    var avreiseArr = avreise.split("");
+    var reisetidArr = reisetid.split("");
+    var ankomst = [];
+
+    for (i = 0; i < avreiseArr.length; i++) {
+        ankomst[i] = Number(avreiseArr[i]) + Number(reisetidArr[i]);
+    }
+    var time = ankomst[0];
+    var minutter = "" + ankomst[2] + ankomst[3];
+    var sekunder = ankomst[5] + ankomst[6];
+    if (minutter > 60) {
+        time++;
+        minutter = minutter - 60;
+    }
+
+    return time + ":" + minutter + ":" + sekunder;
 }
 
-function visAvreiser(avreiser, retur) {    //Funksjon som skriver ut avganger
-    var uttur = setAvreise(avreiser, false);
+function regnReisetid(start, stopp, motsattreise) {//finner reisetid
+    var stopptid = stopp.split("");
+    var starttid = start.split("");
+    var totaltid = [];
+    if (motsattreise) {
+        for (i = 0; i < stopptid.length; i++) {
+            totaltid[i] = Number(starttid[i]) - Number(stopptid[i]);
+        }
+    } else {
+        for (i = 0; i < stopptid.length; i++) {
+            totaltid[i] = Number(stopptid[i]) - Number(starttid[i]);
+        }
+    }
+    return totaltid[0] + totaltid[1] + ":" + totaltid[3] + totaltid[4] + ":" +
+        totaltid[6] + totaltid[7];
+}
+
+function finnAvgangTid(rutestart, forstestopptid) {//finner avgangstid
+    var rutestartArr = rutestart.split("");
+    var forstestopptidArr = forstestopptid.split("");
+    var avgangtid = [];
+
+    for (i = 0; i < rutestartArr.length; i++) {
+        avgangtid[i] = Number(forstestopptidArr[i]) + Number(rutestartArr[i]);
+    }
+
+    return avgangtid[0] + avgangtid[1] + ":" + avgangtid[3] + avgangtid[4] +
+        ":" + avgangtid[6] + avgangtid[7];
+}
+
+function visAvreiser(ruteavganger, retur) {    //Funksjon som skriver ut avganger
+    var uttur = setAvreise(ruteavganger, false);
     $("#avreiser").html(uttur);
     
     if (retur) {
-        var utretur = setAvreise(avreiser, true);
+        var utretur = setAvreise(ruteavganger, true);
         $("#tilbake").after("<br/><br/><h2>Retur:</h2>" + utretur);
     }    
 }
 
-function setAvreise(avreiser, retur) { //Skriver ut avganger med data sendt til seg
-    var timer = Math.floor(parseInt(avreiser[0].totaltid) / 60);
-    var minutter = parseInt(avreiser[0].totaltid) % 60;
-    var reisetid = timer + " timer og " + minutter + " minutter"
-    var holdeplasser, holdeplasserReverse, pris;
+
+
+function setAvreise(ruteavganger, retur) { //Skriver ut avganger med data sendt til seg
 
     let ut = "<table" + ((retur) ? " id='returAvreiser'" : "") + " class='table table-striped'>" +
         "<tr>" +
         "<th>Avreise</th><th>Ankomst</th><th>Reisetid</th><th>Pris</th><th>Holdeplasser</th>" +
         "<th></th>" +
         "</tr>";
-    for (let avreise of avreiser) { //avreise = rute med én tid
-        holdeplasser = avreise.holdeplasser;
-        holdeplasserReverse = holdeplasser.slice().reverse();
-        pris = avreise.pris;
-        let avreiseTid = formaterTid(avreise.start);
-        let ankomst = settAnkomst(avreiseTid, timer, minutter);
-        ut += "<tr>" +
-            "<td>" + avreiseTid + "</td>" +
-            "<td>" + ankomst + "</td>" +
-            "<td>" + reisetid + "</td>" +
-            "<td>" + pris + "kr</td>" +
-            "<td>";
-        ut += ((retur) ? holdeplasserReverse[0].sted : holdeplasser[0].sted);
-        let lengde = holdeplasser.length-1;
-        let visHoldeplasser="";
-        for (h = 1; h < lengde; h++) {
-            visHoldeplasser += ((retur) ? holdeplasserReverse[h].sted : holdeplasser[h].sted) + ", ";
+
+    for (let avgang of ruteavganger) {
+        var holdeplasser = [];
+        var sisteRutestopp = JSON.parse(getUrlParam('to'));
+        var forsteStopp = JSON.parse(getUrlParam('from'));
+        var sisteStoppTid, forsteStoppTid;
+        var alleRutestopp = avgang.rute.ruteStopp;
+        alleRutestopp.sort(function (a, b) {
+            if (a.stoppTid > b.stoppTid) return 1;
+            if (a.stoppTid < b.stoppTid) return -1;
+            return 0;
+        });
+        var reiserute = [];
+        var leggtil = false;
+        for (i in alleRutestopp) { //filtrer til riktige rutestopp for reise
+            
+            if (alleRutestopp[i].holdeplass.id == forsteStopp.id) {
+                forsteStoppTid = alleRutestopp[i].stoppTid;
+                leggtil = true;
+            }
+            if (alleRutestopp[i].holdeplass.id == sisteRutestopp.id) {
+                sisteStoppTid = alleRutestopp[i].stoppTid;
+                reiserute.push(alleRutestopp[i]);
+                break;
+            }
+            if (leggtil) {
+                reiserute.push(alleRutestopp[i]);
+            }
         }
-        ut += "<a href='#' data-toggle='tooltip' title='" + visHoldeplasser + "'><br>" + lengde + " stopp <br></a>"
-        ut += ((retur) ? holdeplasserReverse[lengde].sted : holdeplasser[lengde].sted);
-        ut += "</td>" +
-            '<td><div class="avgCheckBox"><label>' +
-            '<input class="reisevalg" type="checkbox" hidden onChange="reisevalg($(this))"/><span>Velg reise</span>' +
-            '</label></div></td>';
+        var motsattreise = false;
+        if (reiserute.length == 1) {//om reisen går motsatt vei av ruten
+            reiserute = [];
+            motsattreise = true;
+            for (i in alleRutestopp) { //filtrer til riktige rutestopp for reise
+
+                if (alleRutestopp[i].holdeplass.id == sisteRutestopp.id) {
+                    sisteStoppTid = alleRutestopp[i].stoppTid;
+                    leggtil = true;
+                }
+                if (alleRutestopp[i].holdeplass.id == forsteStopp.id) {
+                    forsteStoppTid = alleRutestopp[i].stoppTid;
+                    reiserute.push(alleRutestopp[i]);
+                    break;
+                }
+                if (leggtil) {
+                    reiserute.push(alleRutestopp[i]);
+                }
+            }
+            reiserute.reverse();
+        }
+        //console.log(reiserute);
+        reiserute.forEach(rs => { holdeplasser.push(rs.holdeplass) });
+        if (holdeplasser.length > 0) {
+            holdeplasserReverse = holdeplasser.slice().reverse();
+            pris = "en rimelig pris ";
+            let avreise = avgang.dato.substr(0, 10) + ", ";
+            let avreiseTid = finnAvgangTid(avgang.dato.substr(11, 8), forsteStoppTid);
+            let reisetid = regnReisetid(forsteStoppTid, sisteStoppTid, motsattreise);
+            let ankomst = finnAnkomst(avreiseTid, reisetid);
+            ut += "<tr>" +
+                "<td>" + avreise + avreiseTid + "</td>" +
+                "<td>" + ankomst + "</td>" +
+                "<td>" + reisetid + "</td>" +
+                "<td>" + pris + "kr</td>" +
+                "<td>";
+            ut += ((retur) ? holdeplasserReverse[0].sted : holdeplasser[0].sted);
+            let lengde = holdeplasser.length-1;
+            let visHoldeplasser="";
+            for (h = 1; h < lengde; h++) {
+                visHoldeplasser += ((retur) ? holdeplasserReverse[h].sted : holdeplasser[h].sted) + ", ";
+            }
+            ut += "<a href='#' data-toggle='tooltip' title='" + visHoldeplasser + "'><br>" + (lengde-1) + " stopp <br></a>"
+            ut += ((retur) ? holdeplasserReverse[lengde].sted : holdeplasser[lengde].sted);
+            ut += "</td>" +
+                '<td><div class="avgCheckBox"><label>' +
+                '<input class="reisevalg" type="checkbox" hidden onChange="reisevalg($(this))"/><span>Velg reise</span>' +
+                '</label></div></td>';
+        }
+        
     }
     ut += "</tr></table>";
     return ut;
 }
+
+
 
 function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil bestille, og setter verdiene som brukes i url-en
     var valgtRad, table;
@@ -256,6 +313,7 @@ function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil
     } else {
         //console.log("not checked", element);
     }
+    console.log(valgtRad.index());
 
     var i = 1;
     for (i; i < $(`#${table} tr`).length; i++) {
@@ -266,22 +324,16 @@ function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil
 
     if (table == "avreiser") {
         turJson = {
-            avreise: hentetRute.avreiseTider[valgtRad-1],
-            totalTid: hentetRute.totalTid,
-            pris: hentetRute.pris,
-            startsted: hentetRute.holdeplasser[0],
-            reisemal: hentetRute.holdeplasser[hentetRute.holdeplasser.length - 1],
-            holdeplasser: hentetRute.holdeplasser
+            rute: avreiser[valgtRad.index() - 1].rute.navn,
+            pris: 50,
+            dato: avreiser[valgtRad.index() - 1].dato
         };
     }
     if (table == "returAvreiser") {
         returJson = {
-            avreise: hentetRute.avreiseTider[valgtRad-1],
-            totalTid: hentetRute.totalTid,
-            pris: hentetRute.pris,
-            startsted: hentetRute.holdeplasser[hentetRute.holdeplasser.length-1],
-            reisemal: hentetRute.holdeplasser[0],
-            holdeplasser: hentetRute.holdeplasser
+            rute: avreiser[valgtRad.index() - 1].rute.navn,
+            pris: 50,
+            dato: avreiser[valgtRad.index() - 1].dato
         };
     }
 

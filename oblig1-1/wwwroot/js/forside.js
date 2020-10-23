@@ -196,6 +196,8 @@
     $.get("Bestilling/HentAlleHoldeplasser", function (holdeplasser) {
         formaterFraHoldeplass(holdeplasser);
     });
+
+    //hentPriser();
     
 });
 
@@ -238,6 +240,23 @@ function formaterFraHoldeplass(holdeplasser) {
     });
 }
 
+function visBestillinger() {
+    $.get("Bestilling/Index", function (bestillinger) {
+        console.log(bestillinger);
+    })
+}
+
+function slettBestilling(id) {
+    $.post("Bestilling/Slett", id, function () {
+
+    });
+}
+
+function hentEnBestilling(id) {
+    $.get("Bestilling/HentEn?id=" + id, function (bestilling) {
+        console.log(bestilling);
+    })
+}
 
 function validerOgVisAvganger() {
     const holdeplassFraOk = validerHoldeplassFra(hentVerdi("#fra"));

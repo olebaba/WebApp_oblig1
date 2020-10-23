@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Globalization;
 
 namespace oblig1_1.DAL
 {
@@ -75,16 +76,23 @@ namespace oblig1_1.DAL
             return null;
 
         }
-        private bool sammeDato(DateTime dato1, DateTime dato2) 
+        private bool SammeDato(DateTime dato1, DateTime dato2) 
         {
+            Console.WriteLine(dato1 + ", " + dato2);
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
+
         //Returnere en liste med ruteavganger 
-        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasser) //kan ikke være async pga where
+        public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async pga where
         {
-            try {
-                var fra = holdeplasser[0];
-                var til = holdeplasser[1];
+            JsonSerializerOptions serializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            try
+            {
+                Holdeplass fra = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[0], serializerOptions);
+                Holdeplass til = JsonSerializer.Deserialize<Holdeplass>(holdeplasserOgDato[1], serializerOptions);
+                Console.WriteLine(fra.ToString() + ", " + til.ToString());
+                DateTime date = DateTime.ParseExact(holdeplasserOgDato[2], "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                Console.WriteLine(date);
                 List<RuteAvgang> ruteavganger = new List<RuteAvgang>();
                 List<Rute> potensielleRuter = new List<Rute>();
                 //1.Finne rutestopp der holdeplassID tilsvarer holdeplass fraID
@@ -92,26 +100,38 @@ namespace oblig1_1.DAL
                 //2.Loope rutestopplisten, inni loopen så leter vi etter rutestopp med samme ruteID, som har holdeplassID tilsvarende tilID
                 //rekkefølgenr større enn fraID sitt rekkefølgenr
                 //3.Hvis vi finner en eller flere, legger dette til i listen av rutekandidater
-                /*foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
+                foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
                 {
-                    foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && fraStopp.RekkefølgeNr < r.RekkefølgeNr && fraStopp.Rute == r.Rute))
+                    foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && 
+                                                                fraStopp.Rute == r.Rute))
                     {
                         potensielleRuter.Add(fraStopp.Rute);
                     }
                             /*if (stopp.Holdeplass.ID == til.ID || stopp.Holdeplass.ID>til.ID) {
                         potensielleRuter.Add(stopp.Rute);
                     }*/
-                //}
+                }
+                if(potensielleRuter.Count > 0)
+                {
+                    potensielleRuter.ForEach(pr =>
+                    {
+                        Console.WriteLine("En mulig rute er: " + pr.Navn);
+                    });
+                }
+                else
+                {
+                    Console.WriteLine("Ingen potensielle ruter :(");
+                }
                 //4.Looper listen av rutekandidater og finner ruteavganger som bruker ruta
                 //5. Hvis ruteavgangen har riktig dato, legger den til i listen over ruteavganger
-                /*
+                
                 foreach (var rute in potensielleRuter) {
-                    foreach(var ruteavgang in _db.RuteAvganger.Where(r => r.Rute.RID == rute.RID && sammeDato(r.Dato, dato)))
+                    foreach(var ruteavgang in _db.RuteAvganger.Where(ra => ra.Rute.RID == rute.RID))
                     {
                         ruteavganger.Add(ruteavgang);
                     }
                         
-                }*/
+                }
                 return ruteavganger;
             }
             catch {
@@ -241,6 +261,7 @@ namespace oblig1_1.DAL
         {
             try
             {
+                Console.WriteLine(id);
                 Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
                 if (enBestilling == null) return null; //finner ikke id i DB
                 var hentetBestilling = new Bestillinger()
