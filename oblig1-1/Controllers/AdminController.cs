@@ -47,24 +47,6 @@ namespace oblig1_1.Controllers
             Log.Information("Admin loggut");
             HttpContext.Session.SetString(_loggetInn, "");
         }
-
-        /*
-        public async Task<ActionResult> SlettRute(int id)
-        {
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))
-            {
-                return Unauthorized("Ikke logget inn");
-            }
-            bool returOK = await _db.SlettRute(id);
-            if (!returOK)
-            {
-                Log.Information("Kunne ikke slette rute");
-                return NotFound("Kunne ikke slette");
-            }
-            Log.Information("Sletting utført av rute id: {id}", id);
-            return Ok("Sletting utført");
-        }*/
-
         public async Task<ActionResult> AdminHentHoldeplasser()
         {
             if (string.IsNullOrEmpty(HttpContext.Session.GetString(_loggetInn)))

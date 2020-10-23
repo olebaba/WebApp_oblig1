@@ -52,34 +52,6 @@ namespace oblig1_1.DAL
         {
             List<RuteAvgang> ruteavganger = await _db.RuteAvganger.ToListAsync();
             return ruteavganger;
-            /*
-            try
-            {
-                List<RuteAvgang> alleDBRuteAvganger = await _db.RuteAvganger.ToListAsync();
-                List<RuteAvgang> alleRuteAvganger = new List<RuteAvgang>();
-
-                foreach (var rute in alleDBRuteAvganger)
-                {
-                    var holdeplasserIRute = new List<Holdeplass>();
-                    var enRute = new Rute
-                    {
-                        Datoer = rute.Datoer,
-                        Holdeplasser = holdeplasserIRute
-                    };
-                    foreach (var holdeplass in rute.Holdeplasser)
-                    {
-                        holdeplasserIRute.Add(holdeplass);
-                    }
-                    alleRuter.Add(enRute);
-                }
-                return alleRuter;
-            }
-            catch (Exception e)
-            {
-                Log.Error("Error i VisAlleRuteAvganger: {error}", e);
-                return null;
-            }*/
-            return null;
 
         }
         private bool SammeDato(DateTime dato1, DateTime dato2) 
