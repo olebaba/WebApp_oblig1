@@ -99,18 +99,22 @@ function lagreBestilling() {
     const tur = JSON.parse(getUrlParam('tur'));
     const retur = JSON.parse(getUrlParam('retur'));
     const goDate = new Date(tur.dato);
-    const backDate = new Date(retur.dato);
-
+    
     const bestilltTur = {
         //totalTid: tur.totalTid, //fiks her
         holdeplasser: tur.holdeplasser,
         datoer: goDate.toISOString().substr(0,10)
     }
-
-    const bestilltRetur = {
-        //totalTid: retur.totalTid,
-        holdeplasser: retur.holdeplasser,
-        datoer: backDate.toISOString().substr(0, 10)
+    
+    
+    if(retur != null){
+        const backDate = new Date(retur.dato);
+        
+        const bestilltRetur = {
+            //totalTid: retur.totalTid,
+            holdeplasser: retur.holdeplasser,
+            datoer: backDate.toISOString().substr(0, 10)
+        }
     }
 
     const kunde = {
@@ -133,11 +137,4 @@ function lagreBestilling() {
     .fail(function (error) {
         $("#feil").html("Feil på server - prøv igjen senere. (" + error.responseText + ")");
     }); 
-}
-
-function visEnBestilling() {
-    $.get("Bestilling/HentEn?id=1", function (bestilling) {
-    })
-        .fail((message) => {
-        });
 }
