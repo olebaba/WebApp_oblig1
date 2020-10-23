@@ -266,5 +266,23 @@ namespace XUnitTestOblig
             Assert.Equal("Ikke logget inn", resultat.Value);
         }
         */
+        /*
+        [Fact]
+        public async Task LagreHoldeplassLoggetInn()
+        {
+            mockRep.Setup(k => k.LagreHoldeplass(It.IsAny<Holdeplass>())).ReturnsAsync(true);
+
+            var bestillingController = new BestillingController(mockRep.Object);
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            bestillingController.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await bestillingController.LagreHoldeplass(It.IsAny<Holdeplass>()) as OkObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal("Kunde lagret", resultat.Value);
+        }
+        */
     }
 }

@@ -121,9 +121,17 @@ namespace oblig1_1.Models
                 var voksen = new Priser { Prisklasse = "Voksen", Pris1Sone = 40, Pris2Sone = 60, Pris3Sone = 80, Pris4Sone = 100 };
                 var barn = new Priser { Prisklasse = "Barn", Pris1Sone = 20, Pris2Sone = 30, Pris3Sone = 40, Pris4Sone = 50 };
                 var honnør = new Priser { Prisklasse = "Honnør", Pris1Sone = 25, Pris2Sone = 40, Pris3Sone = 50, Pris4Sone = 60 };
+                var småbarn = new Priser { Prisklasse = "Småbarn", Pris1Sone = 25, Pris2Sone = 40, Pris3Sone = 50, Pris4Sone = 60 };
+                var student = new Priser { Prisklasse = "Student", Pris1Sone = 25, Pris2Sone = 40, Pris3Sone = 50, Pris4Sone = 60 };
+                var vernepliktig = new Priser { Prisklasse = "Vernepliktig", Pris1Sone = 25, Pris2Sone = 40, Pris3Sone = 50, Pris4Sone = 60 };
+                var ledsager = new Priser { Prisklasse = "Ledsager", Pris1Sone = 25, Pris2Sone = 40, Pris3Sone = 50, Pris4Sone = 60 };
                 context.Priser.Add(voksen);
                 context.Priser.Add(barn);
                 context.Priser.Add(honnør);
+                context.Priser.Add(småbarn);
+                context.Priser.Add(student);
+                context.Priser.Add(vernepliktig);
+                context.Priser.Add(ledsager);
 
                 context.SaveChanges();
             }
