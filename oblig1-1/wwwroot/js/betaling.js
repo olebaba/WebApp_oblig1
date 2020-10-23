@@ -93,6 +93,7 @@ function validerOgBetal() {
 }
 
 function lagreBestilling() {
+    /*
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
 
@@ -116,6 +117,8 @@ function lagreBestilling() {
             holdeplasser: retur.holdeplasser,
             datoer: backDate.toISOString().substr(0, 10)
         }
+    }else{
+        bestilltRetur = bestilltTur;   
     }
 
     const kunde = {
@@ -137,5 +140,6 @@ function lagreBestilling() {
     })
     .fail(function (error) {
         $("#feil").html("Feil på server - prøv igjen senere. (" + error.responseText + ")");
-    }); 
+    }); */
+    location.href = 'godkjent.html' + window.location.search;
 }
