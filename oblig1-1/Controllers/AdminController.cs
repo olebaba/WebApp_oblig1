@@ -30,7 +30,7 @@ namespace oblig1_1.Controllers
                 bool returOK = await _db.LoggInn(bruker);
                 if (!returOK)
                 {
-                    Log.Information("Admin logginn feiletfor bruker");
+                    Log.Information("Admin logginn feilet for bruker");
                     HttpContext.Session.SetString(_loggetInn, "");  
                     return Ok(false);
                 }
@@ -86,6 +86,7 @@ namespace oblig1_1.Controllers
                 bool returOk = await _db.EndreHoldeplass(endreHoldeplass);
                 if (!returOk)
                 {
+                    Log.Information("Endringen av holdeplassen kunne ikke utføres");
                     return NotFound("Endringen av holdeplassen kunne ikke utføres");
                 }
                 return Ok("Holdeplass endret");
@@ -104,6 +105,7 @@ namespace oblig1_1.Controllers
                 bool lagreOK = await _db.LagreHoldeplass(innHoldeplass);
                 if (!lagreOK)
                 {
+                    Log.Information("Holdeplass kunne ikke lagres");
                     return BadRequest("Holdeplass kunne ikke lagres");
                 }
                 return Ok("Holdeplass lagret");
