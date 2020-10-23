@@ -155,6 +155,7 @@ namespace oblig1_1.DAL
                 Bestillinger enBestilling = await _db.Bestillinger.FindAsync(id);
                 _db.Bestillinger.Remove(enBestilling);
                 await _db.SaveChangesAsync();
+                Log.Information("Bestilling slettet.");
                 return true;
             }
             catch (Exception e)
@@ -201,6 +202,7 @@ namespace oblig1_1.DAL
                 enBestillling.Retur = endreBestilling.Retur;
 
                 await _db.SaveChangesAsync();
+                Log.Information("Bestilling endret.");
                 return true;
             }
             catch (Exception e)
@@ -245,6 +247,7 @@ namespace oblig1_1.DAL
                 bool ok = hash.SequenceEqual(funnetBruker.Passord);
                 if(ok)
                 {
+                    Log.Information("Admin logget inn.");
                     return true;
                 }
                 return false;
@@ -285,6 +288,7 @@ namespace oblig1_1.DAL
                 enHoldeplass.Sone = endreHoldeplass.Sone;
 
                 await _db.SaveChangesAsync();
+                Log.Information("Holdeplass id: {id} endret.", endreHoldeplass.ID);
                 return true;
             }
             catch(Exception e)
@@ -304,11 +308,12 @@ namespace oblig1_1.DAL
 
                 _db.Holdeplasser.Add(nyHS);
                 await _db.SaveChangesAsync();
+                Log.Information("Holdeplass lagt inn: {holdeplass}", innHP.Sted);
                 return true; 
             }
             catch(Exception e)
             {
-                Log.Error("Error i LagreHoldeplasser: {error}", e);
+                Log.Error("Error i LagreHoldeplass: {error}", e);
                 return false; 
             }
         }
@@ -349,6 +354,7 @@ namespace oblig1_1.DAL
                 RuteStopp etRS = await _db.Rutestopp.FindAsync(id);
                 _db.Rutestopp.Remove(etRS);
                 await _db.SaveChangesAsync();
+                Log.Information("Rutestopp id: {id} slettet.", id);
                 return true; 
             }
             catch(Exception e)
@@ -381,6 +387,7 @@ namespace oblig1_1.DAL
                 etRS.StoppTid = endreRS.StoppTid;
 
                 await _db.SaveChangesAsync();
+                Log.Information("Rutestopp id: {id} endret.", endreRS.ID);
                 return true;
             }
             catch(Exception e)
@@ -412,6 +419,7 @@ namespace oblig1_1.DAL
                 _db.SaveChanges();
                 return nyttRuteStopp;
             }
+            Log.Information("Nytt rutestopp lagt til.");
             return null;
         }
         public RuteAvgang NyRuteAvgang(string[] argumenter)
@@ -430,6 +438,7 @@ namespace oblig1_1.DAL
                 _db.SaveChanges();
                 return nyRuteAvgang;
             }
+            Log.Information("Ny ruteavgang lagt til.");
             return null;
         }
 
@@ -459,6 +468,7 @@ namespace oblig1_1.DAL
 
                 _db.Rutestopp.Add(nyRS);
                 await _db.SaveChangesAsync();
+                Log.Information("Rutestopp lagret.");
                 return true; 
             }
             catch(Exception e)
@@ -482,6 +492,7 @@ namespace oblig1_1.DAL
                 Console.Write(e.Message);
                 return false;
             }
+            Log.Information("Holdeplass slettet.");
             return true;
         }
 
@@ -499,6 +510,7 @@ namespace oblig1_1.DAL
             }
             catch(Exception e)
             {
+                Log.Error("Error i AlleRuter: {error}", e);
                 return null;
             }
         }
@@ -535,6 +547,7 @@ namespace oblig1_1.DAL
 
                 _db.Ruter.Add(nyRute);
                 await _db.SaveChangesAsync();
+                Log.Information("Rute lagret.");
                 return true; 
             }
             catch(Exception e)
@@ -586,6 +599,7 @@ namespace oblig1_1.DAL
                 endreObjekt.Pris3Sone = pris.Pris3Sone;
                 endreObjekt.Pris4Sone = pris.Pris4Sone;
                 await _db.SaveChangesAsync();
+                Log.Information("Priser endret.");
             }
             catch (Exception e)
             {
