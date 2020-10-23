@@ -219,7 +219,6 @@ function slettHoldeplass(id) {
                 console.log("Fant ikke");
             }
         }
-        console.log("HGÅR UHJIT");
         $.post(url, function () {
             window.location.href = 'admin.html';
         });
