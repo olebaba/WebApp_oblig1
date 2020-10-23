@@ -214,6 +214,76 @@ namespace XUnitTestOblig
             Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
             Assert.Equal("Ikke logget inn", resultat.Value);
         }
+
+        [Fact]
+        public async Task EndrePrisLoggetInnOk()
+        {
+            mockRep.Setup(p => p.EndrePriser(It.IsAny<Priser>())).ReturnsAsync(true);
+
+            var controller = new AdminController(mockRep.Object);
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            controller.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await controller.EndrePriser(It.IsAny<Priser>()) as OkObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.OK, resultat.StatusCode);
+            Assert.Equal("Priser endret", resultat.Value);
+        }
+
+        [Fact]
+        public async Task EndrePrisLoggetInnIkkeOk()
+        {
+            mockRep.Setup(p => p.EndrePriser(It.IsAny<Priser>())).ReturnsAsync(false);
+
+            var controller = new AdminController(mockRep.Object);
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            controller.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await controller.EndrePriser(It.IsAny<Priser>()) as BadRequestObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Endringen av prisene kunne ikke utføres", resultat.Value);
+        }
+        [Fact]
+        public async Task EndrePrisFeilModel()
+        {
+            mockRep.Setup(p => p.EndrePriser(It.IsAny<Priser>())).ReturnsAsync(true);
+
+            var controller = new AdminController(mockRep.Object);
+
+            controller.ModelState.AddModelError("Pris1Sone", "Feil i inputvalidering på server");
+
+            mockSession[_loggetInn] = _loggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            controller.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await controller.EndrePriser(It.IsAny<Priser>()) as BadRequestObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.BadRequest, resultat.StatusCode);
+            Assert.Equal("Feil i inputvalidering på server", resultat.Value);
+        }
+
+        [Fact]
+        public async Task EndrePrisIkkeLoggetInn()
+        {
+            mockRep.Setup(p => p.EndrePriser(It.IsAny<Priser>())).ReturnsAsync(true);
+
+            var controller = new AdminController(mockRep.Object);
+
+            mockSession[_loggetInn] = _ikkeLoggetInn;
+            mockHttpContext.Setup(s => s.Session).Returns(mockSession);
+            controller.ControllerContext.HttpContext = mockHttpContext.Object;
+
+            var resultat = await controller.EndrePriser(It.IsAny<Priser>()) as UnauthorizedObjectResult;
+
+            Assert.Equal((int)HttpStatusCode.Unauthorized, resultat.StatusCode);
+            Assert.Equal("Ikke logget inn", resultat.Value);
+        }
+
         /*
         [Fact]
         public async Task SlettRuteLoggetInn()
