@@ -75,7 +75,7 @@ function hentRuteFraDB() { //henter rute fra databasen og formaterer + viser tid
         } else {
             console.log(ruteavganger);
             avreiser = ruteavganger;
-            visAvreiser(ruteavganger, sjekkRetur); 
+            visAvreiser(ruteavganger, sjekkRetur()); 
         }
     })
 
@@ -204,6 +204,7 @@ function visAvreiser(ruteavganger, retur) {    //Funksjon som skriver ut avgange
     $("#avreiser").html(uttur);
     
     if (retur) {
+        console.log("Reisen er retur!");
         var utretur = setAvreise(ruteavganger, true);
         $("#tilbake").after("<br/><br/><h2>Retur:</h2>" + utretur);
     }    
