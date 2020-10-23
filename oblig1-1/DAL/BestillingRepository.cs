@@ -81,6 +81,7 @@ namespace oblig1_1.DAL
             Console.WriteLine(dato1 + ", " + dato2);
             return dato1.Year == dato2.Year && dato1.Month == dato2.Month && dato1.Day == dato2.Day;
         }
+
         //Returnere en liste med ruteavganger 
         public List<RuteAvgang> FinnEnRuteAvgang(string[] holdeplasserOgDato) //kan ikke være async pga where
         {
@@ -102,7 +103,7 @@ namespace oblig1_1.DAL
                 foreach (var fraStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == fra.ID))
                 {
                     foreach (var tilStopp in _db.Rutestopp.Where(r => r.Holdeplass.ID == til.ID && 
-                                                                fraStopp.RekkefølgeNr < r.RekkefølgeNr && 
+                                                                //TimeSpan.Compare(fraStopp.StoppTid, r.StoppTid) < 0 && 
                                                                 fraStopp.Rute == r.Rute))
                     {
                         potensielleRuter.Add(fraStopp.Rute);
