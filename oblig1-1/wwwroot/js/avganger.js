@@ -6,6 +6,7 @@ var avreiser = {};
 var totalpris;
 var turJson, returJson, pris;
 var gang = 0;
+var fullPris = 0;
 
 function visAvganger() {    //Denne henter alle relevante avganger og sender dem til å bli skrevet ut
     hentTittel();
@@ -175,12 +176,7 @@ function beregnPris(array) {
                 totPris += sonePris * antall;
 
             }
-            console.log("PIRSERN12: " + totPris);
-            for (let i = 0; i < priser.length; i++) {
-               // console.log("P: " + priser[i].prisklasse);
-
-            }
-
+            fullPris = totPris;
         });
     }
 }
@@ -460,14 +456,14 @@ function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil
     if (table == "avreiser") {
         turJson = {
             rute: avreiser[valgtRad.index() - 1].rute.navn,
-            pris: 50,
+            pris: fullPris,
             dato: avreiser[valgtRad.index() - 1].dato
         };
     }
     if (table == "returAvreiser") {
         returJson = {
             rute: avreiser[valgtRad.index() - 1].rute.navn,
-            pris: 50,
+            pris: fullPris,
             dato: avreiser[valgtRad.index() - 1].dato
         };
     }
