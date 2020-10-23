@@ -55,12 +55,12 @@ function hentRS() {
 function formaterRS(rutestopp) {
     let ut = "<table class='table table-striped'>" +
         "<tr>" +
-        "<th>RekkefølgeNr</th><th>StoppTid</th><th>Sted</th><th>Sone</th><th></th><th></th>" +
+        //"<th>StoppTid</th>
+        "<th>Sted</th> <th>Sone</th><th></th><th></th>" +
         "</tr>";
     for (let rs of rutestopp) {
         ut += "<tr>" +
-            "<td>" + rs.rekkefølgeNr + "</td>" +
-            "<td>" + rs.stopptid + "</td>" +
+            //"<td>" + rs.stopptid + "</td>" +
             "<td>" + rs.holdeplass.sted + "</td>" +
             "<td>" + rs.holdeplass.sone + "</td>" +
             "<td> <a class='btn btn-primary' href='endre.html?id=" + rs.id + "'>Endre</a></td>" +

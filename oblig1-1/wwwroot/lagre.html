@@ -13,24 +13,19 @@
         <h1>Lagre nytt Rutestopp</h1>
         <form class="form">
             <div class="form-group">
-                <label>RekkefølgeNr</label>
-                <input type="text" id="rekkefolge" onchange="validerRekkefolge(this.value)" />
-                <span id="feilRNr" style="color: red"></span>
-            </div>
-            <div class="form-group">
-                <label>Stopp Tid</label>
-                <input type="text" id="tid" onchange="validerTid(this.value)" />
-                <span id="feilTid" style="color: red"></span>
-            </div>
-            <div class="form-group">
-                <label>Holdeplass Sted</label>
+                <label>Holdeplass</label>
                 <input type="text" id="sted" onchange="validerHoldeplassFra(this.value)" />
                 <span id="feilHoldeplassFra" style="color: red"></span>
             </div>
             <div class="form-group">
-                <label>Holdeplass Sone</label>
-                <input type="text" id="sone" onchange="validerSone(this.value)" />
-                <span id="feilSone" style="color: red"></span>
+                <label>Rute</label>
+                <input type="text" id="sone" onchange="validerRute(this.value)" />
+                <span id="feilRute" style="color: red"></span>
+            </div>
+            <div class="form-group">
+                <label>Tid i minutter etter avgang</label>
+                <input type="text" id="tid" onchange="validerTid(this.value)" />
+                <span id="feilTid" style="color: red"></span>
             </div>
             <div class="form-group">
                 <input type="button" id="reg" value="Lagre" onClick="validerOgLagreRS()" class="btn btn-primary" />

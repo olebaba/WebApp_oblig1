@@ -183,25 +183,25 @@ function validerPassord(passord) {
         return true;
     }
 }
-
-function validerRekkefolge(rekkefolge) {
-    const regexp = /^[0-9]{1,3}$/;
-    const ok = regexp.test(rekkefolge);
+function validerRute(rute) {
+    const regexp = /^[a-zA-ZæøåÆØÅ\.\ \-]{2,30}$/;
+    const ok = regexp.test(rute);
     if (!ok) {
-        $("#feilRNr").html("RekkefølgeNr må bestå av 1 til 3 sammenhengende tall");
+        $("#feilRute").html("Ruten må bestå av 2 til 30 bokstaver");
         return false;
     }
     else {
-        $("#feilRNr").html("");
+        $("#feilRute").html("");
         return true;
     }
 }
 
+
 function validerTid(stoppTid) {
-    const regexp = /^([0-1]?\d|2[0-3]):([0-5]?\d):([0-5]?\d)$/;
+    const regexp = /^[0-9]{1,4}$/;
     const ok = regexp.test(stoppTid);
     if (!ok) {
-        $("#feilTid").html("StoppTid må være på formen HH:MM:SS");
+        $("#feilTid").html("Oppgi stopptid i hele minutter");
         return false;
     }
     else {
