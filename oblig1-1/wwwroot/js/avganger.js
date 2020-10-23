@@ -209,7 +209,7 @@ function visAvreiser(ruteavganger, retur) {    //Funksjon som skriver ut avgange
     }    
 }
 
-
+var holdeplasserIReise = [];
 
 function setAvreise(ruteavganger, retur) { //Skriver ut avganger med data sendt til seg
 
@@ -270,6 +270,7 @@ function setAvreise(ruteavganger, retur) { //Skriver ut avganger med data sendt 
         }
         //console.log(reiserute);
         reiserute.forEach(rs => { holdeplasser.push(rs.holdeplass) });
+        holdeplasser.forEach(h => { holdeplasserIReise.push(h) });
         if (holdeplasser.length > 0) {
             holdeplasserReverse = holdeplasser.slice().reverse();
             pris = "en rimelig pris ";
@@ -301,8 +302,6 @@ function setAvreise(ruteavganger, retur) { //Skriver ut avganger med data sendt 
     ut += "</tr></table>";
     return ut;
 }
-
-
 
 function reisevalg(element) { //gjør det mulig å huke av hvilke reiser man vil bestille, og setter verdiene som brukes i url-en
     var valgtRad, table;
