@@ -15,7 +15,7 @@ function lagreRS() {
         sted: $("#sted").val(),
         sone: $("#sone").val()
     };
-    const url = "Bestilling/LagreRS";
+    const url = "Admin/LagreRS";
     $.post(url, rutestopp, function () {
         window.location.href = 'admin.html';
     })

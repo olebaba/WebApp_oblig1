@@ -3,7 +3,7 @@
         dato: $("#dato").val(),
 
     }
-    const url = "Bestilling/LagreRuteAvgang";
+    const url = "Admin/LagreRuteAvgang";
     $.post(url, ruteavgang, function () {
         window.location.href = 'admin.html';
     })

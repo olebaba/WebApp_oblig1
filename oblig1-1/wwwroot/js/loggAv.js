@@ -1,5 +1,5 @@
 ﻿function loggAv() {
-    $.get("Bestilling/LoggUt", function () {
+    $.get("Admin/LoggUt", function () {
         window.location.href = 'innlogging.html';
     });
 }
